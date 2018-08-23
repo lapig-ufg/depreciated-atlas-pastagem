@@ -83,7 +83,7 @@ module.exports = function(app){
 				},*/
 				{
 					'id': 'landsat_end',
-					'ows_layer': 'bi_ce_mosaico_landsat_30_{end_year}_lapig',
+					'ows_layer': 'pa_br_rf_pastagens_30_2017_lapig',
 					'enabled': true,
 					'label': 'Mosaico Landsat - {end_year}',
 					'options': false,
