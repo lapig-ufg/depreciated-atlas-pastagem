@@ -6,6 +6,40 @@
   <div class="row">
     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 dpat-ol-div">
       <div id="map" class="dpat-ol-map"></div>
+      <div id="position"> 
+      	<div class="row">
+    			<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row-box-name">
+						<mat-checkbox class="layer-name" name="onofflayer" (change)="layerchecked($event)" [(ngModel)]="checked">Área de Pastagem</mat-checkbox>
+						<div class="row layers-indicator">
+							<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+								<button class="button-row" mat-icon-button>
+							    <mat-icon class="icon-info" svgIcon="assets/info.svg">i</mat-icon>
+							  </button>
+							</div>
+							<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators">{{ indicator | number }} ha</div>
+						</div>
+					</div>
+				</div>
+				<div class="row layers-options">
+					<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+						<div class="example-selected-value">Opções de visualização:</div>
+						<div class="row">
+							<div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7 options-radio-button">
+								<mat-radio-group class="example-radio-group">
+								  <mat-radio-button class="example-radio-button">Área</mat-radio-button>
+								</mat-radio-group>
+							</div>
+							<div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+								<mat-form-field>
+								  <mat-select placeholder="" (selectionChange)="updateyear()" [value]="year" [(ngModel)]="year">
+								    <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+								  </mat-select>
+								</mat-form-field>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
     </div>
   </div>
 </div>

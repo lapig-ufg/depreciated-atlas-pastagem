@@ -17,7 +17,7 @@ var http = require('http').Server(app);
 var MongoStore = require('connect-mongo')(session);
 var cookie = parseCookie('LAPIG')
 
-load('config.js', {'verbose': false})
+load('config.js', {'verbose': false}) 
 .then('libs')
 .then('middleware')
 .into(app);
@@ -77,7 +77,7 @@ app.middleware.repository.init(function() {
 	.into(app);
 
 	http.listen(app.config.port, function() {
-		console.log('D-PAT Server @ [port %s] [pid %s]', app.config.port, process.pid.toString());
+		console.log('Atlas Pastagem Server @ [port %s] [pid %s]', app.config.port, process.pid.toString());
 		if(process.env.PRIMARY_WORKER) {
 			
 		}

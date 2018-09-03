@@ -10,7 +10,7 @@
 .ol-grab{cursor:move;cursor:-webkit-grab;cursor:-moz-grab;cursor:grab}
 .ol-control{position:absolute;background-color:rgba(255,255,255,.4);border-radius:4px;padding:2px}
 .ol-control:hover{background-color:rgba(255,255,255,.6)}
-.ol-zoom{top:.5em;left:.5em}
+.ol-zoom{top:.5em;right:.5em}
 .ol-rotate{top:.5em;right:.5em;transition:opacity .25s linear,visibility 0s linear}
 .ol-rotate.ol-hidden{opacity:0;visibility:hidden;transition:opacity .25s linear,visibility 0s linear .25s}
 .ol-zoom-extent{top:4.643em;left:.5em}
