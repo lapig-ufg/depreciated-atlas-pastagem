@@ -80,7 +80,7 @@ export class MapComponent implements OnInit {
 	chartResult: any;
 	chartResultStates: any;
 	regionSelected: 'Brasil';
-	regionTypeCharts: '';
+	regionTypeCharts: any;
 
 	model = '';
   searching = false;
@@ -130,6 +130,7 @@ export class MapComponent implements OnInit {
 		this.tileloading = 0;
 		this.projection = OlProj.get('EPSG:900913');
 		this.currentZoom = 4;
+		this.regionTypeCharts = '';
 
 		this.urls = [
     	'http://o1.lapig.iesa.ufg.br/ows',
@@ -165,7 +166,7 @@ export class MapComponent implements OnInit {
 
   formatter = (x: {text: string}) => x.text;
 
-  private updateRegion(region) {
+  updateRegion(region) {
 
   	this.regionSelected = region.item.name;
   	this.regionTypeCharts = region.item.type
@@ -526,7 +527,7 @@ export class MapComponent implements OnInit {
 		}
 	}
 
-	private baseLayerChecked(base, e) {
+	baseLayerChecked(base, e) {
 		if (base == 'mapbox' && e.checked){
 			this.mapbox.layer.setVisible(true);
 			this.mapbox.visible = true;

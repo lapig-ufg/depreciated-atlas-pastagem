@@ -1,5 +1,4 @@
 var express = require('express')
-, cluster = require('cluster')
 , load = require('express-load')
 , path = require('path')
 , util    = require('util')
@@ -9,12 +8,10 @@ var express = require('express')
 , timeout = require('connect-timeout')
 , bodyParser = require('body-parser')
 , multer = require('multer')
-, session = require('express-session')
 , parseCookie = require('cookie-parser');
 
 var app = express();
 var http = require('http').Server(app);
-var MongoStore = require('connect-mongo')(session);
 var cookie = parseCookie('LAPIG')
 
 load('config.js', {'verbose': false}) 
@@ -22,26 +19,7 @@ load('config.js', {'verbose': false})
 .then('middleware')
 .into(app);
 
-app.middleware.repository.init(function() {
-	
-	var mongodbUrl = 'mongodb://' + app.config.mongo.host + ':' + app.config.mongo.port + '/' + app.config.mongo.dbname;
-
-	app.repository = app.middleware.repository;
-	var store = new MongoStore({ url: mongodbUrl });
-
 	app.use(cookie);
-	var middlewareSession = session({ 
-		store: store,
-		secret: 'LAPIG',
-		resave: false,
-    saveUninitialized: true,
-		key: 'sid',
-		cookie: {
-			maxAge: 1000 * 60 * 60 * 24
-		}
-	})
-
-	app.use(middlewareSession);
 	
 	app.use(compression());
 	app.use(express.static(app.config.clientDir));
@@ -82,8 +60,6 @@ app.middleware.repository.init(function() {
 			
 		}
 	});
-
-});
 
 process.on('uncaughtException', function (err) {
 	console.error(err.stack);

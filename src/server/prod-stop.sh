@@ -1,2 +1,2 @@
 #!/bin/bash
-kill $(pgrep -f "node app-tvi-cluster.js")
+kill $(pgrep -f "node app-atlas-cluster.js")
