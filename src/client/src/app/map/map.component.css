@@ -1,49 +1,9 @@
-.collapse-btn {
-	padding: 0px;
-	padding-left: 5px;
-	padding-right: 5px;
-	background-color: #343a40;
-	border-color: #343a40;
-}
-
 .bckgdisabled {
 	background-color: #e9ecef !important;
 }
 
 .container-fluid {
 	margin-top: 55px;
-}
-
-.dpat-period-group {
-	padding: 10px;
-}
-
-.dpat-layer-group {
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-
-.dpat-layer {
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-
-.dpat-layer-label {
-	background-color: #ffffff;
-}
-
-.dpat-layer-label:focus {
-	outline:0 !important;
-}
-
-.dpat-sidepanel {
-	padding: 10px;
-	padding-top: 0px;
-	background-color: #343a40;
-	overflow-y: scroll;
-	height: calc(100vh - 55px);
 }
 
 hr {
@@ -75,22 +35,26 @@ hr {
 	padding: 10px;
 }
 
-#position {
+#positionheaders {
+  padding: 10px;
+}
+
+#positionLayers {
   position: absolute; 
   left: 2%; 
-  top: 6%;
-  width: 315px;
-  height: 200px;
+  top: 4%;
   background-color: #FFF;
   color: #666;
   text-align: left;
   z-index: 1000;
-  border: 1px solid #525252;
+  /*border: 1px solid #525252;*/
+  opacity: .93;
 }
 
 .row-box-name {
-	padding-top: 10px;
-	padding-left: 30px;
+	padding-top: 20px;
+	padding-left: 20px;
+	padding-bottom: 5px;
 }
 
 .layer-name {
@@ -99,13 +63,14 @@ hr {
 }
 
 .layers-options {
-	padding-left: 42px;
+	padding-left: 50px;
 
 }
 
 .layers-indicator {
-	padding-left: 25px;
-	padding-bottom: 30px;
+	padding-left: 65px;
+	padding-bottom: 15px;
+	margin-right: 0px !important;
 }
 
 .value-indicators {
@@ -129,6 +94,10 @@ hr {
 	padding-top: 5%;
 }
 
+.regions-row {
+	padding: 20px 0px 12px 0px;
+}
+
 .mat-form-field{
 	width: 65px;
 }
@@ -142,4 +111,141 @@ hr {
 ..mat-form-field-infix{
 	padding: 0px  !important;
 	border-top: 0px !important;
+}
+
+#positionCharts {
+  position: absolute; 
+  right: 1%; 
+  bottom: 2%;
+  width: 600px;
+  background-color: #FFF;
+  color: #666;
+  text-align: left;
+  z-index: 1000;
+  /*border: 1px solid #525252;*/
+  opacity: .93;
+}
+
+#positionLegend {
+	position: absolute; 
+  right: 1%; 
+  top: 4%;
+  width: 350px;
+  background-color: #FFF;
+  color: #666;
+  text-align: left;
+  z-index: 1000;
+  /*border: 1px solid #525252;*/
+  opacity: .93;
+}
+
+h6 {
+	margin-left: 15px; 
+	margin-top: 10px;
+}
+
+.charts {
+	padding-bottom: 10px;
+}
+
+.table-municipios {
+	margin: 15px;
+	width: 95%;
+	max-width: 95%;
+	font-size: 12px;
+}
+
+.collapse-btn {
+	padding: 0px;
+	font-weight: bold;
+	width: 30px;
+  border-color: #d1d1d1;
+}
+
+.titleWindows {
+	color: #565353;
+	padding: 10px;
+  font-weight: bold;
+  border-bottom: 2px solid #717171;
+  font-size: 20px;
+}
+
+.layerLegend {
+	padding: 0px 10px 10px 35px;
+}
+
+.title-atlas {
+	color: #373435;
+	font-weight: bold;
+	font-size: 30px; 
+}
+
+.title-atlas-div {
+	text-align: left;
+	padding-left: 0px;
+}
+
+.paddingLayerLegend {
+	padding-top: 5px;
+	padding-left: 0px;
+}
+
+.baseMap {
+	padding: 20px 10px 5px 30px
+}
+
+.logos-atlas {
+	text-align: right;
+}
+
+.logo-lapig {
+	height: 32px;
+	margin-right: 8px;
+}
+
+.logo-pastagem {
+	height: 32px;
+	margin-left: 8px;
+}
+
+.clear-region-btn {
+	height: 18px;
+	position: absolute;
+	left: 88%;
+	top: 10px;
+	cursor: pointer;
+	opacity: 0.8;
+}
+
+.button-csv {
+	text-align: right;
+	color: #707070 !important;
+} button {
+	color: #707070 !important;
+}
+
+.button-shp{
+	text-align: left;
+} button {
+	color: #707070 !important;
+}
+
+.buttons-download {
+	padding-bottom: 25px;
+	margin-right: 0px;
+}
+
+.nameLayers {
+	font-size: 1.21rem;
+	padding-top: 7px;
+}
+
+.collapse-btn {
+	padding: 0px;
+	padding-left: 5px;
+	padding-right: 5px;
+	background-color: #727272;
+	border-color: #727272;
+	margin-left: 15px;
+	color: white !important;
 }

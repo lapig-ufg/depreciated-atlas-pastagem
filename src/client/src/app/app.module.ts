@@ -6,6 +6,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCheckboxModule, MatSelectModule, MatButtonModule, MatIconModule, MatRadioModule } from '@angular/material';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSliderModule } from '@angular/material/slider';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
@@ -48,6 +53,11 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatIconModule,
     MatRadioModule,
+    MatTabsModule,
+    MatTableModule,
+    MatExpansionModule,
+    MatSliderModule,
+    MatSlideToggleModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only

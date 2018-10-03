@@ -1,41 +1,223 @@
-<nav class="navbar navbar-expand-md fixed-top">
-  <img style="height: 35px; margin-right: 15px;" src="/assets/logo.png" />
-  <a class="navbar-brand" style="color:#549151; font-weight:bold" href="#"></a>
+<nav class="navbar navbar-expand-md fixed-top" style="background-color: #FFF;">
+  <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 title-atlas-div">
+  	<div class="title-atlas">Atlas Digital das Pastagens Brasileiras</div>
+  </div>
+  <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 logos-atlas">
+  		<a href="https://www.lapig.iesa.ufg.br/lapig/" target="_blank"><img  class="logo-lapig" src="/assets/logo.png" /></a>
+  		<a href="https://pastagem.org/index.php/pt-br/" target="_blank"><img class="logo-pastagem" src="/assets/pastagem-logo.png" /></a>
+  </div>
 </nav>
 <div class="container-fluid">
   <div class="row">
     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 dpat-ol-div">
       <div id="map" class="dpat-ol-map"></div>
-      <div id="position"> 
-      	<div class="row">
-    			<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row-box-name">
-						<mat-checkbox class="layer-name" name="onofflayer" (change)="layerchecked($event)" [(ngModel)]="checked">Área de Pastagem</mat-checkbox>
-						<div class="row layers-indicator">
-							<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-								<button class="button-row" mat-icon-button>
-							    <mat-icon class="icon-info" svgIcon="assets/info.svg">i</mat-icon>
-							  </button>
+      <div id="positionLayers">
+	      <div class= "titleWindows">
+	      		Camadas Geográficas
+	        	<button type="button" class="collapse-btn btn btn-light btn-sm float-right" (click)="collapseLayer = !collapseLayer" [attr.aria-expanded]="!collapseLayer" aria-controls="camadageografica">-</button>
+	      </div>
+	      <div [ngbCollapse]="collapseLayer">
+	      	<mat-tab-group>
+						<mat-tab label="Pastagens">
+			      	<div class="form-group">
+			      		<div class="regions-row">
+									<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+									  <ng-template #rt let-r="result" let-t="term">
+										  <ngb-highlight [result]="r.text" [term]="t"></ngb-highlight>
+										</ng-template>
+									  <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Escolha uma região" (selectItem)="updateRegion($event)" [resultTemplate]="rt" [inputFormatter]="formatter"/>
+									  <img [hidden]="model == ''" class="clear-region-btn" (click)="getMatchRegion()" src="/assets/clear_button.png" />
+									  <span *ngIf="searching">localizando...</span>
+									  <div class="invalid-feedback" *ngIf="searchFailed">Desculpe, Região não encontrada.</div>
+									</div>
+							  </div>
+				      	<div>
+				    			<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row-box-name">
+										<mat-slide-toggle name="onofflayer" (change)="layerchecked(pastagem.layer, $event)" [(ngModel)]="checked">
+											<h5 class="nameLayers"><b>Área de Pastagem - {{ regionSelected }}</b></h5>
+										</mat-slide-toggle>
+									</div>
+								</div>
+								<div class="row layers-indicator">
+									<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+										<button class="button-row" mat-icon-button>
+									    <mat-icon class="icon-info" svgIcon="assets/info.svg">i</mat-icon>
+									  </button>
+									</div>
+									<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators">{{ indicator | number:'3.0-0' }} ha</div>
+								</div>
+								<div class="row buttons-download">
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv">
+										<a href="{{ linkDownload }}">
+											<button mat-raised-button href (click)="buttonDownload('csv', $event)" value='buttonCSV'>
+												<b>CSV</b>
+											</button>
+										</a>
+									</div>
+									<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-shp">
+										<!-- <a href="{{ linkDownload }}"> -->
+											<button mat-raised-button (click)="buttonDownload('shp', $event)">
+												<b>SHP</b>
+											</button>
+										<!-- </a>
+ -->									</div>
+								</div>
+								<div class="layers-options">
+									<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+										<div class="example-selected-value">Opções de visualização:</div>
+										<div class="row">
+											<div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7 options-radio-button">
+												<mat-radio-group>
+												  <mat-radio-button (change)="opcoesVisualizacao($event)" value="areas-pastagens" checked="true">
+												  	Áreas
+												  </mat-radio-button>
+												  <mat-radio-button (change)="opcoesVisualizacao($event)" value="municipios-pastagens">
+												  	Municípios
+												  </mat-radio-button>
+												</mat-radio-group>
+											</div>
+											<div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+												<mat-form-field>
+												  <mat-select placeholder="" (selectionChange)="updateyear()" [value]="year" [(ngModel)]="year">
+												    <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+												  </mat-select>
+												</mat-form-field>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators">{{ indicator | number }} ha</div>
-						</div>
-					</div>
+						</mat-tab>
+						<mat-tab label="Mapa Base">
+							<div class="form-group baseMap">
+								<mat-slide-toggle (change)="baseLayerChecked('mapbox', $event)" [(ngModel)]="mapbox.visible" [checked]="mapbox.visible" >
+									Mapbox
+								</mat-slide-toggle><br/><br/>
+								<mat-slide-toggle (change)="baseLayerChecked('satelite', $event)" [(ngModel)]="satelite.visible">
+									Satélite
+								</mat-slide-toggle><br/><br/>
+								<mat-slide-toggle (change)="baseLayerChecked('estradas', $event)" [(ngModel)]="estradas.visible" >
+									Estrada
+								</mat-slide-toggle><br/><br/>
+								<mat-slide-toggle (change)="baseLayerChecked('relevo', $event)" [(ngModel)]="relevo.visible">
+									Relevo
+								</mat-slide-toggle><br/><br/>
+								<mat-slide-toggle (change)="baseLayerChecked('landsat', $event)" [(ngModel)]="landsat.visible">
+									Landsat - 2017
+								</mat-slide-toggle><br/>
+							</div>
+						</mat-tab>
+						<mat-tab label="Limites Geográficos">
+							<div class="form-group baseMap">
+								<mat-slide-toggle (change)="layerchecked(estados.layer, $event)" [(ngModel)]="estados.visible" [checked]="estados.visible" class="slideEstados" >
+									Estados
+								</mat-slide-toggle><br/><br/>
+								<mat-slide-toggle (change)="layerchecked(municipios.layer, $event)" [(ngModel)]="municipios.visible" class="slideMunicipios" >
+									Municípios
+								</mat-slide-toggle><br/><br/>
+								<mat-slide-toggle (change)="layerchecked(biomas.layer, $event)" [(ngModel)]="biomas.visible"  class="slideBiomas" >
+									Biomas
+								</mat-slide-toggle><br/><br/>
+								<mat-slide-toggle (change)="layerchecked(terras_indigenas.layer, $event)" class="slideTerrasIndigenas" >
+									Terras Indígenas
+								</mat-slide-toggle><br/><br/>
+								<mat-slide-toggle [disabled]="true">
+									Terras Privadas
+								</mat-slide-toggle><br/><br/>
+								<mat-slide-toggle (change)="layerchecked(unidades_protecao_integral.layer, $event)" class="slideUnidadesConservacao" >
+									Unidades de Conservação
+								</mat-slide-toggle><br/><br/>
+								<mat-slide-toggle (change)="layerchecked(frigorificos.layer, $event)" class="slideFrigorificos" >
+									Frigoríficos
+								</mat-slide-toggle><br/>
+							</div>
+						</mat-tab>
+					</mat-tab-group>
 				</div>
-				<div class="row layers-options">
-					<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-						<div class="example-selected-value">Opções de visualização:</div>
-						<div class="row">
-							<div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7 options-radio-button">
-								<mat-radio-group class="example-radio-group">
-								  <mat-radio-button class="example-radio-button">Área</mat-radio-button>
-								</mat-radio-group>
-							</div>
-							<div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-								<mat-form-field>
-								  <mat-select placeholder="" (selectionChange)="updateyear()" [value]="year" [(ngModel)]="year">
-								    <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
-								  </mat-select>
-								</mat-form-field>
-							</div>
+			</div>
+			<div id="positionCharts">
+				<div class= "titleWindows">
+	      	Gráficos
+	        <button type="button" class="collapse-btn btn btn-light btn-sm float-right" (click)="collapseCharts = !collapseCharts" [attr.aria-expanded]="!collapseCharts" aria-controls="camadageografica">-</button>
+	      </div>
+				<div [ngbCollapse]="collapseCharts">
+					<mat-tab-group class="charts">
+					  <mat-tab label="Série Temporal" *ngIf="true" id="tabGraficoLinhas">
+					  	<h6><b>Áreas de Pastagem - {{ regionSelected }}</b> </h6>
+					  	<ngx-charts-line-chart 
+					  		[view]="[600,280]" 
+					  		[results]="chartResult"
+					  		[scheme]="colorScheme"
+					  		[legend]="false"
+					  		[legendTitle] = "false"
+					  		[autoScale]="true"
+					  		[yAxis]="true" 
+					  		[xAxis]="true">
+					  		<ng-template #tooltipTemplate let-model="model">
+		                {{model.name}}: {{ model.value | number:'1.0-0' }} ha
+		            </ng-template>
+        			</ngx-charts-line-chart>
+					  </mat-tab>
+					  <mat-tab label="Estados" *ngIf="regionTypeCharts != 'estado' && regionTypeCharts != 'municipio'"> 
+					  	<h6><b>Áreas de Pastagens nos Estados - {{ year }} {{ regionTypeCharts }}</b> </h6>
+					  	<ngx-charts-bar-horizontal 
+						  	[view]="[500,auto]"
+						  	[barPadding]="2"
+						  	[scheme]="colorSchemeStates"
+						  	[schemeType]="colorSchemeStatesType"
+						  	[showGridLines]="true" 
+						  	[roundDomains]="false" 
+						  	[roundEdges]="false" 
+						  	[results]="chartResultStates" 
+						  	[yAxis]="true" 
+						  	[xAxis]="true" 
+						  	[showYAxisLabel]="true"
+						  	[showXAxisLabel]="true">
+		            <ng-template #tooltipTemplate let-model="model">
+		                {{model.name}}: {{ model.value | number:'1.0-0' }} ha
+		            </ng-template>
+		          </ngx-charts-bar-horizontal>
+					  </mat-tab>
+					  <mat-tab label="Municípios" *ngIf="regionTypeCharts != 'municipio'">
+					  	<h6><b>Ranking dos Municípios - {{ year }}</b> </h6>
+					  	<table class="table table-sm table-municipios">
+		            <thead>
+		              <tr>
+		                <th scope="col">#</th>
+		                <th scope="col">Município</th>
+		                <th scope="col">Estado</th>
+		                <th class="text-right" scope="col">Área</th>
+		              </tr>
+		            </thead>
+		            <tbody *ngFor="let city of chartResultCities">
+		              <tr>
+		                <th scope="row">{{city.index}}</th>
+		                <td>{{city.name}}</td>
+		                <td>{{city.uf}}</td>
+		                <td class="float-right">{{city.value | number:'1.0-0' }} ha</td>
+		              </tr>
+		            </tbody>
+		          </table>
+					  </mat-tab>
+					</mat-tab-group>
+				</div>
+			</div>
+			<div id= "positionLegend" *ngIf="checked">
+				<div class= "titleWindows">
+	      	Legendas
+	        <button type="button" class="collapse-btn btn btn-light btn-sm float-right" (click)="collapseLegends = !collapseLegends" [attr.aria-expanded]="!collapseLegends" aria-controls="camadageografica">-</button>
+	      </div>
+	      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
+	      	<div *ngIf="checked">
+						<div>
+							<h6>
+								<img [src]="checkedLegend ? '../../assets/layer-visible.png' : '../../assets/layer-not-visible.png'" (click)="legendchecked()" > 
+								<b>Área de Pastagem - {{ regionSelected }}</b>
+							</h6>
+						</div>
+						<div class= "layerLegend">
+							<img *ngIf="layerPastureShow == 'areas-pastagens'" src="http://o4.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture&format=image%2Fpng">
+							<img *ngIf="layerPastureShow == 'municipios-pastagens'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_regions_municipios&format=image%2Fpng">
 						</div>
 					</div>
 				</div>

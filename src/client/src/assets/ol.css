@@ -17,7 +17,7 @@
 .ol-full-screen{right:.5em;top:.5em}
 @media print{.ol-control{display:none}
 }
-.ol-control button{display:block;margin:1px;padding:0;color:#fff;font-size:1.14em;font-weight:700;text-decoration:none;text-align:center;height:1.375em;width:1.375em;line-height:.4em;background-color:rgba(0, 0, 0, 0.5);border:none;border-radius:2px}
+.ol-control button{display:none;margin:1px;padding:0;color:#fff;font-size:1.14em;font-weight:700;text-decoration:none;text-align:center;height:1.375em;width:1.375em;line-height:.4em;background-color:rgba(0, 0, 0, 0.5);border:none;border-radius:2px}
 .ol-control button::-moz-focus-inner{border:none;padding:0}
 .ol-zoom-extent button{line-height:1.4em}
 .ol-compass{display:block;font-weight:400;font-size:1.2em;will-change:transform}
@@ -31,7 +31,7 @@
 .ol-attribution li{display:inline;list-style:none;line-height:inherit}
 .ol-attribution li:not(:last-child):after{content:" "}
 .ol-attribution img{max-height:2em;max-width:inherit;vertical-align:middle}
-.ol-attribution button,.ol-attribution ul{display:inline-block}
+.ol-attribution button,.ol-attribution ul{display:none}
 .ol-attribution.ol-collapsed ul{display:none}
 .ol-attribution.ol-logo-only ul{display:block}
 .ol-attribution:not(.ol-collapsed){background:rgba(255,255,255,.8)}
