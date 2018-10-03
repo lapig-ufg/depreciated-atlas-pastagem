@@ -3,9 +3,7 @@ var express = require('express')
 , path = require('path')
 , util    = require('util')
 , compression = require('compression')
-, requestTimeout = require('express-timeout')
 , responseTime = require('response-time')
-, timeout = require('connect-timeout')
 , bodyParser = require('body-parser')
 , multer = require('multer')
 , parseCookie = require('cookie-parser');
@@ -14,9 +12,7 @@ var app = express();
 var http = require('http').Server(app);
 var cookie = parseCookie('LAPIG')
 
-load('config.js', {'verbose': false}) 
-.then('libs')
-.then('middleware')
+load('config.js', {'verbose': false})
 .into(app);
 
 	app.use(cookie);
@@ -28,17 +24,6 @@ load('config.js', {'verbose': false})
 
 	var publicDir = path.join(__dirname, '');
 
-	app.use(requestTimeout({
-		'timeout': 1000 * 60 * 30,
-		'callback': function(err, options) {
-			var response = options.res;
-			if (err) {
-				util.log('Timeout: ' + err);
-			}
-			response.end();
-		}
-	}));
-
 	app.use(responseTime());
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({ extended: true }));
@@ -49,8 +34,7 @@ load('config.js', {'verbose': false})
 		next();
 	});
 
-	load('models', {'verbose': false})
-	.then('controllers')
+	load('controllers')
 	.then('routes')
 	.into(app);
 

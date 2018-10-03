@@ -102,7 +102,6 @@ module.exports = function(app){
 		if(regionFilter != ''){
 			regionFilter = "WHERE "+regionFilter
 		}else{
-			console.log('não tem region')
 		}
 
 		client.query("SELECT year, SUM(area_ha) FROM pasture "+regionFilter+" GROUP BY year ORDER BY year", (err, res) => {
