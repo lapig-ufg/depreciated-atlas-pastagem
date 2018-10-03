@@ -11,8 +11,7 @@ module.exports = function(app) {
 	};
 
 	if(process.env.NODE_ENV == 'prod') {
-		config["port"] = "4000"
-
+		config["port"] = "4004"
 	}
 
 	return config;
