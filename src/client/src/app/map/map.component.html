@@ -3,8 +3,8 @@
   	<div class="title-atlas">Atlas Digital das Pastagens Brasileiras</div>
   </div>
   <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 logos-atlas">
-  		<a href="https://www.lapig.iesa.ufg.br/lapig/" target="_blank"><img  class="logo-lapig" src="/assets/logo.png" /></a>
-  		<a href="https://pastagem.org/index.php/pt-br/" target="_blank"><img class="logo-pastagem" src="/assets/pastagem-logo.png" /></a>
+  		<a href="https://www.lapig.iesa.ufg.br/lapig/" target="_blank"><img  class="logo-lapig" src="atlas/assets/logo.png" /></a>
+  		<a href="https://pastagem.org/index.php/pt-br/" target="_blank"><img class="logo-pastagem" src="atlas/assets/pastagem-logo.png" /></a>
   </div>
 </nav>
 <div class="container-fluid">
@@ -26,7 +26,7 @@
 										  <ngb-highlight [result]="r.text" [term]="t"></ngb-highlight>
 										</ng-template>
 									  <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Escolha uma região" (selectItem)="updateRegion($event)" [resultTemplate]="rt" [inputFormatter]="formatter"/>
-									  <img [hidden]="model == ''" class="clear-region-btn" (click)="getMatchRegion()" src="/assets/clear_button.png" />
+									  <img [hidden]="model == ''" class="clear-region-btn" (click)="getMatchRegion()" src="atlas/assets/clear_button.png" />
 									  <span *ngIf="searching">localizando...</span>
 									  <div class="invalid-feedback" *ngIf="searchFailed">Desculpe, Região não encontrada.</div>
 									</div>
@@ -41,7 +41,7 @@
 								<div class="row layers-indicator">
 									<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
 										<button class="button-row" mat-icon-button>
-									    <mat-icon class="icon-info" svgIcon="assets/info.svg">i</mat-icon>
+									    <mat-icon class="icon-info" svgIcon="atlas/assets/info.svg">i</mat-icon>
 									  </button>
 									</div>
 									<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators">{{ indicator | number:'3.0-0' }} ha</div>
@@ -211,7 +211,7 @@
 	      	<div *ngIf="checked">
 						<div>
 							<h6>
-								<img [src]="checkedLegend ? '../../assets/layer-visible.png' : '../../assets/layer-not-visible.png'" (click)="legendchecked()" > 
+								<img [src]="checkedLegend ? 'atlas/assets/layer-visible.png' : 'atlas/assets/layer-not-visible.png'" (click)="legendchecked()" > 
 								<b>Área de Pastagem - {{ regionSelected }}</b>
 							</h6>
 						</div>
