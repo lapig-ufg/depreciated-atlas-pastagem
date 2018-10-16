@@ -27,7 +27,7 @@ import GeoJSON from 'ol/format/geojson';
 import _ol_TileUrlFunction_ from 'ol/tileurlfunction.js';
 import "rxjs/add/observable/of";
 
-const SEARCH_URL = 'atlas/service/map/search';
+const SEARCH_URL = 'service/map/search';
 const PARAMS = new HttpParams({
   fromObject: {
     format: 'json'
@@ -88,6 +88,9 @@ export class MapComponent implements OnInit {
   msFilterRegion = '';
   msFilterRegionCharts = '';
   chartResultCities: any;
+
+  downloadRegionType: any;
+  downloadRegion: any;
 
   collapseLayer: boolean;
   collapseCharts: boolean;
@@ -170,25 +173,31 @@ export class MapComponent implements OnInit {
 
   	this.regionSelected = region.item.name;
   	this.regionTypeCharts = region.item.type
+  	this.downloadRegionType = region.item.type;
+  	this.downloadRegion = region.item.value;
   	var regionType = region.item.type;
   	var region = region.item.value;
-  	this.region_geom = region
+  	this.region_geom = region;
 
 
   	if(regionType == 'estado') {
   		regionType = 'uf'
+  		this.downloadRegionType = 'uf';
   	}else if (regionType == 'municipio') {
   		regionType = 'cd_geocmu'
   	}else if (regionType == 'região de fronteira' && region == "MATOPIBA") {
   		regionType = 'MATOPIBA'
   		region = '1'
+  		this.downloadRegionType = 'roi';
+  		this.downloadRegion = 'MATOPIBA';
   		this.region_geom = 'MATOPIBA'
   	}else if (regionType == 'região de fronteira' && region == "ARCODESMAT") {
   		regionType = 'ARCODESMAT'
   		region = '1'
+  		this.downloadRegionType = 'roi';
+  		this.downloadRegion = 'ARCODESMAT';
   		this.region_geom = 'ARCODESMAT'
   	}
-
 
   	this.msFilterRegion = " AND "+regionType+"='"+region+"'";
   	this.msFilterRegionCharts = regionType+"='"+region+"'";
@@ -204,7 +213,7 @@ export class MapComponent implements OnInit {
   private zoomExtent() {
   	var map = this.map;
   	if (this.regionTypeCharts != '') {
-			this.http.get('atlas/service/map/extent?region=text='+"'"+this.region_geom+"'").subscribe(extentResult => {
+			this.http.get('service/map/extent?region=text='+"'"+this.region_geom+"'").subscribe(extentResult => {
 				var features = (new GeoJSON()).readFeatures(extentResult, {
 				  dataProjection : 'EPSG:4326',
 				  featureProjection: 'EPSG:3857'
@@ -249,6 +258,8 @@ export class MapComponent implements OnInit {
 			this.msFilterRegionCharts = '';
 			this.regionTypeCharts = '';
 			this.regionSelected = 'Brasil';
+			this.downloadRegionType = undefined;
+  		this.downloadRegion = undefined;
 			this.sumIndicators();
 			this.updateSourceLayer();
 			this.updateCharts();
@@ -508,10 +519,11 @@ export class MapComponent implements OnInit {
 
 	buttonDownload(tipo, e) {
 		if(tipo == 'csv'){
-			this.linkDownload = 'atlas/service/map/downloadCSV?region=year='+this.year+''+this.msFilterRegion
+			this.linkDownload = 'service/map/downloadCSV?region=year='+this.year+''+this.msFilterRegion
 		}else if (tipo == 'shp'){
-			//this.linkDownload = ""
-			alert('Em construção');
+			var paramsDownload = 'file=pasture&regionType='+this.downloadRegionType+'&region='+this.downloadRegion+'&year='+this.year
+			this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
+			console.log(this.linkDownload)
 		}
 	}
 
@@ -643,19 +655,19 @@ export class MapComponent implements OnInit {
 	}
 
 	private sumIndicators() {
-		this.http.get('atlas/service/map/indicators?&MSFILTER=year='+this.year+''+this.msFilterRegion).subscribe(indicators => {
+		this.http.get('service/map/indicators?&MSFILTER=year='+this.year+''+this.msFilterRegion).subscribe(indicators => {
 			this.indicator = indicators[0].sum;
 		});
 	}
 
 	private updateCharts() {
-		this.http.get('atlas/service/map/charts?region='+this.msFilterRegionCharts).subscribe(charts => {
+		this.http.get('service/map/charts?region='+this.msFilterRegionCharts).subscribe(charts => {
 			this.chartResult = charts;
 		});
 	}
 
 	private updateChartsYears() {
-		this.http.get('atlas/service/map/chartsByYear?year='+this.year+''+this.msFilterRegion).subscribe(chartsYear => {
+		this.http.get('service/map/chartsByYear?year='+this.year+''+this.msFilterRegion).subscribe(chartsYear => {
 			this.chartResultCities = chartsYear['cities'];
 			this.chartResultStates = chartsYear['state'];
 		});
@@ -667,11 +679,11 @@ export class MapComponent implements OnInit {
 		this.updateChartsYears();
 		this.sumIndicators();
 
-		this.http.get('atlas/service/map/years').subscribe(years => {
+		this.http.get('service/map/years').subscribe(years => {
 			this.years = years;
 		});
 
-		this.http.get('atlas/service/map/charts').subscribe(charts => {
+		this.http.get('service/map/charts').subscribe(charts => {
 			this.chartResult = charts;
 		});
 

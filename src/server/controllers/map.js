@@ -1,14 +1,16 @@
 var pg = require('pg')
 , fs = require('fs')
-, json2csv = require('json2csv').parse;
+, json2csv = require('json2csv').parse
+, archiver = require('archiver');
+
 
 module.exports = function(app){
 	var Map = {}
-	var location = {};
 
-	var conString = "postgres://postgres@200.137.217.158:5432/atlas_pastagem";
+	var config = app.config;
+	var conString = "postgres://"+config.postgres.host+":"+config.postgres.port+"/"+config.postgres.dbname;
 	var client = new pg.Client(conString);
-	client.connect();
+			client.connect();
 
 	Map.extent = function(request, response) {
 
@@ -176,6 +178,7 @@ module.exports = function(app){
 
 		var region = request.param('region', '');
 		var sqlQuery =  "SELECT cd_geouf, cd_geocmu, regiao, uf, estado, municipio, bioma, arcodesmat, matopiba, mun_ha, area_ha, year FROM pasture WHERE "+region
+
 		client.query(sqlQuery, (err, rows) => {
 			if (err) {
 				console.log(err)
@@ -194,6 +197,66 @@ module.exports = function(app){
 
 			}
 		});
+	}
+
+	Map.downloadSHP = function(request, response) {
+
+		var pathFile;
+		var layer = request.param('file', '');
+		var regionType = request.param('regionType', '');
+		var region = request.param('region', '');
+		var year = request.param('year', '');
+		var fileParam = layer+'_'+year;
+		
+		var diretorio = config.downloadDir2+layer+'/'+regionType+'/'+region+'/';
+		var	pathFile = diretorio+fileParam;
+		
+		if(fileParam.indexOf("../") == 0){
+			res.send('Arquivo inválido!')
+			res.end();
+		}else if(fs.existsSync(pathFile+'.shp')) {
+			var nameFile = regionType+'_'+region+'_'+fileParam
+			response.setHeader('Content-disposition', 'attachment; filename='+nameFile+'.zip');
+			response.setHeader('Content-type', 'application/zip')
+
+			var zipFile = archiver('zip');
+			zipFile.pipe(response);
+
+			fs.readdir(diretorio, (err, files) => {
+			  files.forEach(fileresult => {
+
+			  	if(fileresult.indexOf(fileParam) == 0){
+			  		var pathFile = diretorio+fileresult;
+						zipFile.file(pathFile, {name:fileresult});
+			  	}
+
+			  });
+
+				zipFile.finalize();
+			})
+
+		}else if(regionType == 'undefined'){
+			var diretorioBR = config.downloadDir2+layer+'/brasil/';
+			var fileParamBR = year;
+			var	pathFileBR = diretorioBR+fileParamBR;
+			var nameFile = 'br_'+layer+'_'+year;
+
+			response.setHeader('Content-disposition', 'attachment; filename='+nameFile+'.zip');
+			response.setHeader('Content-type', 'application/zip')
+
+			var zipFile = archiver('zip');
+			zipFile.pipe(response);
+
+			if(fs.existsSync(pathFileBR)) {
+				zipFile.directory(pathFileBR, fileParam);
+			}
+
+			zipFile.finalize();
+
+		}else {
+			response.send("Arquivo indisponível");
+  		response.end();
+		}
 	}
 
 	return Map;
