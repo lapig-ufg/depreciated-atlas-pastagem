@@ -5,8 +5,8 @@ module.exports = function(app) {
 	var config = {
 		"appRoot": appRoot, 
 		"clientDir": appRoot + "/../client/dist/",
-		"downloadDir": appRoot + "/teste/",
-		"downloadDir2": "/data/download_atlas/",
+		"downloadDir": "/data/download_atlas/",
+		"fotoDir": "/data/fotos_campo/",
 		"langDir": appRoot + "/lang",
 		"logDir": appRoot + "/log/",
 		"postgres": {
@@ -18,7 +18,9 @@ module.exports = function(app) {
 	};
 
 	if(process.env.NODE_ENV == 'prod') {
-		config["port"] = "4004"
+		config["port"] = "4004",
+		config["downloadDir"] = "/data/dados-lapig/download_atlas/",
+		config["fotoDir"] = "/data/dados-lapig/fotos_campo/"
 	}
 
 	return config;

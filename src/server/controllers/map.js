@@ -34,10 +34,189 @@ module.exports = function(app){
 		});
 	}
 
+	Map.fieldPoints = function(request, response) {
+		var msfilter = request.param('msfilter', '');
+		var condition;
+		if(msfilter) {
+			condition = ' WHERE '+msfilter;
+		}
+
+		var colums = "id, cobertura, obs, data, periodo, horario, altura, homoge, invasoras, gado, qtd_cupins, forrageira, solo_exp";
+		var sqlQuery = "SELECT ST_AsGeoJSON(geom) geojson,"+colums+" FROM pontos_campo_parada"+condition;
+		
+		client.query(sqlQuery, (err, queryResult) => {
+			if (err) {
+				response.end()
+			} else {
+				
+				var result = []
+				var diretorioFotos = config.fotoDir;
+
+
+				queryResult.rows.forEach(function(row) {
+
+					result.push({
+						'type': 'Feature',
+          	'geometry': JSON.parse(row['geojson']),
+          	'properties': {
+          		'id': row['id'],
+          		'foto': fs.readdirSync(diretorioFotos+row['id']),
+          		'cobertura': row['cobertura'],
+          		'obs': row['obs'],
+          		'data': row['data'],
+          		'periodo': row['periodo'],
+          		'horario': row['horario'],
+          		'altura': row['altura'],
+          		'homoge': row['homoge'],
+          		'invasoras': row['invasoras'],
+          		'gado': row['gado'],
+          		'qtd_cupins': row['qtd_cupins'],
+          		'forrageira': row['forrageira'],
+          		'solo_exp': row['solo_exp']
+          	}
+					})
+				})
+
+				response.send({
+  				"type": "FeatureCollection",
+  				"features": result
+  			})
+		    response.end();
+			}
+		});
+
+	}
+
 	Map.indicators = function(request, response){
 
 		var msfilter = request.param('MSFILTER', '');
 		client.query("SELECT year, SUM(area_ha) FROM pasture WHERE "+msfilter+" GROUP BY year ORDER BY year", (err, res) => {
+
+		  if (err) {
+		    console.log(err.stack)
+		    response.send(err)
+				response.end()
+		  } else {
+				response.send(res.rows)
+				response.end()
+		  }
+		})
+	}
+
+	Map.indicatorsRebanhoBovino = function(request, response){
+
+		var msfilter = request.param('MSFILTER', '');
+		client.query("SELECT year, SUM(ua) FROM lotacao_bovina_regions WHERE "+msfilter+" GROUP BY year ORDER BY year", (err, res) => {
+
+		  if (err) {
+		    console.log(err.stack)
+		    response.send(err)
+				response.end()
+		  } else {
+				response.send(res.rows)
+				response.end()
+		  }
+		})
+	}
+
+	Map.indicatorsPastureDegraded = function(request, response){
+
+		var msfilter = request.param('MSFILTER', '');
+		var filters = '';
+
+		if(msfilter) {
+			filters = " WHERE "+msfilter;
+		}
+
+		client.query("SELECT SUM(area_ha) FROM pasture_degraded"+filters, (err, res) => {
+
+		  if (err) {
+		    console.log(err.stack)
+		    response.send(err)
+				response.end()
+		  } else {
+				response.send(res.rows)
+				response.end()
+		  }
+		})
+	}
+
+	Map.indicatorsPoints = function(request, response){
+
+		var msfilter = request.param('MSFILTER', '');
+		var filters = '';
+
+		if(msfilter) {
+			filters = " WHERE "+msfilter;
+		}
+
+		client.query("SELECT COUNT(*) from pontos_campo_parada"+filters, (err, res) => {
+
+		  if (err) {
+		    console.log(err.stack)
+		    response.send(err)
+				response.end()
+		  } else {
+				response.send(res.rows)
+				response.end()
+		  }
+		})
+	}
+
+	Map.indicatorsPointsTVITreinamento = function(request, response){
+
+		var msfilter = request.param('MSFILTER', '');
+		var filters = '';
+
+		if(msfilter) {
+			filters = " WHERE "+msfilter;
+		}
+
+		client.query("SELECT COUNT(*) from pontos_tvi_treinamento"+filters, (err, res) => {
+
+		  if (err) {
+		    console.log(err.stack)
+		    response.send(err)
+				response.end()
+		  } else {
+				response.send(res.rows)
+				response.end()
+		  }
+		})
+	}
+
+	Map.indicatorsPointsTVIValidacao = function(request, response){
+
+		var msfilter = request.param('MSFILTER', '');
+		var filters = '';
+
+		if(msfilter) {
+			filters = " WHERE "+msfilter;
+		}
+
+		client.query("SELECT COUNT(*) from pontos_tvi_validacao"+filters, (err, res) => {
+
+		  if (err) {
+		    console.log(err.stack)
+		    response.send(err)
+				response.end()
+		  } else {
+				response.send(res.rows)
+				response.end()
+		  }
+		})
+	}
+
+	Map.indicatorsPointsNoStop = function(request, response){
+
+		var msfilter = request.param('MSFILTER', '');
+		var filters = '';
+
+		if(msfilter) {
+			filters = " WHERE "+msfilter;
+		}
+
+		client.query("SELECT COUNT(*) from pontos_campo_sem_parada"+filters, (err, res) => {
 
 		  if (err) {
 		    console.log(err.stack)
@@ -177,7 +356,23 @@ module.exports = function(app){
 	Map.downloadCSV = function(request, response) {
 
 		var region = request.param('region', '');
-		var sqlQuery =  "SELECT cd_geouf, cd_geocmu, regiao, uf, estado, municipio, bioma, arcodesmat, matopiba, mun_ha, area_ha, year FROM pasture WHERE "+region
+		var file = request.param('file', '');
+		var msfilter = request.param('filter', '');
+		var filter = '';
+		var sqlQuery;
+
+		if(file == 'pasture') {
+		 	sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(area_ha), year FROM pasture WHERE "+region+" GROUP BY 1,2,3,4,5,7"
+		} else if (file == 'pasture_degraded') {
+
+			if(msfilter) {
+				filter = " WHERE "+msfilter;
+			}
+
+			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(area_ha) as area_ha FROM pasture_degraded "+filter+" GROUP BY 1,2,3,4,5"
+		} else if (file == 'lotacao_bovina_regions') {
+			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(ua) as ua, year FROM lotacao_bovina_regions WHERE "+region+" GROUP BY 1,2,3,4,5,7"
+		}
 
 		client.query(sqlQuery, (err, rows) => {
 			if (err) {
@@ -185,7 +380,7 @@ module.exports = function(app){
 				response.end()
 			} else {
 
-				var output = "area_pastagem.csv";
+				var output = file+".csv";
 				var csv = json2csv(rows.rows);
 
 				fs.writeFile(output, csv, function(err) {
@@ -208,13 +403,13 @@ module.exports = function(app){
 		var year = request.param('year', '');
 		var fileParam = layer+'_'+year;
 		
-		var diretorio = config.downloadDir2+layer+'/'+regionType+'/'+region+'/';
+		var diretorio = config.downloadDir+layer+'/'+regionType+'/'+region+'/';
 		var	pathFile = diretorio+fileParam;
 		
 		if(fileParam.indexOf("../") == 0){
 			res.send('Arquivo inválido!')
 			res.end();
-		}else if(fs.existsSync(pathFile+'.shp')) {
+		} else if(fs.existsSync(pathFile+'.shp')) {
 			var nameFile = regionType+'_'+region+'_'+fileParam
 			response.setHeader('Content-disposition', 'attachment; filename='+nameFile+'.zip');
 			response.setHeader('Content-type', 'application/zip')
@@ -235,8 +430,8 @@ module.exports = function(app){
 				zipFile.finalize();
 			})
 
-		}else if(regionType == 'undefined'){
-			var diretorioBR = config.downloadDir2+layer+'/brasil/';
+		} else if(regionType == 'undefined'){
+			var diretorioBR = config.downloadDir+layer+'/brasil/';
 			var fileParamBR = year;
 			var	pathFileBR = diretorioBR+fileParamBR;
 			var nameFile = 'br_'+layer+'_'+year;
@@ -253,7 +448,23 @@ module.exports = function(app){
 
 			zipFile.finalize();
 
-		}else {
+		} else if (layer == 'pontos_campo_sem_parada' || layer == 'pontos_campo_parada' || layer == 'pontos_tvi_treinamento' || layer == 'pontos_tvi_validacao'){
+
+				response.setHeader('Content-disposition', 'attachment; filename=' + layer+'.zip');
+				response.setHeader('Content-type', 'application/zip')
+
+				var diretorio = config.downloadDir+layer;
+
+				var zipFile = archiver('zip');
+				zipFile.pipe(response);
+
+				if(fs.existsSync(diretorio)) {
+					zipFile.directory(diretorio, layer);
+				}
+
+				zipFile.finalize();
+
+		} else {
 			response.send("Arquivo indisponível");
   		response.end();
 		}

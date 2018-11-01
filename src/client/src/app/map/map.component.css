@@ -43,18 +43,23 @@ hr {
   position: absolute; 
   left: 2%; 
   top: 4%;
+  width: 22%;
   background-color: #FFF;
   color: #666;
   text-align: left;
   z-index: 1000;
-  /*border: 1px solid #525252;*/
+  border: 1px solid #808080;
   opacity: .93;
 }
 
+.layersConteudo {
+	height: 800px;
+  overflow: auto;
+}
+
 .row-box-name {
-	padding-top: 20px;
+	padding-top: 10px;
 	padding-left: 20px;
-	padding-bottom: 5px;
 }
 
 .layer-name {
@@ -68,6 +73,7 @@ hr {
 }
 
 .layers-indicator {
+	font-size: 0.9rem;
 	padding-left: 65px;
 	padding-bottom: 15px;
 	margin-right: 0px !important;
@@ -84,13 +90,14 @@ hr {
 
 .icon-info {
 	font-weight: bold;
-	font-size: 18px;
+	font-size: 15px;
 	color: black;
 	background-color: #d1d1d1;
 	border-radius: 15px;
 }
 
 .options-radio-button {
+	padding-left: 10%;
 	padding-top: 5%;
 }
 
@@ -122,24 +129,42 @@ hr {
   color: #666;
   text-align: left;
   z-index: 1000;
-  /*border: 1px solid #525252;*/
+  border: 1px solid #808080;
   opacity: .93;
 }
 
 #positionLegend {
 	position: absolute; 
-  right: 1%; 
+  right: 1%;
   top: 4%;
   width: 350px;
   background-color: #FFF;
   color: #666;
   text-align: left;
   z-index: 1000;
-  /*border: 1px solid #525252;*/
+  border: 1px solid #808080;
   opacity: .93;
 }
 
+#layers_produtividade {
+	margin-bottom: 0px;
+}
+
+#layers_degradacao {
+	margin-bottom: 20px;
+}
+
+.font-size-geral {
+	font-size: 0.9rem;
+}
+
+.legendasConteudo {
+	max-height: 320px;
+  overflow: auto;
+}
+
 h6 {
+	font-size: 0.98rem;
 	margin-left: 15px; 
 	margin-top: 10px;
 }
@@ -236,7 +261,7 @@ h6 {
 }
 
 .nameLayers {
-	font-size: 1.21rem;
+	font-size: 0.98rem;
 	padding-top: 7px;
 }
 
@@ -249,3 +274,36 @@ h6 {
 	margin-left: 15px;
 	color: white !important;
 }
+
+.separacaoLayers {
+	border-top: 1px solid #717171;
+}
+
+.optionPontosTVI {
+	margin-left: 5%;
+}
+
+.fotosCampo {
+	text-align: center;
+	max-width: 320px;
+	max-height: 190px;
+	padding: 10px;
+}
+
+.conteinerFotosCampo {
+  padding-bottom: 5%;
+  padding-top: 5%;
+  text-align: center;
+}
+
+.instrucoesPontosCampo {
+  height: auto;
+  width: auto;
+  text-align: center;
+  padding-top: 20px;
+}
+
+#dropdowYearRebanho {
+	padding-left: 22%;
+}
+

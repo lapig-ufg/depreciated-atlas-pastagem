@@ -47,6 +47,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     NgxChartsModule,
     MatCheckboxModule,
     MatSelectModule,

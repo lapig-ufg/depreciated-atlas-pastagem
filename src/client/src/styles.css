@@ -94,4 +94,48 @@
 	overflow: inherit !important;
 }
 
+#dropdownPoints .mat-form-field-infix {
+	border-top: none !important;
+}
+
+#dropdownPoints .mat-form-field {
+	width: 110px !important;
+}
+
+#dropdowYearRebanho .mat-form-field-infix {
+	padding-top: 0px !important;
+}
+
+
+#positionLayers .mat-tab-body-content {
+	overflow: inherit !important;
+}
+
+#positionCharts .mat-tab-body-content {
+	overflow: inherit !important;
+}
+
+#layers_degradacao .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+	background-color: #b81111 !important;
+}
+
+#layers_degradacao .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+	background-color: rgba(183,16,16,.5) !important;
+}
+
+#layers_produtividade .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+	background-color: #f68e42 !important;
+}
+
+#layers_produtividade .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+	background-color: rgba(246,142,66,.5) !important;
+}
+
+#layers_pontos .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+	background-color: #7b2800 !important;
+}
+
+#layers_pontos .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+	background-color: rgba(123, 40, 0,.5) !important;
+}
 
