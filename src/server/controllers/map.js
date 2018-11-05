@@ -106,7 +106,8 @@ module.exports = function(app){
 	Map.indicatorsRebanhoBovino = function(request, response){
 
 		var msfilter = request.param('MSFILTER', '');
-		client.query("SELECT year, SUM(ua) FROM lotacao_bovina_regions WHERE "+msfilter+" GROUP BY year ORDER BY year", (err, res) => {
+								 
+		client.query("SELECT year, SUM(ua*pct_areapo) as ua, sum(n_kbcs*pct_areapo) as kbc FROM lotacao_bovina_regions WHERE "+msfilter+" GROUP BY year ORDER BY year", (err, res) => {
 
 		  if (err) {
 		    console.log(err.stack)
@@ -371,7 +372,7 @@ module.exports = function(app){
 
 			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(area_ha) as area_ha FROM pasture_degraded "+filter+" GROUP BY 1,2,3,4,5"
 		} else if (file == 'lotacao_bovina_regions') {
-			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(ua) as ua, year FROM lotacao_bovina_regions WHERE "+region+" GROUP BY 1,2,3,4,5,7"
+			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(ua*pct_areapo) as ua, sum(n_kbcs*pct_areapo) as kbc, year FROM lotacao_bovina_regions WHERE "+region+" GROUP BY 1,2,3,4,5,8"
 		}
 
 		client.query(sqlQuery, (err, rows) => {

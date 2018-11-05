@@ -1062,7 +1062,7 @@ export class MapComponent implements OnInit {
 		});
 
 		this.http.get('service/map/indicatorsRebanhoBovino?&MSFILTER=year='+this.yearRebanho+''+this.msFilterRegion).subscribe(indicatorsRebanho => {
-			this.indicatorRebanhoBovino = indicatorsRebanho[0].sum;
+			this.indicatorRebanhoBovino = indicatorsRebanho[0].ua;
 		});
 
 		var filterPastureDegraded = 'service/map/indicatorsPastureDegraded?&MSFILTER='+this.msFilterRegionCharts

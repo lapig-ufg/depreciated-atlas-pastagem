@@ -139,3 +139,6 @@
 	background-color: rgba(123, 40, 0,.5) !important;
 }
 
+.mat-raised-button {
+	min-width: 60px !important;
+}

@@ -3,8 +3,8 @@
   	<div class="title-atlas">Atlas Digital das Pastagens Brasileiras</div>
   </div>
   <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 logos-atlas">
+  		<a href="https://pastagem.org/index.php/pt-br/" target="_blank"><img class="logo-ufg" src="assets/ufg.png" /></a>
   		<a href="https://www.lapig.iesa.ufg.br/lapig/" target="_blank"><img  class="logo-lapig" src="assets/logo.png" /></a>
-  		<a href="https://pastagem.org/index.php/pt-br/" target="_blank"><img class="logo-pastagem" src="assets/pastagem-logo.png" /></a>
   </div>
 </nav>
 <div class="container-fluid">
@@ -16,7 +16,7 @@
 	      		Camadas Geográficas
 	        	<button type="button" class="collapse-btn btn btn-light btn-sm float-right" (click)="collapseLayer = !collapseLayer" [attr.aria-expanded]="!collapseLayer" aria-controls="camadageografica">-</button>
 	      </div>
-	      <div [ngbCollapse]="collapseLayer">
+	      <div class="collapseLayer" [ngbCollapse]="collapseLayer">
 	      	<mat-tab-group class="layersConteudo">
 						<mat-tab label="Pastagens">
 			      	<div class="form-group" id="layers_pastagens">
@@ -148,7 +148,7 @@
 								<div class="row">
 									<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4" id='dropdowYearRebanho'>
 										<mat-form-field>
-										  <mat-select placeholder="" (selectionChange)="updateyear()" [value]="yearRebanho" [(ngModel)]="yearRebanho">
+										  <mat-select placeholder="" [disabled]=!rebanho_bovino_show (selectionChange)="updateyear()" [value]="yearRebanho" [(ngModel)]="yearRebanho">
 										    <mat-option *ngFor="let yearRebanho of years" [value]="yearRebanho">{{ yearRebanho }}</mat-option>
 										  </mat-select>
 										</mat-form-field>
@@ -194,7 +194,7 @@
 									<div class="row">
 										<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv" id="dropdownPoints">
 											<mat-form-field>
-											  <mat-select [formControl]="dropdowPontosdeCampo" (selectionChange)="tipoCampoSelected('campo', $event)">
+											  <mat-select [formControl]="dropdowPontosdeCampo" [disabled]=!pontos_parada (selectionChange)="tipoCampoSelected('campo', $event)">
 											    <mat-option value="parada">Pastagem</mat-option>
 											    <mat-option value="carro">Uso e Cobertura</mat-option>
 											  </mat-select>
@@ -233,7 +233,7 @@
 									<div class="row">
 										<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv" id="dropdownPoints">
 											<mat-form-field>
-											  <mat-select [formControl]="dropdowPontosTVI" (selectionChange)="tipoCampoSelected('tvi', $event)">
+											  <mat-select [formControl]="dropdowPontosTVI" [disabled]=!pontos_tvi_show (selectionChange)="tipoCampoSelected('tvi', $event)">
 											    <mat-option value="treinamento">Treinamento</mat-option>
 											    <mat-option value="validacao">Validação</mat-option>
 											  </mat-select>

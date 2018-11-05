@@ -1,3 +1,5 @@
+html, body { margin:0; height: 100%;}
+
 .bckgdisabled {
 	background-color: #e9ecef !important;
 }
@@ -41,8 +43,10 @@ hr {
 
 #positionLayers {
   position: absolute; 
-  left: 2%; 
-  top: 4%;
+  left: 2%;
+  height: 90%;
+  min-width: 320px;
+  top: 7%;
   width: 22%;
   background-color: #FFF;
   color: #666;
@@ -53,8 +57,12 @@ hr {
 }
 
 .layersConteudo {
-	height: 800px;
+	height: 100%;
   overflow: auto;
+}
+
+.collapseLayer {
+	height: 86%
 }
 
 .row-box-name {
@@ -223,12 +231,13 @@ h6 {
 	text-align: right;
 }
 
-.logo-lapig {
+.logo-ufg {
 	height: 32px;
 	margin-right: 8px;
+	margin-top: 5px;
 }
 
-.logo-pastagem {
+.logo-lapig {
 	height: 32px;
 	margin-left: 8px;
 }
