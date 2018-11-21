@@ -57,12 +57,17 @@ export class SearchService {
 
 @Component({
 	selector: 'app-map',
+	//templateUrl: 'map.component.mobile.html',
 	templateUrl: './map.component.html',
 	providers: [SearchService],
 	styleUrls: [
 		'./map.component.css'
 	]
+	/*styleUrls: [
+		'./map.component.mobile.css'
+	]*/
 })
+
 export class MapComponent implements OnInit {
 
 	map: OlMap;
@@ -116,6 +121,8 @@ export class MapComponent implements OnInit {
 
   downloadRegionType: any;
   downloadRegion: any;
+  chartRegionScale: boolean;
+  changeTabSelected: '';
 
   collapseLayer: boolean;
   collapseCharts: boolean;
@@ -272,6 +279,14 @@ export class MapComponent implements OnInit {
   	this.addPoints();
   }
 
+  changeTab(event) {
+  	this.changeTabSelected = event.tab.textLabel;
+
+  	if(event.tab.textLabel == "Série Temporal") {
+  		this.chartRegionScale = true;
+  	}
+  }
+
   private zoomExtent() {
   	var map = this.map;
   	if (this.regionTypeCharts != '') {
@@ -407,7 +422,7 @@ export class MapComponent implements OnInit {
       target: 'map',
       layers: this.layers,
       view: new OlView({
-	      center: OlProj.fromLonLat([-44, -14]),
+	      center: OlProj.fromLonLat([-52, -14]),
 	      projection: this.projection,
 	      zoom: this.currentZoom,
 	    }),
@@ -786,7 +801,7 @@ export class MapComponent implements OnInit {
 	}
 
 	buttonDownload(tipo, layer, e) {
-		if(tipo == 'csv'){
+		if(tipo == 'csv' && layer == 'pasture'){
 			var paramsDownload = 'file='+layer+'&region=year='+this.year+''+this.msFilterRegion+'&filter='+this.msFilterRegionCharts;
 			this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
 		} else if(tipo == 'csv' && layer == 'lotacao_bovina_regions'){
@@ -996,7 +1011,8 @@ export class MapComponent implements OnInit {
 		} else if (layer == 'pontos_campo_parada') {
 			layer = this.fieldPointsStop;
 			this.pontos_parada = e.checked;
-			this.selectedIndex = 3
+			console.log(this.changeTabSelected);
+			this.selectedIndex = 4
 		} else if (layer == 'pastagem_degradada') {
 			layer = this.pastagens_degradadas.layer;
 			this.pastagens_degradadas_show = e.checked;
@@ -1136,6 +1152,7 @@ export class MapComponent implements OnInit {
 		this.regionSelected = 'Brasil';
 		this.updateChartsYears();
 		this.sumIndicators();
+		this.chartRegionScale = true;
 
 		this.http.get('service/map/years').subscribe(years => {
 			this.years = years;

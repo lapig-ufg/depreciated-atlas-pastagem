@@ -111,9 +111,9 @@
 	overflow: inherit !important;
 }
 
-#positionCharts .mat-tab-body-content {
+/*#positionCharts .mat-tab-body-content {
 	overflow: inherit !important;
-}
+}*/
 
 #layers_degradacao .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
 	background-color: #b81111 !important;
@@ -141,4 +141,28 @@
 
 .mat-raised-button {
 	min-width: 60px !important;
+}
+
+@media (max-width: 600px) { 
+	.mat-tab-label-container {
+		height: 40px !important;
+	}
+
+	.mat-raised-button {
+	min-width: 30px !important;
+}
+
+	/*#matgroup .mat-tab-body-wrapper {
+		overflow: auto !important;
+		max-height: 200px !important;
+		max-width: 400px !important;
+	}
+*/
+	/*#positionCharts .mat-tab-body-content {
+		overflow: auto !important;
+	}*/
+}
+
+#menuMobile .mat-menu-content .ng-trigger .ng-trigger-fadeInItems {
+	padding-top: 40px !important;
 }

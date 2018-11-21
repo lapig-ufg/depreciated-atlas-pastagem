@@ -5,6 +5,8 @@ html, body { margin:0; height: 100%;}
 }
 
 .container-fluid {
+	padding-right: 0px;
+	padding-left: 0px;
 	margin-top: 55px;
 }
 
@@ -42,59 +44,32 @@ hr {
 }
 
 #positionLayers {
-  position: absolute; 
-  left: 2%;
-  /*bottom: 2%;*/
-  /*height: 90%;*/
-  min-width: 320px;
-  top: 4%;
-  width: 22%;
+  position: relative; 
+  margin-top: 10px;
+  max-width: 280px;
   background-color: #FFF;
   color: #666;
   text-align: left;
   z-index: 1000;
-  border: 1px solid #808080;
+  /*border: 1px solid #808080;*/
   opacity: .93;
 }
 
-#positionCharts {
-  position: absolute; 
-  right: 1%; 
-  bottom: 2%;
-  width: 600px;
-  background-color: #FFF;
-  color: #666;
-  text-align: left;
-  z-index: 1000;
-  border: 1px solid #808080;
-  opacity: .93;
-}
-
-#positionLegend {
-	position: absolute; 
-  right: 1%;
-  top: 4%;
-  width: 350px;
-  background-color: #FFF;
-  color: #666;
-  text-align: left;
-  z-index: 1000;
-  border: 1px solid #808080;
-  opacity: .93;
+#menuMobile {
+	top: 1%;
 }
 
 .layersConteudo {
-  max-height: 800px;
+	height: 100%;
   overflow: auto;
 }
 
-/*.collapseLayer {
-	height: 86%
-}*/
+.collapseLayer {
+	height: 94%
+}
 
 .row-box-name {
-	padding-top: 10px;
-	padding-left: 20px;
+	padding: 10px 0px 0px 5px;
 }
 
 .layer-name {
@@ -103,20 +78,19 @@ hr {
 }
 
 .layers-options {
-	padding-left: 50px;
+	padding-left: 40px;
 
 }
 
 .layers-indicator {
-	font-size: 0.9rem;
-	padding-left: 75px;
-	padding-bottom: 15px;
+	font-size: 0.8rem;
+	padding-left: 50px;
+	padding-bottom: 5px;
 	margin-right: 0px !important;
-	flex-wrap: nowrap;
 }
 
 .value-indicators {
-	padding-left: 5px;
+	padding-left: 0px;
 }
 
 .button-row button,
@@ -138,7 +112,7 @@ hr {
 }
 
 .regions-row {
-	padding: 20px 0px 12px 0px;
+	padding: 10px 0px 5px 0px;
 }
 
 .mat-form-field{
@@ -156,6 +130,35 @@ hr {
 	border-top: 0px !important;
 }
 
+#positionCharts {
+	max-height: 530px;
+	padding-left: 14px;
+	padding-right: 14px;
+	overflow: auto;
+  position: absolute; 
+  bottom: 0%;
+  width: 100%;
+  background-color: #FFF;
+  color: #666;
+  text-align: left;
+  z-index: 1000;
+  border-top: 1px solid #808080;
+  opacity: .93;
+}
+
+#positionLegend {
+	position: absolute; 
+  right: 1%;
+  top: 4%;
+  width: 220px;
+  background-color: #FFF;
+  color: #666;
+  text-align: left;
+  z-index: 1000;
+  border: 1px solid #808080;
+  opacity: .93;
+}
+
 #layers_produtividade {
 	margin-bottom: 0px;
 }
@@ -165,29 +168,27 @@ hr {
 }
 
 .font-size-geral {
-	font-size: 0.9rem;
+	padding-top: 10px;
+	font-size: 0.78rem;
 }
 
 .legendasConteudo {
-	max-height: 320px;
+	max-height: 150px;
   overflow: auto;
 }
 
 h6 {
-	font-size: 0.98rem;
+	font-size: 0.8rem;
 	margin-left: 15px; 
-	margin-top: 10px;
-}
-
-.charts {
-	padding-bottom: 10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
 .table-municipios {
 	margin: 15px;
 	width: 95%;
 	max-width: 95%;
-	font-size: 12px;
+	font-size: 0.7rem;
 }
 
 .collapse-btn {
@@ -201,18 +202,18 @@ h6 {
 	color: #565353;
 	padding: 10px;
   font-weight: bold;
-  border-bottom: 2px solid #717171;
-  font-size: 20px;
+  border-bottom: 1px solid #717171;
+  font-size: 0.9rem;
 }
 
 .layerLegend {
-	padding: 0px 10px 10px 35px;
+	padding: 0px 10px 5px 35px;
 }
 
 .title-atlas {
 	color: #373435;
 	font-weight: bold;
-	font-size: 30px; 
+	font-size: 1rem; 
 }
 
 .title-atlas-div {
@@ -221,7 +222,7 @@ h6 {
 }
 
 .paddingLayerLegend {
-	padding-top: 5px;
+	padding-top: 0px;
 	padding-left: 0px;
 }
 
@@ -234,14 +235,14 @@ h6 {
 }
 
 .logo-ufg {
-	height: 40px;
+	height: 20px;
 	margin-right: 8px;
 	margin-top: 5px;
 }
 
 .logo-lapig {
-	height: 40px;
-	margin-left: 8px;
+	height: 20px;
+	margin-left: 0px;
 }
 
 .clear-region-btn {
@@ -256,6 +257,7 @@ h6 {
 .button-csv {
 	text-align: right;
 	color: #707070 !important;
+	padding-left: 30%
 } button {
 	color: #707070 !important;
 }
@@ -272,7 +274,7 @@ h6 {
 }
 
 .nameLayers {
-	font-size: 0.98rem;
+	font-size: 0.85rem;
 	padding-top: 7px;
 }
 
@@ -296,14 +298,12 @@ h6 {
 
 .fotosCampo {
 	text-align: center;
-	max-width: 320px;
-	max-height: 190px;
-	padding: 10px;
+	max-width: 260px;
+	max-height: 160px;
+	padding: 4px;
 }
 
-.conteinerFotosCampo {
-  padding-bottom: 5%;
-  padding-top: 5%;
+.containerFotosCampo {
   text-align: center;
 }
 
@@ -315,157 +315,40 @@ h6 {
 }
 
 #dropdowYearRebanho {
-	padding-left: 22%;
+	font-size: 0.8rem;
+	padding-left: 30%;
 }
 
-@media (max-width: 600px) { 
-	.title-atlas {
-		font-size: 1em;
-	}
-
-	.logo-lapig {
-		height: 20px;
-		margin-left: 0px;
-	}
-
-	.logo-ufg {
-		height: 20px;
-	}
-
-	.barra-titulo {
-		padding-top: 10px;
-		padding-bottom: 0px;
-	}
-
-	.buttons-download,
-	.buttonsDisplay {
-		display: none
-	}
-
-	#dropdowYearRebanho, 
-	.button-csv {
-		padding-left: 33%
-	}
-
-	.layers-indicator {
-		padding-bottom: 5px;
-	}
-
-	#positionCharts {
-		width: 350px;
-		max-height: 287px;
-	}
-
-	h6 {
-		font-size: 0.8rem;
-	}
-
-	.titleWindows {
-		font-size: 0.95em
-	}
-
-	.table-municipios {
-		font-size: 0.6em;
-	}
-
-	.mat-tab-label-container {
-		height: 40px !important;
-	}
-
-	.graficoEstados {
-		max-width: 78%;
-		max-height: 177px;
-	}
-
-	#positionLegend {
-		width: 220px;
-	}
-
-	.legendasConteudo {
-		max-height: 150px;
-	}
-
-	.paddingLayerLegend {
-		padding-top: 0px;
-	}
-
+.barra-titulo {
+	border-bottom: 1px solid #808080;
+	padding-top: 10px;
+	padding-bottom: 0px;
+	padding-right: 0px;
+	padding-left: 0px;
 }
 
-@media (min-width: 1000px) and (max-width: 1400px) {
+.buttons-download,
+.buttonsDisplay {
+	display: none
+}
 
-	.legendasConteudo {
-		max-height: 200px;
-	}
+.fixed-top {
+	padding-bottom: 5px;
+	z-index: 900 !important;
+}
 
-	.titleWindows {
-		font-size: 0.95em
-	}
+#dropdownPoints {
+	font-size: 0.8rem;
+}
 
-	h6 {
-		font-size: 0.8rem;
-	}
-
-	.table-municipios {
-		font-size: 0.6em;
-	}
-
-	.logo-ufg {
-		height: 20px;
-	}
-
-	.title-atlas {
-		font-size: 1em;
-	}
-
-	.logo-lapig {
-		height: 20px;
-		margin-left: 0px;
-	}
-
-	.container-fluid {
-		margin-top: 40px;
-	}
-
-	.dpat-ol-map {
-		height: calc(100vh - 40px); /* 100% of the viewport height - navbar height */
-	}
-
-	.layersConteudo {
-  	max-height: 510px;
-  }
-
-  .nameLayers {
-		font-size: 0.92rem;
-		padding-top: 5px;
-	}
-
-	.layers-indicator {
-		font-size: 0.85rem;
-	}
-
-	.font-size-geral {
-		font-size: 0.85rem;
-	}
-
-	#dropdowYearRebanho,
-	#dropdownPoints {
-		font-size: 0.9rem;
-	}
+.button-menu {
+	padding-top: 1%;
 }
 
 .iconInfo {
 	font-size: 20px;
 }
 
-@media (min-width: 1400px) and (max-width: 1700px) {
-	.layersConteudo {
-  	max-height: 720px;
-  }
+.form-control {
+	font-size: 0.8rem;
 }
-
-@media (height: 1280px) and (width: 1240px) {
-	.layersConteudo {
-  	max-height: 800px;
-  }
-}
-

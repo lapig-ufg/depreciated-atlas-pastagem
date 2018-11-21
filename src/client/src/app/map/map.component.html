@@ -1,8 +1,8 @@
-<nav class="navbar navbar-expand-md fixed-top" style="background-color: #FFF;">
-  <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 title-atlas-div">
+<nav class="navbar navbar-expand-md fixed-top barra-titulo" style="border-bottom: 1px solid #808080; background-color: #FFF;">
+  <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 title-atlas-div">
   	<div class="title-atlas">Atlas Digital das Pastagens Brasileiras</div>
   </div>
-  <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 logos-atlas">
+  <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 logos-atlas">
   		<a href="https://pastagem.org/index.php/pt-br/" target="_blank"><img class="logo-ufg" src="assets/ufg.png" /></a>
   		<a href="https://www.lapig.iesa.ufg.br/lapig/" target="_blank"><img  class="logo-lapig" src="assets/logo.png" /></a>
   </div>
@@ -18,7 +18,7 @@
 	      </div>
 	      <div class="collapseLayer" [ngbCollapse]="collapseLayer">
 	      	<mat-tab-group class="layersConteudo">
-						<mat-tab label="Pastagens">
+						<mat-tab label="Pastagem">
 			      	<div class="form-group" id="layers_pastagens">
 			      		<div class="regions-row">
 									<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -39,12 +39,12 @@
 									</div>
 								</div>
 								<div class="row layers-indicator">
-									<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+									<div>
 										<button class="button-row" mat-icon-button>
-									    <mat-icon class="icon-info" svgIcon="assets/info.svg">i</mat-icon>
+									    <mat-icon class="iconInfo">info</mat-icon>
 									  </button>
 									</div>
-									<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators">{{ indicatorPasture | number:'3.0-0' }} ha</div>
+									<div class="value-indicators">{{ indicatorPasture | number:'3.0-0' }} ha</div>
 								</div>
 								<div class="row buttons-download">
 									<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv">
@@ -105,14 +105,14 @@
 									</div>
 								</div>
 								<div class="row layers-indicator">
-									<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+									<div>
 										<button class="button-row" mat-icon-button>
-									    <mat-icon class="icon-info" svgIcon="assets/info.svg">i</mat-icon>
+									    <mat-icon class="iconInfo">info</mat-icon>
 									  </button>
 									</div>
-									<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators"> {{ indicatorPastureDegraded | number:'3.0-0' }} ha, com indício de degradação </div>
+									<div class="value-indicators"> {{ indicatorPastureDegraded | number:'3.0-0' }} ha com indícios de degradação </div>
 								</div>
-								<div class="row">
+								<div class="row buttonsDisplay">
 									<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv">
 										<a href="{{ linkDownload }}">
 											<button mat-raised-button href (click)="buttonDownload('csv', 'pasture_degraded', $event)" value='buttonCSV'>
@@ -138,12 +138,12 @@
 									</div>
 								</div>
 								<div class="row layers-indicator">
-									<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+									<div>
 										<button class="button-row" mat-icon-button>
-									    <mat-icon class="icon-info" svgIcon="assets/info.svg">i</mat-icon>
+									    <mat-icon class="iconInfo">info</mat-icon>
 									  </button>
 									</div>
-									<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators"> {{ indicatorRebanhoBovino | number:'3.0-0' }} UA </div>
+									<div class="value-indicators"> {{ indicatorRebanhoBovino | number:'3.0-0' }} UA </div>
 								</div>
 								<div class="row">
 									<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4" id='dropdowYearRebanho'>
@@ -153,14 +153,14 @@
 										  </mat-select>
 										</mat-form-field>
 									</div>
-									<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 button-csv">
+									<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 button-csv buttonsDisplay">
 										<a href="{{ linkDownload }}">
 											<button mat-raised-button href (click)="buttonDownload('csv', 'lotacao_bovina_regions', $event)" value='buttonCSV'>
 												<b>CSV</b>
 											</button>
 										</a>
 									</div>
-									<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 button-shp">
+									<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 button-shp buttonsDisplay">
 										<a href="{{ linkDownload }}">
 											<button mat-raised-button (click)="buttonDownload('shp', 'lotacao_bovina_regions', $event)">
 												<b>SHP</b>
@@ -179,15 +179,15 @@
 										</div>
 									</div>
 									<div class="row layers-indicator">
-										<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+										<div>
 											<button class="button-row" mat-icon-button>
-										    <mat-icon class="icon-info" svgIcon="assets/info.svg">i</mat-icon>
+										    <mat-icon class="iconInfo">info</mat-icon>
 										  </button>
 										</div>
-										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators" *ngIf="this.tipoCampo == 'parada'">
+										<div class="value-indicators" *ngIf="this.tipoCampo == 'parada'">
 											{{ indicatorPoints }} pontos
 										</div>
-										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators" *ngIf="this.tipoCampo == 'carro'">
+										<div class="value-indicators" *ngIf="this.tipoCampo == 'carro'">
 											{{ indicatorPointsNoStop | number:'2.0-0' }} pontos
 										</div>
 									</div>
@@ -200,7 +200,7 @@
 											  </mat-select>
 											</mat-form-field>
 										</div>
-										<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-shp">
+										<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-shp buttonsDisplay">
 											<a href="{{ linkDownload }}">
 												<button mat-raised-button (click)="buttonDownload(tipoCampo, 'pontos_campo', $event)">
 													<b>SHP</b>
@@ -218,15 +218,15 @@
 										</div>
 									</div>
 									<div class="row layers-indicator">
-										<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+										<div>
 											<button class="button-row" mat-icon-button>
-										    <mat-icon class="icon-info" svgIcon="assets/info.svg">i</mat-icon>
+										    <mat-icon class="iconInfo">info</mat-icon>
 										  </button>
 										</div>
-										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators" *ngIf="this.tipoTVI == 'treinamento'">
+										<div class="value-indicators" *ngIf="this.tipoTVI == 'treinamento'">
 											{{ indicatorPointsTVITreinamento | number:'2.0-0' }} pontos
 										</div>
-										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators" *ngIf="this.tipoTVI == 'validacao'">
+										<div class="value-indicators" *ngIf="this.tipoTVI == 'validacao'">
 											{{ indicatorPointsTVIValidacao | number:'2.0-0' }} pontos
 										</div>
 									</div>
@@ -239,7 +239,7 @@
 											  </mat-select>
 											</mat-form-field>
 										</div>
-										<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-shp">
+										<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-shp buttonsDisplay">
 											<a href="{{ linkDownload }}">
 												<button mat-raised-button (click)="buttonDownload(tipoTVI, 'pontos_tvi', $event)">
 													<b>SHP</b>
@@ -292,7 +292,7 @@
 								</mat-slide-toggle><br/>
 							</div>
 						</mat-tab>
-						<mat-tab label="Limites Geográficos">
+						<mat-tab label="Limites">
 							<div class="form-group baseMap">
 								<mat-slide-toggle (change)="layerchecked(estados.layer, $event)" [(ngModel)]="estados.visible" [checked]="estados.visible" class="slideEstados" >
 									Estados
@@ -325,8 +325,8 @@
 	      	Análises
 	        <button type="button" class="collapse-btn btn btn-light btn-sm float-right" (click)="collapseCharts = !collapseCharts" [attr.aria-expanded]="!collapseCharts" aria-controls="camadageografica">-</button>
 	      </div>
-				<div [ngbCollapse]="collapseCharts">
-					<mat-tab-group class="charts" [selectedIndex]="selectedIndex" #matgroup>
+				<div [ngbCollapse]="collapseCharts" id= "matgroup">
+					<mat-tab-group class="charts" [selectedIndex]="selectedIndex" #matgroup (selectedTabChange)="changeTab($event)">
 					  <mat-tab label="Série Temporal" *ngIf="true" id="tabGraficoLinhas">
 					  	<h6><b>Áreas de Pastagem - {{ regionSelected }}</b> </h6>
 					  	<ngx-charts-line-chart 
@@ -335,7 +335,7 @@
 					  		[scheme]="colorScheme"
 					  		[legend]="false"
 					  		[legendTitle] = "false"
-					  		[autoScale]="true"
+					  		[autoScale]="chartRegionScale"
 					  		[yAxis]="true" 
 					  		[xAxis]="true">
 					  		<ng-template #tooltipTemplate let-model="model">
