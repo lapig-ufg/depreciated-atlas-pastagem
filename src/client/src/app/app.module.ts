@@ -10,14 +10,19 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSliderModule } from '@angular/material/slider';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material';
+import { MatInputModule } from '@angular/material';
+
 
 import { AppComponent } from './app.component';
-import { MapComponent } from './map/map.component';
+import { MapComponent, DialogOverviewExampleDialog } from './map/map.component';
 import { MapMobileComponent } from './map/map-mobile.component';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
+
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LOCALE_ID } from '@angular/core';
@@ -63,6 +68,7 @@ const appMobileRoutes: Routes = [
     MapComponent,
     MapMobileComponent,
     AppNavbarComponent,
+    DialogOverviewExampleDialog
   ],
   imports: [
     BrowserModule,
@@ -83,12 +89,16 @@ const appMobileRoutes: Routes = [
     MatSlideToggleModule,
     MatMenuModule,
     MatSidenavModule,
+    MatTooltipModule,
+    MatDialogModule,
+    MatInputModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only
     ),
     NgbModule.forRoot()
   ],
+  entryComponents:[DialogOverviewExampleDialog],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' }
   ],

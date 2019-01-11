@@ -166,3 +166,32 @@
 #menuMobile .mat-menu-content .ng-trigger .ng-trigger-fadeInItems {
 	padding-top: 40px !important;
 }
+
+#layers_pastagens .form-group {
+	margin-bottom: 0 !important
+}
+
+.title-row {
+	width: 130px;
+	font-size: 0.95rem;
+	padding: 10px;
+}
+
+.content-row {
+	padding: 10px;
+	font-size: 0.9rem;
+}
+
+.a01 {
+	background-color: #efefef;
+}
+
+.title-metadados {
+	text-align: center;
+  font-weight: 600;
+}
+
+.button-close-metadados {
+	background-color: #959595; 
+	left: 85%
+}

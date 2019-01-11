@@ -28,7 +28,7 @@ hr {
 }
 
 .dpat-ol-map {
-	height: calc(100vh - 55px); /* 100% of the viewport height - navbar height */
+	height: calc(82vh); /* 100% of the viewport height - navbar height */
 }
 
 .ol-zoom-in, .ol-zoom-out {

@@ -5,6 +5,8 @@ module.exports = function (app) {
 	app.get('/service/map/extent', map.extent);
 	app.get('/service/map/fieldPoints', map.fieldPoints);
 	app.get('/service/map/indicators', map.indicators);
+	app.get('/service/map/indicatorsPastureOld', map.indicatorsPastureOld);
+	app.get('/service/map/indicatorsPotencialIntensificacao', map.indicatorsPotencialIntensificacao);
 	app.get('/service/map/indicatorsRebanhoBovino', map.indicatorsRebanhoBovino);
 	app.get('/service/map/indicatorsPastureDegraded', map.indicatorsPastureDegraded);
 	app.get('/service/map/indicatorsPoints', map.indicatorsPoints);

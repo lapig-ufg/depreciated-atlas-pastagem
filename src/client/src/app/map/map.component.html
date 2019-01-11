@@ -19,259 +19,304 @@
 	      <div class="collapseLayer" [ngbCollapse]="collapseLayer">
 	      	<mat-tab-group class="layersConteudo">
 						<mat-tab label="Pastagem">
-			      	<div class="form-group" id="layers_pastagens">
-			      		<div class="regions-row">
-									<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-									  <ng-template #rt let-r="result" let-t="term">
-										  <ngb-highlight [result]="r.text" [term]="t"></ngb-highlight>
-										</ng-template>
-									  <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Escolha uma região" (selectItem)="updateRegion($event)" [resultTemplate]="rt" [inputFormatter]="formatter"/>
-									  <img [hidden]="model == ''" class="clear-region-btn" (click)="getMatchRegion()" src="assets/clear_button.png" />
-									  <span *ngIf="searching">localizando...</span>
-									  <div class="invalid-feedback" *ngIf="searchFailed">Desculpe, Região não encontrada.</div>
-									</div>
-							  </div>
-				      	<div>
-				    			<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row-box-name">
-										<mat-slide-toggle name="onofflayer" (change)="layerchecked(pastagem.layer, $event)" [(ngModel)]="checked">
-											<h5 class="nameLayers"><b>Área de Pastagem - {{ regionSelected }}</b></h5>
-										</mat-slide-toggle>
-									</div>
-								</div>
-								<div class="row layers-indicator">
-									<div>
-										<button class="button-row" mat-icon-button>
-									    <mat-icon class="iconInfo">info</mat-icon>
-									  </button>
-									</div>
-									<div class="value-indicators">{{ indicatorPasture | number:'3.0-0' }} ha</div>
-								</div>
-								<div class="row buttons-download">
-									<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv">
-										<a href="{{ linkDownload }}">
-											<button mat-raised-button href (click)="buttonDownload('csv', 'pasture', $event)" value='buttonCSV' [disabled]="contractTypeValid">
-												<b>CSV</b>
-											</button>
-										</a>
-									</div>
-									<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-shp">
-										<a href="{{ linkDownload }}">
-											<button mat-raised-button (click)="buttonDownload('shp', 'pasture', $event)" [disabled]="contractTypeValid">
-												<b>SHP</b>
-											</button>
-										</a>
-									</div>
-								</div>
-								<div class="layers-options">
-									<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 font-size-geral">
-										<div class="example-selected-value">Opções de visualização:</div>
-										<div class="row">
-											<div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7 options-radio-button">
-												<mat-radio-group #radiogroup [(ngModel)]="selectPasture">
-												  <mat-radio-button (change)="opcoesVisualizacao($event)" value="areas-pastagens">
-												  	Áreas
-												  </mat-radio-button>
-												  <mat-radio-button (change)="opcoesVisualizacao($event)" value="municipios-pastagens">
-												  	Municípios
-												  </mat-radio-button>
-												  <mat-radio-button (change)="opcoesVisualizacao($event)" value="pastagens-zero-transicao">
-												  	Pastagens Antigas
-												  </mat-radio-button>
-												  <mat-radio-button (change)="opcoesVisualizacao($event)" value="pastagens-todas-transicoes" [disabled]="disableTransitionsPastures">
-												  	Transições de Uso (1985 - 2017)
-												  </mat-radio-button>
-												  <mat-radio-button (change)="opcoesVisualizacao($event)" value="pastagens-uma-transicao" [disabled]="disableTransitionsPastures">
-												  	Apenas 1 Transição
-												  </mat-radio-button>
-												</mat-radio-group>
-											</div>
-											<div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-												<mat-form-field>
-												  <mat-select placeholder="" (selectionChange)="updateyear()" [value]="year" [(ngModel)]="year">
-												    <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
-												  </mat-select>
-												</mat-form-field>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="form-group separacaoLayers" id="layers_degradacao">
-								<div>
-				    			<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row-box-name">
-										<mat-slide-toggle (change)="layerchecked('pastagem_degradada', $event)">
-											<h5 class="nameLayers"><b>Pastagem Degradada (2017)</b></h5>
-										</mat-slide-toggle>
-									</div>
-								</div>
-								<div class="row layers-indicator">
-									<div>
-										<button class="button-row" mat-icon-button>
-									    <mat-icon class="iconInfo">info</mat-icon>
-									  </button>
-									</div>
-									<div class="value-indicators"> {{ indicatorPastureDegraded | number:'3.0-0' }} ha com indícios de degradação </div>
-								</div>
-								<div class="row buttonsDisplay">
-									<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv">
-										<a href="{{ linkDownload }}">
-											<button mat-raised-button href (click)="buttonDownload('csv', 'pasture_degraded', $event)" value='buttonCSV'>
-												<b>CSV</b>
-											</button>
-										</a>
-									</div>
-									<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-shp">
-										<a href="{{ linkDownload }}">
-											<button mat-raised-button (click)="buttonDownload('shp', 'pasture_degraded', $event)">
-												<b>SHP</b>
-											</button>
-										</a>
-									</div>
-								</div>
-							</div>
-							<div class="form-group separacaoLayers" id="layers_produtividade">
-								<div>
-				    			<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row-box-name">
-										<mat-slide-toggle (change)="layerchecked('rebanho_bovino', $event)">
-											<h5 class="nameLayers"><b>Rebanho Bovino - UA</b></h5>
-										</mat-slide-toggle>
-									</div>
-								</div>
-								<div class="row layers-indicator">
-									<div>
-										<button class="button-row" mat-icon-button>
-									    <mat-icon class="iconInfo">info</mat-icon>
-									  </button>
-									</div>
-									<div class="value-indicators"> {{ indicatorRebanhoBovino | number:'3.0-0' }} UA </div>
-								</div>
-								<div class="row">
-									<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4" id='dropdowYearRebanho'>
-										<mat-form-field>
-										  <mat-select placeholder="" [disabled]=!rebanho_bovino_show (selectionChange)="updateyear()" [value]="yearRebanho" [(ngModel)]="yearRebanho">
-										    <mat-option *ngFor="let yearRebanho of years" [value]="yearRebanho">{{ yearRebanho }}</mat-option>
-										  </mat-select>
-										</mat-form-field>
-									</div>
-									<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 button-csv buttonsDisplay">
-										<a href="{{ linkDownload }}">
-											<button mat-raised-button href (click)="buttonDownload('csv', 'lotacao_bovina_regions', $event)" value='buttonCSV'>
-												<b>CSV</b>
-											</button>
-										</a>
-									</div>
-									<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 button-shp buttonsDisplay">
-										<a href="{{ linkDownload }}">
-											<button mat-raised-button (click)="buttonDownload('shp', 'lotacao_bovina_regions', $event)">
-												<b>SHP</b>
-											</button>
-										</a>
-									</div>
-								</div>
-							</div>
-							<div class="form-group separacaoLayers" id="layers_pontos">
-								<div>
-									<div>
-					    			<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row-box-name">
-											<mat-slide-toggle (change)="layerchecked('pontos_campo_parada', $event)">
-												<h5 class="nameLayers"><b>Pontos de Campo</b></h5>
-											</mat-slide-toggle>
-										</div>
-									</div>
-									<div class="row layers-indicator">
-										<div>
-											<button class="button-row" mat-icon-button>
-										    <mat-icon class="iconInfo">info</mat-icon>
-										  </button>
-										</div>
-										<div class="value-indicators" *ngIf="this.tipoCampo == 'parada'">
-											{{ indicatorPoints }} pontos
-										</div>
-										<div class="value-indicators" *ngIf="this.tipoCampo == 'carro'">
-											{{ indicatorPointsNoStop | number:'2.0-0' }} pontos
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv" id="dropdownPoints">
-											<mat-form-field>
-											  <mat-select [formControl]="dropdowPontosdeCampo" [disabled]=!pontos_parada (selectionChange)="tipoCampoSelected('campo', $event)">
-											    <mat-option value="parada">Pastagem</mat-option>
-											    <mat-option value="carro">Uso e Cobertura</mat-option>
-											  </mat-select>
-											</mat-form-field>
-										</div>
-										<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-shp buttonsDisplay">
-											<a href="{{ linkDownload }}">
-												<button mat-raised-button (click)="buttonDownload(tipoCampo, 'pontos_campo', $event)">
-													<b>SHP</b>
-												</button>
-											</a>
-										</div>
-									</div>
-								</div>
-								<div>
-									<div>
-					    			<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row-box-name">
-											<mat-slide-toggle (change)="layerchecked('pontos_tvi', $event)">
-												<h5 class="nameLayers"><b>Pontos Visualmente Inspecionados</b></h5>
-											</mat-slide-toggle>
-										</div>
-									</div>
-									<div class="row layers-indicator">
-										<div>
-											<button class="button-row" mat-icon-button>
-										    <mat-icon class="iconInfo">info</mat-icon>
-										  </button>
-										</div>
-										<div class="value-indicators" *ngIf="this.tipoTVI == 'treinamento'">
-											{{ indicatorPointsTVITreinamento | number:'2.0-0' }} pontos
-										</div>
-										<div class="value-indicators" *ngIf="this.tipoTVI == 'validacao'">
-											{{ indicatorPointsTVIValidacao | number:'2.0-0' }} pontos
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv" id="dropdownPoints">
-											<mat-form-field>
-											  <mat-select [formControl]="dropdowPontosTVI" [disabled]=!pontos_tvi_show (selectionChange)="tipoCampoSelected('tvi', $event)">
-											    <mat-option value="treinamento">Treinamento</mat-option>
-											    <mat-option value="validacao">Validação</mat-option>
-											  </mat-select>
-											</mat-form-field>
-										</div>
-										<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-shp buttonsDisplay">
-											<a href="{{ linkDownload }}">
-												<button mat-raised-button (click)="buttonDownload(tipoTVI, 'pontos_tvi', $event)">
-													<b>SHP</b>
-												</button>
-											</a>
-										</div>
-									</div>
-									<!-- <div class="row layers-options">
+							<mat-accordion>
+				      	<div id="layers_pastagens">
+				      		<div class="regions-row">
 										<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-											<div>Opções de visualização:</div>
+										  <ng-template #rt let-r="result" let-t="term">
+											  <ngb-highlight [result]="r.text" [term]="t"></ngb-highlight>
+											</ng-template>
+										  <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Escolha um bioma / estado / município..." (selectItem)="updateRegion($event)" [resultTemplate]="rt" [inputFormatter]="formatter"/>
+										  <img [hidden]="model == ''" class="clear-region-btn" (click)="getMatchRegion()" src="assets/clear_button.png" />
+										  <span *ngIf="searching">localizando...</span>
+										  <div class="invalid-feedback" *ngIf="searchFailed">Desculpe, Região não encontrada.</div>
+										</div>
+								  </div>
+										<mat-expansion-panel [expanded] = true>
+											<mat-expansion-panel-header [collapsedHeight]="'60px'">
+								      	<div>
+													<mat-slide-toggle name="onofflayer" (change)="layerchecked(pastagem.layer, $event)" [(ngModel)]="checked">
+														<h5 class="nameLayers" *ngIf="layerPastureShow != 'pastagens-zero-transicao'"><b>Área de Pastagem - {{ regionSelected }}</b></h5>
+														<h5 class="nameLayers" *ngIf="layerPastureShow == 'pastagens-zero-transicao'"><b>Áreas de Pastagens Antigas (1985 - 2017)</b></h5>
+													</mat-slide-toggle>
+												</div>
+											</mat-expansion-panel-header>
+											<div class="row layers-indicator">
+												<div>
+													<button class="button-row" (click)="openDialog('pasture')" mat-icon-button>
+												    <mat-icon class="iconInfo">info</mat-icon>
+												  </button>
+												</div>
+												<div class="value-indicators" *ngIf="layerPastureShow != 'pastagens-zero-transicao'">{{ indicatorPasture | number:'3.0-0' }} ha</div>
+												<div class="value-indicators" *ngIf="layerPastureShow == 'pastagens-zero-transicao'">{{ indicatorPastureOld | number:'3.0-0' }} ha</div>
+											</div>
+											<div class="row buttons-download">
+												<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv">
+													<a href="{{ linkDownload }}">
+														<button mat-raised-button href (click)="buttonDownload('csv', 'pasture', $event)" value='buttonCSV' [disabled]="contractTypeValid">
+															<b>CSV</b>
+														</button>
+													</a>
+												</div>
+												<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-shp">
+													<a href="{{ linkDownload }}">
+														<button mat-raised-button (click)="buttonDownload('shp', 'pasture', $event)" [disabled]="contractTypeValid">
+															<b>SHP</b>
+														</button>
+													</a>
+												</div>
+											</div>
+											<div class="layers-options">
+												<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 font-size-geral">
+													<div class="example-selected-value">Opções de visualização:</div>
+													<div class="row">
+														<div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7 options-radio-button">
+															<mat-radio-group #radiogroup [(ngModel)]="selectPasture">
+															  <mat-radio-button (change)="opcoesVisualizacao($event)" value="areas-pastagens">
+															  	Áreas
+															  </mat-radio-button>
+															  <mat-radio-button (change)="opcoesVisualizacao($event)" value="municipios-pastagens">
+															  	Municípios
+															  </mat-radio-button>
+															  <mat-radio-button (change)="opcoesVisualizacao($event)" value="pastagens-zero-transicao">
+															  	Pastagens Antigas
+															  </mat-radio-button>
+															  <mat-radio-button matTooltip="Para visualizar este dado, escolha um Estado ou Município." (change)="opcoesVisualizacao($event)" value="pastagens-todas-transicoes" [disabled]="disableTransitionsPastures">
+															  	Transições de Uso (1985 - 2017)
+															  </mat-radio-button>
+															  <mat-radio-button matTooltip="Para visualizar este dado, escolha um Estado ou Município." (change)="opcoesVisualizacao($event)" value="pastagens-uma-transicao" [disabled]="disableTransitionsPastures">
+															  	Apenas 1 Transição
+															  </mat-radio-button>
+															</mat-radio-group>
+														</div>
+														<div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3" *ngIf="show_year_pasture">
+															<mat-form-field>
+															  <mat-select placeholder="" (selectionChange)="updateyear()" [value]="year" [(ngModel)]="year">
+															    <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+															  </mat-select>
+															</mat-form-field>
+														</div>
+													</div>
+												</div>
+											</div>
+		  							</mat-expansion-panel>
+								</div>
+								<div class=" separacaoLayers" id="layers_degradacao">
+									<mat-expansion-panel>
+										<mat-expansion-panel-header [collapsedHeight]="'60px'">
 											<div>
-												<mat-form-field class="optionPontosTVI">
-												  <mat-select placeholder="Ano">
-												    <mat-option>2017</mat-option>
-												    <mat-option>2016</mat-option>
-												    <mat-option>2015</mat-option>
-												    <mat-option>2014</mat-option>
-												  </mat-select>
-												</mat-form-field>
-												<mat-form-field class="optionPontosTVI">
-												  <mat-select placeholder="Votos">
-												    <mat-option>1</mat-option>
-												    <mat-option>2</mat-option>
-												    <mat-option>3</mat-option>
-												    <mat-option>4</mat-option>
-												  </mat-select>
-												</mat-form-field>
+												<mat-slide-toggle (change)="layerchecked('pastagem_degradada', $event)">
+													<h5 class="nameLayers"><b>Pastagem Degradada (2017)</b></h5>
+												</mat-slide-toggle>
+											</div>
+										</mat-expansion-panel-header>
+										<div class="row layers-indicator">
+											<div>
+												<button class="button-row" (click)="openDialog('pastagem_degradada')" mat-icon-button>
+											    <mat-icon class="iconInfo">info</mat-icon>
+											  </button>
+											</div>
+											<div class="value-indicators"> {{ indicatorPastureDegraded | number:'3.0-0' }} ha com indícios de degradação </div>
+										</div>
+										<div class="row buttons-download">
+											<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv">
+												<a href="{{ linkDownload }}">
+													<button mat-raised-button href (click)="buttonDownload('csv', 'pasture_degraded', $event)" value='buttonCSV'>
+														<b>CSV</b>
+													</button>
+												</a>
+											</div>
+											<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-shp">
+												<a href="{{ linkDownload }}">
+													<button mat-raised-button (click)="buttonDownload('shp', 'pasture_degraded', $event)">
+														<b>SHP</b>
+													</button>
+												</a>
 											</div>
 										</div>
-									</div> -->
+										<div class="layers-options">
+											<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 font-size-geral">
+												<div class="example-selected-value">Opções de visualização:</div>
+												<div class="row">
+													<div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7 options-radio-button">
+														<mat-radio-group #radiogroup [(ngModel)]="selectPastureDegraded">
+														  <mat-radio-button (change)="opcoesVisualizacao($event)" value="areas-pastagens-degraded">
+														  	Áreas
+														  </mat-radio-button>
+														  <mat-radio-button (change)="opcoesVisualizacao($event)" value="municipios-pastagens-degraded">
+														  	Municípios
+														  </mat-radio-button>
+														</mat-radio-group>
+													</div>
+												</div>
+											</div>
+										</div>
+									</mat-expansion-panel>
 								</div>
-							</div>
+								<div class=" separacaoLayers" id="layers_produtividade">
+									<div>
+										<mat-expansion-panel>
+											<mat-expansion-panel-header [collapsedHeight]="'60px'">
+												<div>
+													<mat-slide-toggle (change)="layerchecked('rebanho_bovino', $event)">
+														<h5 class="nameLayers"><b>Rebanho Bovino - UA</b></h5>
+													</mat-slide-toggle>
+												</div>
+											</mat-expansion-panel-header>
+											<div class="row layers-indicator">
+												<div>
+													<button class="button-row" (click)="openDialog('rebanho_bovino')" mat-icon-button>
+												    <mat-icon class="iconInfo">info</mat-icon>
+												  </button>
+												</div>
+												<div class="value-indicators"> {{ indicatorRebanhoBovino | number:'3.0-0' }} UA </div>
+											</div>
+											<div class="row">
+												<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4" id='dropdowYearRebanho'>
+													<mat-form-field>
+													  <mat-select placeholder="" [disabled]=!rebanho_bovino_show (selectionChange)="updateyear()" [value]="yearRebanho" [(ngModel)]="yearRebanho">
+													    <mat-option *ngFor="let yearRebanho of years" [value]="yearRebanho">{{ yearRebanho }}</mat-option>
+													  </mat-select>
+													</mat-form-field>
+												</div>
+												<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 button-csv buttonsDisplay">
+													<a href="{{ linkDownload }}">
+														<button mat-raised-button href (click)="buttonDownload('csv', 'lotacao_bovina_regions', $event)" value='buttonCSV'>
+															<b>CSV</b>
+														</button>
+													</a>
+												</div>
+												<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 button-shp buttonsDisplay">
+													<a href="{{ linkDownload }}">
+														<button mat-raised-button (click)="buttonDownload('shp', 'lotacao_bovina_regions', $event)">
+															<b>SHP</b>
+														</button>
+													</a>
+												</div>
+											</div>
+										</mat-expansion-panel>
+									</div>
+									<div class=" separacaoLayers">
+										<mat-expansion-panel>
+											<mat-expansion-panel-header [collapsedHeight]="'60px'">
+												<div>
+													<mat-slide-toggle (change)="layerchecked('potencial_intensificacao', $event)">
+														<h5 class="nameLayers"><b>Potencial de Intensificação da Pecuária</b></h5>
+													</mat-slide-toggle>
+												</div>
+											</mat-expansion-panel-header>
+											<div class="row layers-indicator">
+												<div>
+													<button class="button-row" mat-icon-button>
+												    <mat-icon class="iconInfo">info</mat-icon>
+												  </button>
+												</div>
+												<div class="value-indicators"> {{ indicatorPotencialInt | number:'1.1-2' }} UA/ha </div>
+											</div>
+											<div class="row buttonsDisplay">
+												<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv">
+													<a href="{{ linkDownload }}">
+														<button mat-raised-button href (click)="buttonDownload('csv', 'potencial_intensificacao_pecuaria', $event)" value='buttonCSV'>
+															<b>CSV</b>
+														</button>
+													</a>
+												</div>
+												<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-shp">
+													<a href="{{ linkDownload }}">
+														<button mat-raised-button (click)="buttonDownload('shp', 'potencial_intensificacao_pecuaria', $event)">
+															<b>SHP</b>
+														</button>
+													</a>
+												</div>
+											</div>
+										</mat-expansion-panel>
+									</div>
+								</div>
+								<div class="separacaoLayers" id="layers_pontos">
+									<div>
+										<mat-expansion-panel>
+											<mat-expansion-panel-header [collapsedHeight]="'60px'">
+												<div>
+													<mat-slide-toggle (change)="layerchecked('pontos_campo_parada', $event)">
+														<h5 class="nameLayers"><b>Pontos de Campo</b></h5>
+													</mat-slide-toggle>
+												</div>
+											</mat-expansion-panel-header>
+											<div class="row layers-indicator">
+												<div>
+													<button class="button-row" (click)="openDialog('pontos_campo_parada')" mat-icon-button>
+												    <mat-icon class="iconInfo">info</mat-icon>
+												  </button>
+												</div>
+												<div class="value-indicators" *ngIf="this.tipoCampo == 'parada'">
+													{{ indicatorPoints }} pontos
+												</div>
+												<div class="value-indicators" *ngIf="this.tipoCampo == 'carro'">
+													{{ indicatorPointsNoStop | number:'2.0-0' }} pontos
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv" id="dropdownPoints">
+													<mat-form-field>
+													  <mat-select [formControl]="dropdowPontosdeCampo" [disabled]=!pontos_parada (selectionChange)="tipoCampoSelected('campo', $event)">
+													    <mat-option value="parada">Pastagem</mat-option>
+													    <mat-option value="carro">Uso e Cobertura</mat-option>
+													  </mat-select>
+													</mat-form-field>
+												</div>
+												<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-shp buttonsDisplay">
+													<a href="{{ linkDownload }}">
+														<button mat-raised-button (click)="buttonDownload(tipoCampo, 'pontos_campo', $event)">
+															<b>SHP</b>
+														</button>
+													</a>
+												</div>
+											</div>
+										</mat-expansion-panel>
+									</div>
+									<div class="separacaoLayers">
+										<mat-expansion-panel>
+											<mat-expansion-panel-header [collapsedHeight]="'60px'">
+												<div>
+													<mat-slide-toggle (change)="layerchecked('pontos_tvi', $event)">
+														<h5 class="nameLayers"><b>Pontos Visualmente Inspecionados</b></h5>
+													</mat-slide-toggle>
+												</div>
+											</mat-expansion-panel-header>
+											<div class="row layers-indicator">
+												<div>
+													<button class="button-row" (click)="openDialog('pontos_tvi')" mat-icon-button>
+												    <mat-icon class="iconInfo">info</mat-icon>
+												  </button>
+												</div>
+												<div class="value-indicators" *ngIf="this.tipoTVI == 'treinamento'">
+													{{ indicatorPointsTVITreinamento | number:'2.0-0' }} pontos
+												</div>
+												<div class="value-indicators" *ngIf="this.tipoTVI == 'validacao'">
+													{{ indicatorPointsTVIValidacao | number:'2.0-0' }} pontos
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv" id="dropdownPoints">
+													<mat-form-field>
+													  <mat-select [formControl]="dropdowPontosTVI" [disabled]=!pontos_tvi_show (selectionChange)="tipoCampoSelected('tvi', $event)">
+													    <mat-option value="treinamento">Treinamento</mat-option>
+													    <mat-option value="validacao">Validação</mat-option>
+													  </mat-select>
+													</mat-form-field>
+												</div>
+												<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-shp buttonsDisplay">
+													<a href="{{ linkDownload }}">
+														<button mat-raised-button (click)="buttonDownload(tipoTVI, 'pontos_tvi', $event)">
+															<b>SHP</b>
+														</button>
+													</a>
+												</div>
+											</div>
+										</mat-expansion-panel>
+									</div>
+								</div>
+							</mat-accordion>
 						</mat-tab>
 						<mat-tab label="Mapa Base">
 							<div class="form-group baseMap">
@@ -288,7 +333,7 @@
 									Relevo
 								</mat-slide-toggle><br/><br/>
 								<mat-slide-toggle (change)="baseLayerChecked('landsat', $event)" [(ngModel)]="landsat.visible">
-									Landsat - 2017
+									Landsat - {{ year }}
 								</mat-slide-toggle><br/>
 							</div>
 						</mat-tab>
@@ -306,7 +351,7 @@
 								<mat-slide-toggle (change)="layerchecked(terras_indigenas.layer, $event)" class="slideTerrasIndigenas" >
 									Terras Indígenas
 								</mat-slide-toggle><br/><br/>
-								<mat-slide-toggle [disabled]="true">
+								<mat-slide-toggle (change)="layerchecked(terras_privadas.layer, $event)" class="slideEstados" >
 									Terras Privadas
 								</mat-slide-toggle><br/><br/>
 								<mat-slide-toggle (change)="layerchecked(unidades_protecao_integral.layer, $event)" class="slideUnidadesConservacao" >
@@ -474,76 +519,117 @@
 	        <button type="button" class="collapse-btn btn btn-light btn-sm float-right" (click)="collapseLegends = !collapseLegends" [attr.aria-expanded]="!collapseLegends" aria-controls="camadageografica">-</button>
 	      </div>
 				<div class="legendasConteudo">
-		      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
-		      	<div *ngIf="checked">
-							<div>
-								<h6>
-									<img [src]="checkedLegendPasture ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pasture')" > 
-									<b>Área de Pastagem - {{ regionSelected }}</b>
-								</h6>
-							</div>
-							<div class= "layerLegend">
-								<img *ngIf="layerPastureShow == 'areas-pastagens'" src="http://o4.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture&format=image%2Fpng">
-								<img *ngIf="layerPastureShow == 'municipios-pastagens'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_regions_municipios&format=image%2Fpng">
-								<img *ngIf="layerPastureShow == 'pastagens-todas-transicoes'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_all_transitions&format=image%2Fpng">
-								<img *ngIf="layerPastureShow == 'pastagens-uma-transicao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_one_transitions&format=image%2Fpng">
-								<img *ngIf="layerPastureShow == 'pastagens-zero-transicao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_zero_transitions&format=image%2Fpng">
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
-		      	<div *ngIf="pastagens_degradadas_show">
-							<div>
-								<h6>
-									<img [src]="checkedLegendPastureDegraded ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pasture_degraded')" > 
-									<b>Pastagem Degradada - {{ regionSelected }}</b>
-								</h6>
-							</div>
-							<div class= "layerLegend">
-								<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_degraded&format=image%2Fpng">
+					<mat-accordion [multi]="multi">
+			      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
+			      	<div *ngIf="checked">
+			      		<mat-expansion-panel [expanded] = true>
+									<mat-expansion-panel-header [collapsedHeight]="'60px'">
+										<div>
+											<h6>
+												<img [src]="checkedLegendPasture ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pasture')" > 
+												<b>Área de Pastagem - {{ regionSelected }}</b>
+											</h6>
+										</div>
+									</mat-expansion-panel-header>
+									<div class= "layerLegend">
+										<img *ngIf="layerPastureShow == 'areas-pastagens'" src="http://o4.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture&format=image%2Fpng">
+										<img *ngIf="layerPastureShow == 'municipios-pastagens'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_regions_municipios&format=image%2Fpng">
+										<img *ngIf="layerPastureShow == 'pastagens-todas-transicoes'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_all_transitions&format=image%2Fpng">
+										<img *ngIf="layerPastureShow == 'pastagens-uma-transicao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_one_transitions&format=image%2Fpng">
+										<img *ngIf="layerPastureShow == 'pastagens-zero-transicao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_zero_transitions&format=image%2Fpng">
+									</div>
+								</mat-expansion-panel>
 							</div>
 						</div>
-					</div>
-					<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
-		      	<div *ngIf="rebanho_bovino_show">
-							<div>
-								<h6>
-									<img [src]="checkedLegendRebanho ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('rebanho_bovino')" > 
-									<b>Rebanho Bovino - UA</b>
-								</h6>
-							</div>
-							<div class= "layerLegend">
-								<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=lotacao_bovina_regions&format=image%2Fpng">
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
-		      	<div *ngIf="pontos_sem_parada_show">
-							<div>
-								<h6>
-									<img [src]="checkedLegendFieldPointNoStop ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pontos_campo_sem_parada')" > 
-									<b>Pontos de campo - Uso e Cobertura</b>
-								</h6>
-							</div>
-							<div class= "layerLegend">
-								<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_campo_sem_parada&format=image%2Fpng">
+						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
+			      	<div *ngIf="pastagens_degradadas_show">
+			      		<mat-expansion-panel [expanded] = true>
+									<mat-expansion-panel-header [collapsedHeight]="'60px'">
+										<div>
+											<h6>
+												<img [src]="checkedLegendPastureDegraded ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pasture_degraded')" > 
+												<b>Pastagem Degradada - {{ regionSelected }}</b>
+											</h6>
+										</div>
+									</mat-expansion-panel-header>
+									<div class= "layerLegend">
+										<img *ngIf="layerPastureDegradedShow == 'areas-pastagens-degraded'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_degraded&format=image%2Fpng">
+										<img *ngIf="layerPastureDegradedShow == 'municipios-pastagens-degraded'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_degraded_regions_municipios&format=image%2Fpng">
+									</div>
+								</mat-expansion-panel>
 							</div>
 						</div>
-					</div>
-					<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
-		      	<div *ngIf="pontos_tvi_show">
-							<div>
-								<h6>
-									<img [src]="checkedLegendTviPoint ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pontos_tvi')" > 
-									<b>Pontos Visualmente Inspecionados</b>
-								</h6>
-							</div>
-							<div class= "layerLegend">
-								<img *ngIf="layerPointTVIShow == 'treinamento'" src="http://o4.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_tvi_treinamento&format=image%2Fpng">
-								<img *ngIf="layerPointTVIShow == 'validacao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_tvi_validacao&format=image%2Fpng">
+						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
+			      	<div *ngIf="rebanho_bovino_show">
+			      		<mat-expansion-panel [expanded] = true>
+									<mat-expansion-panel-header [collapsedHeight]="'60px'">
+										<div>
+											<h6>
+												<img [src]="checkedLegendRebanho ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('rebanho_bovino')" > 
+												<b>Rebanho Bovino - UA</b>
+											</h6>
+										</div>
+									</mat-expansion-panel-header>
+									<div class= "layerLegend">
+										<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=lotacao_bovina_regions&format=image%2Fpng">
+									</div>
+								</mat-expansion-panel>
 							</div>
 						</div>
-					</div>
+
+						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
+			      	<div *ngIf="potencial_intensificacao_show">
+			      		<mat-expansion-panel [expanded] = true>
+									<mat-expansion-panel-header [collapsedHeight]="'60px'">
+										<div>
+											<h6>
+												<img [src]="checkedLegendPot_Int ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('potencial_intensificacao')" > 
+												<b>Potencial de Intenficação da Pecuária</b>
+											</h6>
+										</div>
+									</mat-expansion-panel-header>
+									<div class= "layerLegend">
+										<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=potencial_intensificacao_pecuaria&format=image%2Fpng">
+									</div>
+								</mat-expansion-panel>
+							</div>
+						</div>
+						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
+			      	<div *ngIf="pontos_sem_parada_show">
+			      		<mat-expansion-panel [expanded] = true>
+									<mat-expansion-panel-header [collapsedHeight]="'60px'">
+										<div>
+											<h6>
+												<img [src]="checkedLegendFieldPointNoStop ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pontos_campo_sem_parada')" > 
+												<b>Pontos de campo - Uso e Cobertura</b>
+											</h6>
+										</div>
+									</mat-expansion-panel-header>
+									<div class= "layerLegend">
+										<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_campo_sem_parada&format=image%2Fpng">
+									</div>
+								</mat-expansion-panel>
+							</div>
+						</div>
+						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
+			      	<div *ngIf="pontos_tvi_show">
+			      		<mat-expansion-panel [expanded] = true>
+									<mat-expansion-panel-header [collapsedHeight]="'60px'">
+										<div>
+											<h6>
+												<img [src]="checkedLegendTviPoint ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pontos_tvi')" > 
+												<b>Pontos Visualmente Inspecionados</b>
+											</h6>
+										</div>
+									</mat-expansion-panel-header>
+									<div class= "layerLegend">
+										<img *ngIf="layerPointTVIShow == 'treinamento'" src="http://o4.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_tvi_treinamento&format=image%2Fpng">
+										<img *ngIf="layerPointTVIShow == 'validacao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_tvi_validacao&format=image%2Fpng">
+									</div>
+								</mat-expansion-panel>
+							</div>
+						</div>
+					</mat-accordion>
 				</div>
 			</div>
     </div>

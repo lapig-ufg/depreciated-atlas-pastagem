@@ -1,0 +1,370 @@
+<h1 mat-dialog-title style="text-align: center;">Metadados</h1>
+<div mat-dialog-content style="text-align: justify;" *ngIf="data.name == 'pasture'">
+	<h3 class="title-metadados">Áreas de Pastagem do Brasil</h3>
+	<table>
+		<tbody>
+		  <tr class="table-row a01">
+		  	<td class="title-row"><b>Descrição:</b></td>
+		  	<td class="content-row">
+		  		Mapeamento anual das pastagens brasileiras, realizado através do uso de séries de dados Landsat de 1985 a 2017. Utilizando abordagens de classificação supervisionada (Random Forest) através da plataforma Earth Engine da Google. Para mais informações acesse o <a href="https://storage.googleapis.com/mapbiomas/base-de-dados/metodologia/colecao-3_0/Pasture-Appendix-ATBD-Colec%CC%A7a%CC%83o-3-V1.pdf"> ATBD Mapbiomas.</a>
+		  	</td>
+		  </tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Formato:</b></td>
+				<td class="content-row">
+					Shapefile (*.SHP), com arquivos complementares (*.PRJ, *DBF, *.SHX, *.SBX, *MAP).
+					Comma-separated values (*.CSV).
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Região:</b></td>
+				<td class="content-row">
+					Nível de Brasil, permitindo analisar o valor das áreas de pastagem, por diversas regiões de interesse (e.g. biomas, estados, municípios).
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Data:</b></td>
+				<td class="content-row">
+					De 1985 a 2017.
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Escala:</b></td>
+				<td class="content-row">
+					30 metros.
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Sistemas de Referência e Coordenadas</b></td>
+				<td class="content-row">
+					Superfície de referência SIRGAS 2000, sistema de coordenadas em grau.
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Projeção cartográfica:</b></td>
+				<td class="content-row">
+					Universal de Mercator.
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Atualização:</b></td>
+				<td class="content-row">
+					Anual.
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Codificação de caractere:</b></td>
+				<td class="content-row">
+					Latin 1.
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Fonte:</b></td>
+				<td class="content-row">
+					Laboratório de Processamento de Imagens e Geoprocessamento - Lapig (geração do dado).
+					Projeto de Mapeamento Anual da Cobertura e Uso do Solo do Brasil - MapBiomas (viabilizador).
+				</td>
+			</tr>
+			<tr class="table-row a01">
+			  <td class="title-row"><b>Contato:</b></td>
+			  <td class="content-row">
+					Fernanda Stefani - fer.stefani.souza@gmail.com<br/>
+					Lana Teixeira - lanamarast@gmail.com
+			  </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div mat-dialog-content style="text-align: justify;" *ngIf="data.name == 'pastagem_degradada'">
+	<h3 class="title-metadados">Indícios de degradação das pastagens brasileiras </h3>
+	<table>
+		<tbody>
+		  <tr class="table-row a01">
+		  	<td class="title-row"><b>Descrição:</b></td>
+		  	<td class="content-row">
+		  		Mapeamento da qualidade de pastagens, gerado pelo Lapig, onde foram analisados os dados de pastagens pixel a pixel para o período de 2011 a 2016, por meio de análise de tendências em anomalias acumuladas. A análise foi baseados em dados satelitários (NDVI/MOD13Q1), e avalia perdas ou ganho em produtividade. As áreas com tendência significativas de perda em produtividade (p < 0.05)  foram consideradas áreas com indícios de degradação.
+		  	</td>
+		  </tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Formato:</b></td>
+				<td class="content-row">
+					Shapefile (*.SHP), com arquivos complementares (*.PRJ, *DBF, *.SHX, *.SBX, *MAP).
+					Comma-separated values (*.CSV).
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Região:</b></td>
+				<td class="content-row">
+					Nível de Brasil, permitindo analisar o valor das áreas de pastagem, por diversas regiões de interesse (e.g. biomas, estados, municípios).
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Data:</b></td>
+				<td class="content-row">
+					2017.
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Escala:</b></td>
+				<td class="content-row">
+					1:250.000
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Sistemas de Referência e Coordenadas</b></td>
+				<td class="content-row">
+					Superfície de referência SIRGAS 2000, sistema de coordenadas em grau.
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Projeção cartográfica:</b></td>
+				<td class="content-row">
+					Universal de Mercator.
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Codificação de caractere:</b></td>
+				<td class="content-row">
+					Latin 1.
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Fonte:</b></td>
+				<td class="content-row">
+					Laboratório de Processamento de Imagens e Geoprocessamento - Lapig (geração do dado).
+					Projeto de Mapeamento Anual da Cobertura e Uso do Solo do Brasil - MapBiomas (viabilizador).
+				</td>
+			</tr>
+			<tr class="table-row a01">
+			  <td class="title-row"><b>Contato:</b></td>
+			  <td class="content-row">
+					Fernanda Stefani - fer.stefani.souza@gmail.com<br/>
+					Lana Teixeira - lanamarast@gmail.com
+			  </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div mat-dialog-content style="text-align: justify;" *ngIf="data.name == 'rebanho_bovino'">
+	<h3 class="title-metadados">Rebanho Bovino em Unidades Animal (UA).</h3>
+	<table>
+		<tbody>
+		  <tr class="table-row a01">
+		  	<td class="title-row"><b>Descrição:</b></td>
+		  	<td class="content-row">
+		  		Cálculo realizado considerando a composição do rebanho para o censo agropecuário. Para os anos de 1986 a 1999, utilizou-se os dados do censo agropecuário de 1996. Para os anos de 2000 a 2017. utilizou-se os dados do censo agropecuário de 2006. Sendo que uma Unidade Animal (UA), equivale a um animal de 450 kg vivo.
+		  	</td>
+		  </tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Formato:</b></td>
+				<td class="content-row">
+					Shapefile (*.SHP), com arquivos complementares (*.PRJ, *DBF, *.SHX, *.SBX, *MAP).
+					Comma-separated values (*.CSV).
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Região:</b></td>
+				<td class="content-row">
+					Nível de Brasil, permitindo analisar por diversas regiões de interesse (e.g. biomas, estados, municípios).
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Data:</b></td>
+				<td class="content-row">
+					1985 á 2017.
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Escala:</b></td>
+				<td class="content-row">
+					1:250.000
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Sistemas de Referência e Coordenadas</b></td>
+				<td class="content-row">
+					Superfície de referência SIRGAS 2000, sistema de coordenadas em grau.
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Projeção cartográfica:</b></td>
+				<td class="content-row">
+					Universal de Mercator.
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Atualização:</b></td>
+				<td class="content-row">
+					Não informado.
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Codificação de caractere:</b></td>
+				<td class="content-row">
+					Latin 1.
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Fonte:</b></td>
+				<td class="content-row">
+					Laboratório de Processamento de Imagens e Geoprocessamento - Lapig (geração do dado).
+				</td>
+			</tr>
+			<tr class="table-row a01">
+			  <td class="title-row"><b>Contato:</b></td>
+			  <td class="content-row">
+					Fernanda Stefani - fer.stefani.souza@gmail.com<br/>
+					Lana Teixeira - lanamarast@gmail.com
+			  </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div mat-dialog-content style="text-align: justify;" *ngIf="data.name == 'pontos_campo_parada'">
+	<h3 class="title-metadados">Pontos Amostrais obtidos em campo.</h3>
+	<table>
+		<tbody>
+		  <tr class="table-row a01">
+		  	<td class="title-row"><b>Descrição:</b></td>
+		  	<td class="content-row">
+		  		
+		  	</td>
+		  </tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Formato:</b></td>
+				<td class="content-row">
+					Shapefile (*.SHP), com arquivos complementares (*.PRJ, *DBF, *.SHX, *.SBX, *MAP).
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Região:</b></td>
+				<td class="content-row">
+					Nível de Brasil, permitindo analisar por diversas regiões de interesse (e.g. biomas, estados, municípios).
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Data:</b></td>
+				<td class="content-row">
+					
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Escala:</b></td>
+				<td class="content-row">
+					
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Sistemas de Referência e Coordenadas</b></td>
+				<td class="content-row">
+					Superfície de referência SIRGAS 2000, sistema de coordenadas em grau.
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Projeção cartográfica:</b></td>
+				<td class="content-row">
+					Universal de Mercator.
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Atualização:</b></td>
+				<td class="content-row">
+					Não informado.
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Codificação de caractere:</b></td>
+				<td class="content-row">
+					Latin 1.
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Fonte:</b></td>
+				<td class="content-row">
+					Laboratório de Processamento de Imagens e Geoprocessamento - Lapig (geração do dado).
+					Projeto de Mapeamento Anual da Cobertura e Uso do Solo do Brasil - MapBiomas (viabilizador). 
+				</td>
+			</tr>
+			<tr class="table-row a01">
+			  <td class="title-row"><b>Contato:</b></td>
+			  <td class="content-row">
+					Fernanda Stefani - fer.stefani.souza@gmail.com<br/>
+					Lana Teixeira - lanamarast@gmail.com
+			  </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div mat-dialog-content style="text-align: justify;" *ngIf="data.name == 'pontos_tvi'">
+	<h3 class="title-metadados">Pontos Visualmente Inspecionados</h3>
+	<table>
+		<tbody>
+		  <tr class="table-row a01">
+		  	<td class="title-row"><b>Descrição:</b></td>
+		  	<td class="content-row">
+		  		
+		  	</td>
+		  </tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Formato:</b></td>
+				<td class="content-row">
+					Shapefile (*.SHP), com arquivos complementares (*.PRJ, *DBF, *.SHX, *.SBX, *MAP).
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Região:</b></td>
+				<td class="content-row">
+					Nível de Brasil, permitindo analisar por diversas regiões de interesse (e.g. biomas, estados, municípios).
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Data:</b></td>
+				<td class="content-row">
+					
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Escala:</b></td>
+				<td class="content-row">
+					
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Sistemas de Referência e Coordenadas</b></td>
+				<td class="content-row">
+					Superfície de referência SIRGAS 2000, sistema de coordenadas em grau.
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Projeção cartográfica:</b></td>
+				<td class="content-row">
+					Universal de Mercator.
+				</td>
+			</tr>
+			<tr class="table-row a01">
+				<td class="title-row"><b>Codificação de caractere:</b></td>
+				<td class="content-row">
+					Latin 1.
+				</td>
+			</tr>
+			<tr class="table-row">
+				<td class="title-row"><b>Fonte:</b></td>
+				<td class="content-row">
+					Laboratório de Processamento de Imagens e Geoprocessamento - Lapig (geração do dado).
+					Projeto de Mapeamento Anual da Cobertura e Uso do Solo do Brasil - MapBiomas (viabilizador). 
+				</td>
+			</tr>
+			<tr class="table-row a01">
+			  <td class="title-row"><b>Contato:</b></td>
+			  <td class="content-row">
+					Fernanda Stefani - fer.stefani.souza@gmail.com<br/>
+					Lana Teixeira - lanamarast@gmail.com
+			  </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()" class="button-close-metadados">Ok</button>
+  <!-- <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button> -->
+</div>

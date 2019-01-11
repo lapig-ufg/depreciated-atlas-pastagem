@@ -1,4 +1,4 @@
-import {Component, Injectable, OnInit} from '@angular/core';
+import {Component, Injectable, OnInit, Inject} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 
 import {Observable } from 'rxjs';
@@ -27,10 +27,12 @@ import Style from 'ol/style/style';
 import OlView from 'ol/view';
 import OlProj from 'ol/proj';
 import OlExtent from 'ol/extent';
-import TileUTFGrid from 'ol/source/tileutfgrid';
 import Overlay from 'ol/overlay';
 import GeoJSON from 'ol/format/geojson';
 import _ol_TileUrlFunction_ from 'ol/tileurlfunction.js';
+import TileJSON from 'ol/source/tilejson.js';
+import UTFGrid from 'ol/source/tileutfgrid.js';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import "rxjs/add/observable/of";
 
 const SEARCH_URL = 'service/map/search';
@@ -57,15 +59,11 @@ export class SearchService {
 
 @Component({
 	selector: 'app-map',
-	//templateUrl: 'map.component.mobile.html',
 	templateUrl: './map.component.html',
 	providers: [SearchService],
 	styleUrls: [
 		'./map.component.css'
 	]
-	/*styleUrls: [
-		'./map.component.mobile.css'
-	]*/
 })
 
 export class MapComponent implements OnInit {
@@ -75,9 +73,12 @@ export class MapComponent implements OnInit {
 	projection: OlProj;
 	tileGrid: TileGrid;
 	currentZoom: Number;
+	utfgridsource: UTFGrid;
 
 	indicatorPasture: any;
 	indicatorPastureDegraded: any;
+	indicatorPastureOld: any;
+	indicatorPotencialInt: any;
 	indicatorRebanhoBovino: any;
 	indicatorPoints: any;
 	indicatorPointsNoStop: any;
@@ -88,12 +89,14 @@ export class MapComponent implements OnInit {
 	tileloading: Number;
 
 	selectPasture = 'areas-pastagens'
+	selectPastureDegraded = 'areas-pastagens-degraded'
 	checked = true;
 	checkedLegendPasture = true;
 	checkedLegendPastureDegraded = true;
 	checkedLegendFieldPointNoStop = true;
 	checkedLegendTviPoint = true;
 	checkedLegendRebanho = true;
+	checkedLegendPot_Int = true;
 
 	year = '2017';
 	yearRebanho = '2017';
@@ -144,7 +147,9 @@ export class MapComponent implements OnInit {
   pastagens_uma_transicao: any;
   pastagens_zero_transicao: any;
   pastagens_degradadas: any;
+  pastagem_degradada_municipios: any;
   rebanho_bovino: any;
+  potencial_intensificacao: any;
   estados: any;
   biomas: any;
   municipios: any;
@@ -156,6 +161,7 @@ export class MapComponent implements OnInit {
   estradas: any;
   landsat: any;
   relevo:any;
+  terras_privadas: any;
   pontos_campo_sem_parada: any;
   pontos_tvi_treinamento: any;
   pontos_tvi_validacao: any;
@@ -169,11 +175,14 @@ export class MapComponent implements OnInit {
   region_geom: any;
   linkDownload: any;
   layerPastureShow = 'areas-pastagens';
+  layerPastureDegradedShow = 'areas-pastagens-degraded';
   layerPointTVIShow = 'treinamento';
   pastagens_degradadas_show: any;
   rebanho_bovino_show: any;
+  potencial_intensificacao_show: any;
   pontos_sem_parada_show: any;
   pontos_tvi_show: any;
+  show_year_pasture = true;
 
   baseMap= 'mapbox';
   hectares = "hectares";
@@ -183,7 +192,7 @@ export class MapComponent implements OnInit {
 	contractTypeValid = false;
 	disableTransitionsPastures = true;
 
-	constructor(private http: HttpClient, private _service: SearchService) { 
+	constructor(private http: HttpClient, private _service: SearchService, public dialog: MatDialog) { 
 		this.indexedLayers = {};
 		this.tileloading = 0;
 		this.projection = OlProj.get('EPSG:900913');
@@ -231,6 +240,19 @@ export class MapComponent implements OnInit {
 
   formatter = (x: {text: string}) => x.text;
 
+  openDialog(layer): void {
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      width: '650px',
+      data: {name: layer}
+    });
+
+    console.log(layer)
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
   updateRegion(region) {
 
   	this.regionSelected = region.item.name;
@@ -240,7 +262,6 @@ export class MapComponent implements OnInit {
   	var regionType = region.item.type;
   	var region = region.item.value;
   	this.region_geom = region;
-
 
   	if(regionType == 'estado') {
   		regionType = 'uf'
@@ -311,10 +332,13 @@ export class MapComponent implements OnInit {
 		var source_pastagens_uma_transicoes = this.pastagens_uma_transicao.layer.getSource();
 		var source_pastagens_zero_transicoes = this.pastagens_zero_transicao.layer.getSource();
 		var source_pastagens_degradadas = this.pastagens_degradadas.layer.getSource();
+		var source_pastagens_degradadas_regions = this.pastagem_degradada_municipios.layer.getSource();
 		var source_rebanho_bovino = this.rebanho_bovino.layer.getSource();
+		var source_potencial_intensificacao = this.potencial_intensificacao.layer.getSource();
 		var source_pontos_sem_parada = this.pontos_campo_sem_parada.layer.getSource();
 		var source_pontos_tvi_treinamento = this.pontos_tvi_treinamento.layer.getSource();
 		var source_pontos_tvi_validacao = this.pontos_tvi_validacao.layer.getSource();
+		var source_landsat = this.landsat.layer.getSource()
 
 		source_pastagem_area.setUrls(this.getUrls(this.pastagem.layername, this.pastagem.layerfilter))
 		source_pastagem_municipio.setUrls(this.getUrls(this.pastagem_municipios.layername, this.pastagem_municipios.layerfilter))
@@ -322,10 +346,13 @@ export class MapComponent implements OnInit {
 		source_pastagens_uma_transicoes.setUrls(this.getUrls(this.pastagens_uma_transicao.layername, this.pastagens_uma_transicao.layerfilter))
 		source_pastagens_zero_transicoes.setUrls(this.getUrls(this.pastagens_zero_transicao.layername, this.pastagens_zero_transicao.layerfilter))
 		source_pastagens_degradadas.setUrls(this.getUrls(this.pastagens_degradadas.layername, this.pastagens_degradadas.layerfilter))
+		source_pastagens_degradadas_regions.setUrls(this.getUrls(this.pastagem_degradada_municipios.layername, this.pastagem_degradada_municipios.layerfilter))
 		source_rebanho_bovino.setUrls(this.getUrls(this.rebanho_bovino.layername, this.rebanho_bovino.layerfilter))
+		source_potencial_intensificacao.setUrls(this.getUrls(this.potencial_intensificacao.layername, this.potencial_intensificacao.layerfilter))
 		source_pontos_sem_parada.setUrls(this.getUrls(this.pontos_campo_sem_parada.layername, this.pontos_campo_sem_parada.layerfilter))
 		source_pontos_tvi_treinamento.setUrls(this.getUrls(this.pontos_tvi_treinamento.layername, this.pontos_tvi_treinamento.layerfilter))
 		source_pontos_tvi_validacao.setUrls(this.getUrls(this.pontos_tvi_validacao.layername, this.pontos_tvi_validacao.layerfilter))
+		source_landsat.updateParams({'YEAR':this.year});
 
 		source_pastagem_area.refresh();
 		source_pastagem_municipio.refresh();
@@ -333,10 +360,13 @@ export class MapComponent implements OnInit {
 		source_pastagens_uma_transicoes.refresh();
 		source_pastagens_zero_transicoes.refresh();
 		source_pastagens_degradadas.refresh();
+		source_pastagens_degradadas_regions.refresh();
 		source_rebanho_bovino.refresh();
+		source_potencial_intensificacao.refresh();
 		source_pontos_sem_parada.refresh();
 		source_pontos_tvi_treinamento.refresh();
 		source_pontos_tvi_validacao.refresh();
+		source_landsat.refresh();
   }
 
   formatLabel(value: number | null) {
@@ -362,7 +392,7 @@ export class MapComponent implements OnInit {
 			this.downloadRegionType = undefined;
   		this.downloadRegion = undefined;
   		this.disableTransitionsPastures = true;
-  		this.layerPastureShow = 'areas-pastagens'
+  		this.layerPastureShow = 'areas-pastagens';
   		this.layerPointTVIShow = 'treinamento';
 			this.sumIndicators();
 			this.updateSourceLayer();
@@ -371,6 +401,7 @@ export class MapComponent implements OnInit {
 			this.addPoints();
 
 			this.selectPasture = 'areas-pastagens'
+			this.selectPastureDegraded = 'areas-pastagens-degraded'
 			this.pastagens_todas_transicoes.layer.setVisible(false);
 			this.pastagens_uma_transicao.layer.setVisible(false);
   		this.pastagem.layer.setVisible(true);
@@ -539,6 +570,8 @@ export class MapComponent implements OnInit {
 
 	private createBaseLayers() {
 
+		var year = 
+
 		this.mapbox = {
 			visible: true,
 			layer: new OlTileLayer({
@@ -597,7 +630,7 @@ export class MapComponent implements OnInit {
           					'VERSION': '1.1.1',
           					'TRANSPARENT': 'true', 
           					'MAP': 'wms/v/3.0/classification/rgb.map', 
-          					'YEAR': 2017
+          					'YEAR': this.year
          	},
          	serverType: 'mapserver',
           tileGrid: this.tileGrid
@@ -671,6 +704,15 @@ export class MapComponent implements OnInit {
 			layerfilter: 'pontos_campo_sem_parada'
 		}
 
+		this.pastagem_degradada_municipios = {
+			label: 'Áreas de Pastagens degradadas do Brasil',
+			tooltip: 'Áreas de Pastagens degradadas do Brasil',
+			layername: "pasture_degraded_regions_municipios",
+			visible: false,
+			opacity: 1,
+			layerfilter: 'pontos_campo_sem_parada'
+		}
+
 		this.rebanho_bovino = {
 			label: 'Rebanho Bovino - UA',
 			tooltip: 'Rebanho Bovino - UA',
@@ -678,6 +720,15 @@ export class MapComponent implements OnInit {
 			visible: false,
 			opacity: 1,
 			layerfilter: 'rebanho_bovino'
+		}
+
+		this.potencial_intensificacao = {
+			label: 'Potencial de Intenficação da Pecuária',
+			tooltip: 'Potencial de Intenficação da Pecuária',
+			layername: "potencial_intensificacao_pecuaria",
+			visible: false,
+			opacity: 1,
+			layerfilter: 'pontos_campo_sem_parada'
 		}
 
 		this.estados = {
@@ -755,13 +806,33 @@ export class MapComponent implements OnInit {
 			layerfilter: 'pontos_campo_sem_parada'
 		}
 
+		this.terras_privadas = {
+			visible: false,
+			layer: new OlTileLayer({
+				source: new TileWMS({
+          url: 'http://geoserver.imaflora.org/geoserver/ima-geo/wms',
+          projection: 'EPSG:3857',
+          params: {'LAYERS': 'ima-geo:v_car0518_mapbiomas', 
+          					'SERVICE': 'WMS',
+          					'VERSION': '1.1.1',
+          					'TRANSPARENT': 'true', 
+         	},
+         	serverType: 'mapserver',
+          tileGrid: this.tileGrid
+        }),
+				visible: false,
+	    })
+	  }
+
 		this.pastagem['layer'] = this.createTMSLayer(this.pastagem.layername, this.pastagem.visible, this.pastagem.opacity, this.pastagem.layerfilter);
 		this.pastagem_municipios['layer'] = this.createTMSLayer(this.pastagem_municipios.layername, this.pastagem_municipios.visible, this.pastagem_municipios.opacity, this.pastagem_municipios.layerfilter);
 		this.pastagens_todas_transicoes['layer'] = this.createTMSLayer(this.pastagens_todas_transicoes.layername, this.pastagens_todas_transicoes.visible, this.pastagens_todas_transicoes.opacity, this.pastagens_todas_transicoes.layerfilter);
 		this.pastagens_uma_transicao['layer'] = this.createTMSLayer(this.pastagens_uma_transicao.layername, this.pastagens_uma_transicao.visible, this.pastagens_uma_transicao.opacity, this.pastagens_uma_transicao.layerfilter);
 		this.pastagens_zero_transicao['layer'] = this.createTMSLayer(this.pastagens_zero_transicao.layername, this.pastagens_zero_transicao.visible, this.pastagens_zero_transicao.opacity, this.pastagens_zero_transicao.layerfilter);
 		this.pastagens_degradadas['layer'] = this.createTMSLayer(this.pastagens_degradadas.layername, this.pastagens_degradadas.visible, this.pastagens_degradadas.opacity, this.pastagens_degradadas.layerfilter);
+		this.pastagem_degradada_municipios['layer'] = this.createTMSLayer(this.pastagem_degradada_municipios.layername, this.pastagem_degradada_municipios.visible, this.pastagem_degradada_municipios.opacity, this.pastagem_degradada_municipios.layerfilter);
 		this.rebanho_bovino['layer'] = this.createTMSLayer(this.rebanho_bovino.layername, this.rebanho_bovino.visible, this.rebanho_bovino.opacity, this.rebanho_bovino.layerfilter);
+		this.potencial_intensificacao['layer'] = this.createTMSLayer(this.potencial_intensificacao.layername, this.potencial_intensificacao.visible, this.potencial_intensificacao.opacity, this.potencial_intensificacao.layerfilter);
 		this.estados['layer'] = this.createTMSLayer(this.estados.layername, this.estados.visible, this.estados.opacity, '')
 		this.municipios['layer'] = this.createTMSLayer(this.municipios.layername, this.municipios.visible, this.municipios.opacity, '')
 		this.biomas['layer'] = this.createTMSLayer(this.biomas.layername, this.biomas.visible, this.biomas.opacity, '')
@@ -776,13 +847,21 @@ export class MapComponent implements OnInit {
 		this.fieldPointsStop = this.createVectorLayer('fieldPointsStop', '#fc16ef', 3);
 		this.fieldPointsStop.setVisible(false);
 
+	 	this.utfgridsource = new OlTileLayer({
+	 		source: new UTFGrid({
+	    	url: 'http://o3.lapig.iesa.ufg.br/ows?layers=lotacao_bovina_regions&MSFILTER=year=2017&mode=tile&tile={x}+{y}+{z}&tilemode=gmap&map.imagetype=png'
+		  })
+		});
+
 		this.layers.push(this.pastagem['layer'])
 		this.layers.push(this.pastagem_municipios['layer'])
 		this.layers.push(this.pastagens_todas_transicoes['layer'])
 		this.layers.push(this.pastagens_uma_transicao['layer'])
 		this.layers.push(this.pastagens_zero_transicao['layer'])
 		this.layers.push(this.pastagens_degradadas['layer'])
+		this.layers.push(this.pastagem_degradada_municipios['layer'])
 		this.layers.push(this.rebanho_bovino['layer'])
+		this.layers.push(this.potencial_intensificacao['layer'])
 		this.layers.push(this.estados['layer'])
 		this.layers.push(this.municipios['layer'])
 		this.layers.push(this.biomas['layer'])
@@ -794,6 +873,8 @@ export class MapComponent implements OnInit {
 		this.layers.push(this.pontos_tvi_validacao['layer'])
 		this.layers.push(this.regions);
 		this.layers.push(this.fieldPointsStop);
+		this.layers.push(this.terras_privadas.layer);
+		this.layers.push(this.utfgridsource);
 
 		this.layers.push()
 		this.layers = this.layers.concat(olLayers.reverse());
@@ -801,29 +882,55 @@ export class MapComponent implements OnInit {
 	}
 
 	buttonDownload(tipo, layer, e) {
-		if(tipo == 'csv' && layer == 'pasture'){
-			var paramsDownload = 'file='+layer+'&region=year='+this.year+''+this.msFilterRegion+'&filter='+this.msFilterRegionCharts;
-			this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
-		} else if(tipo == 'csv' && layer == 'lotacao_bovina_regions'){
-			var paramsDownload = 'file='+layer+'&region=year='+this.yearRebanho+''+this.msFilterRegion+'&filter='+this.msFilterRegionCharts;
-			this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
-		} else if (tipo == 'shp' && layer == 'lotacao_bovina_regions') {
-			var paramsDownload = '&MSFILTER=year='+this.yearRebanho+''+this.msFilterRegion
-			this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=lotacao_bovina_regions&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
-		} else if (tipo == 'shp' && layer == 'pasture' && this.layerPastureShow == 'areas-pastagens'){
-			var paramsDownload = 'file='+layer+'&regionType='+this.downloadRegionType+'&region='+this.downloadRegion+'&year='+this.year
-			this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
-		} else if (tipo == 'shp' && layer == 'pasture' && this.layerPastureShow == 'municipios-pastagens') {
-			var paramsDownload = '&MSFILTER=year='+this.year+''+this.msFilterRegion
-			this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=pasture_regions_municipios&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
-		} else if (tipo == 'shp' && layer == 'pasture_degraded'){
+		if(layer == 'pasture'){
+			if(tipo == 'csv') {
+				var paramsDownload = 'file='+layer+'&region=year='+this.year+''+this.msFilterRegion+'&filter='+this.msFilterRegionCharts;
+				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload	
+			} else if (tipo == 'shp') {
+				if (this.layerPastureShow == 'areas-pastagens') {
+				var paramsDownload = 'file='+layer+'&regionType='+this.downloadRegionType+'&region='+this.downloadRegion+'&year='+this.year
+				this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
+				} else if (this.layerPastureShow == 'municipios-pastagens') {
+					var paramsDownload = '&MSFILTER=year='+this.year+''+this.msFilterRegion
+					this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=pasture_regions_municipios&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
+				} else if (this.layerPastureShow == 'pastagens-zero-transicao') {
+					var paramsDownload = 'file=old_pasture&regionType='+this.downloadRegionType+'&region='+this.downloadRegion+'&year='+this.year
+					this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
+				} else if (this.layerPastureShow == 'pastagens-todas-transicoes') {
+					var paramsDownload = 'file=pasture_all_transitions&regionType='+this.downloadRegionType+'&region='+this.downloadRegion+'&year='+this.year
+					this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
+				} else if (this.layerPastureShow == 'pastagens-uma-transicao') {
+					var paramsDownload = 'file=pasture_all_transitions&regionType='+this.downloadRegionType+'&region='+this.downloadRegion+'&year='+this.year
+					this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
+				}
+			}
+		} else if (tipo == 'shp' && layer == 'pasture_degraded') {
+			var layerDow;
 
 			if(this.msFilterRegionCharts != ''){
 				var paramsDownload = '&MSFILTER='+this.msFilterRegionCharts
 			} else {
 				var paramsDownload = "&MSFILTER=uf!='0'"
 			}
-			this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=pasture_degraded&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
+
+			if(this.layerPastureDegradedShow == 'municipios-pastagens-degraded') {
+				layerDow = 'pasture_degraded_regions_municipios'
+			} else {
+				layerDow = 'pasture_degraded'
+			}
+
+			this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME='+layerDow+'&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
+		}else if (tipo == 'csv' && layer == 'pasture_degraded') {
+				var paramsDownload = 'file='+layer+'&filter='+this.msFilterRegionCharts;
+				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
+		} else if(layer == 'lotacao_bovina_regions') {
+			if(tipo == 'csv') {
+				var paramsDownload = 'file='+layer+'&region=year='+this.yearRebanho+''+this.msFilterRegion+'&filter='+this.msFilterRegionCharts;
+				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
+			} else {
+				var paramsDownload = '&MSFILTER=year='+this.yearRebanho+''+this.msFilterRegion
+				this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=lotacao_bovina_regions&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
+			}
 		} else if (layer == 'pontos_campo') {
 			var paramsDownload = 'file=pontos_campo_parada';
 
@@ -840,7 +947,16 @@ export class MapComponent implements OnInit {
 			}
 
 			this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
+		} else if (layer == 'potencial_intensificacao_pecuaria') {
+			if(tipo == 'csv') {
+				var paramsDownload = 'file='+layer+'&filter='+this.msFilterRegionCharts;
+				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
+				console.log(this.msFilterRegionCharts);
+				
+			}
 		}
+		console.log(this.layerPastureShow , this.linkDownload);
+		
 	}
 
 	opcoesVisualizacao(e){
@@ -852,6 +968,7 @@ export class MapComponent implements OnInit {
 			this.pastagens_zero_transicao.layer.setVisible(false);
 			this.contractTypeValid = false;
 			this.layerPastureShow = 'areas-pastagens';
+			this.show_year_pasture = true;
 		} else if (e.value == 'municipios-pastagens') {
 			this.pastagem_municipios.layer.setVisible(true);
 			this.pastagem.layer.setVisible(false);
@@ -860,6 +977,7 @@ export class MapComponent implements OnInit {
 			this.pastagens_zero_transicao.layer.setVisible(false);
 			this.contractTypeValid = false;
 			this.layerPastureShow = 'municipios-pastagens';
+			this.show_year_pasture = true;
 		} else if (e.value == 'pastagens-todas-transicoes') {
 			this.pastagens_todas_transicoes.layer.setVisible(true);
 			this.pastagens_uma_transicao.layer.setVisible(false);
@@ -868,6 +986,7 @@ export class MapComponent implements OnInit {
 			this.pastagem.layer.setVisible(false);
 			this.contractTypeValid = true;
 			this.layerPastureShow = 'pastagens-todas-transicoes';
+			this.show_year_pasture = false;
 		} else if (e.value == 'pastagens-uma-transicao') {
 			this.pastagens_uma_transicao.layer.setVisible(true);
 			this.pastagens_zero_transicao.layer.setVisible(false);
@@ -876,15 +995,28 @@ export class MapComponent implements OnInit {
 			this.pastagem.layer.setVisible(false);
 			this.contractTypeValid = true;
 			this.layerPastureShow = 'pastagens-uma-transicao';
+			this.show_year_pasture = false;
 		} else if (e.value == 'pastagens-zero-transicao') {
 			this.pastagens_zero_transicao.layer.setVisible(true);
 			this.pastagens_uma_transicao.layer.setVisible(false);
 			this.pastagens_todas_transicoes.layer.setVisible(false);
 			this.pastagem_municipios.layer.setVisible(false);
 			this.pastagem.layer.setVisible(false);
-			this.contractTypeValid = true;
+			this.contractTypeValid = false;
 			this.layerPastureShow = 'pastagens-zero-transicao';
+			this.show_year_pasture = false;
 		}
+
+		if(e.value == 'areas-pastagens-degraded'){
+			this.pastagens_degradadas.layer.setVisible(true);
+			this.pastagem_degradada_municipios.layer.setVisible(false);
+			this.layerPastureDegradedShow = 'areas-pastagens-degraded';
+		} else if (e.value == 'municipios-pastagens-degraded') {
+			this.pastagem_degradada_municipios.layer.setVisible(true);
+			this.pastagens_degradadas.layer.setVisible(false);
+			this.layerPastureDegradedShow = 'municipios-pastagens-degraded';
+		}
+
 	}
 
 	baseLayerChecked(base, e) {
@@ -1003,22 +1135,29 @@ export class MapComponent implements OnInit {
 			this.municipios.layer.setVisible(false)
 			this.municipios.visible = false
 		} else if (layer == this.pastagem.layer) {
-				if(e.checked === false){
-					this.pastagem_municipios.layer.setVisible(false);
-				}else if (e.checked === true && this.layerPastureShow == 'municipios-pastagens'){
-					this.pastagem_municipios.layer.setVisible(true);
-				}
+			if(e.checked === false){
+				this.pastagem_municipios.layer.setVisible(false);
+			}else if (e.checked === true && this.layerPastureShow == 'municipios-pastagens'){
+				this.pastagem_municipios.layer.setVisible(true);
+			}
 		} else if (layer == 'pontos_campo_parada') {
 			layer = this.fieldPointsStop;
 			this.pontos_parada = e.checked;
 			console.log(this.changeTabSelected);
 			this.selectedIndex = 4
 		} else if (layer == 'pastagem_degradada') {
-			layer = this.pastagens_degradadas.layer;
+			if(this.layerPastureDegradedShow == 'areas-pastagens-degraded'){
+				layer = this.pastagens_degradadas.layer;
+			} else {
+				layer = this.pastagem_degradada_municipios.layer;
+			}
 			this.pastagens_degradadas_show = e.checked;
 		} else if (layer == 'rebanho_bovino') {
 			layer = this.rebanho_bovino.layer;
 			this.rebanho_bovino_show = e.checked;
+		} else if (layer == 'potencial_intensificacao') {
+			layer = this.potencial_intensificacao.layer;
+			this.potencial_intensificacao_show = e.checked;
 		} else if (layer == 'pontos_tvi') {
 			this.pontos_tvi_show = e.checked
 			if(this.layerPointTVIShow == 'validacao'){
@@ -1049,10 +1188,17 @@ export class MapComponent implements OnInit {
 			}
 		} else if (layer == 'pasture_degraded') {
 			this.checkedLegendPastureDegraded = !this.checkedLegendPastureDegraded;
-			this.pastagens_degradadas.layer.setVisible(this.checkedLegendPastureDegraded);
+			if (this.layerPastureDegradedShow == 'areas-pastagens-degraded'){
+				this.pastagens_degradadas.layer.setVisible(this.checkedLegendPastureDegraded);
+			} else if (this.layerPastureDegradedShow == 'municipios-pastagens-degraded') {
+				this.pastagem_degradada_municipios.layer.setVisible(this.checkedLegendPastureDegraded);
+			}
 		} else if (layer == 'rebanho_bovino') {
 			this.checkedLegendRebanho = !this.checkedLegendRebanho;
 			this.rebanho_bovino.layer.setVisible(this.checkedLegendRebanho);
+		} else if (layer == 'potencial_intensificacao') {
+			this.checkedLegendPot_Int = !this.checkedLegendPot_Int;
+			this.potencial_intensificacao.layer.setVisible(this.checkedLegendPot_Int);
 		} else if (layer == 'pontos_campo_sem_parada') {
 			this.checkedLegendFieldPointNoStop = !this.checkedLegendFieldPointNoStop;
 			this.pontos_campo_sem_parada.layer.setVisible(this.checkedLegendFieldPointNoStop);
@@ -1064,6 +1210,8 @@ export class MapComponent implements OnInit {
 				this.pontos_tvi_treinamento.layer.setVisible(this.checkedLegendTviPoint);
 			}
 		}
+
+		console.log(layer)
 	}
 
 	updateyear() {
@@ -1082,6 +1230,8 @@ export class MapComponent implements OnInit {
 		});
 
 		var filterPastureDegraded = 'service/map/indicatorsPastureDegraded?&MSFILTER='+this.msFilterRegionCharts
+		var filterPastureOld = 'service/map/indicatorsPastureOld?&MSFILTER='+this.msFilterRegionCharts
+		var filterPotencialIntensificacao = 'service/map/indicatorsPotencialIntensificacao?&MSFILTER='+this.msFilterRegionCharts
 		var filterPoints = 'service/map/indicatorsPoints?&MSFILTER='+this.msFilterRegionCharts
 		var filterPointsNoStop = 'service/map/indicatorsPointsNoStop?&MSFILTER='+this.msFilterRegionCharts
 		var filterPointsTVITreinamento = 'service/map/indicatorsPointsTVITreinamento?&MSFILTER='+this.msFilterRegionCharts
@@ -1089,6 +1239,8 @@ export class MapComponent implements OnInit {
 		
 		if(this.msFilterRegionCharts == ''){
 			filterPastureDegraded = 'service/map/indicatorsPastureDegraded'
+			filterPastureOld = 'service/map/indicatorsPastureOld'
+			filterPotencialIntensificacao = 'service/map/indicatorsPotencialIntensificacao'
 			filterPoints = 'service/map/indicatorsPoints'
 			filterPointsNoStop = 'service/map/indicatorsPointsNoStop'
 			filterPointsTVITreinamento = 'service/map/indicatorsPointsTVITreinamento'
@@ -1097,6 +1249,16 @@ export class MapComponent implements OnInit {
 		
 		this.http.get(filterPastureDegraded).subscribe(indicatorsPastureDegraded => {
 			this.indicatorPastureDegraded = indicatorsPastureDegraded[0].sum;
+		});
+
+		this.http.get(filterPastureOld).subscribe(indicatorsPastureOld => {
+			this.indicatorPastureOld = indicatorsPastureOld[0].sum;
+		});
+
+
+		this.http.get(filterPotencialIntensificacao).subscribe(indicatorsPotInt => {
+			this.indicatorPotencialInt = indicatorsPotInt[0].avg;
+			console.log(this.indicatorPotencialInt);
 		});
 
 		this.http.get(filterPoints).subscribe(indicatorsPoints => {
@@ -1165,5 +1327,21 @@ export class MapComponent implements OnInit {
 		this.createMap();
 		this.addPoints();
 	}
+
+}
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: 'dialog-overview-example-dialog.html',
+})
+export class DialogOverviewExampleDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    @Inject(MAT_DIALOG_DATA) public data) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 
 }

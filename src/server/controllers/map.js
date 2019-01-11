@@ -103,6 +103,50 @@ module.exports = function(app){
 		})
 	}
 
+	Map.indicatorsPastureOld = function(request, response){
+
+		var msfilter = request.param('MSFILTER', '');
+		var filters = '';
+
+		if(msfilter) {
+			filters = " AND "+msfilter;
+		}
+
+		client.query("SELECT SUM(area_ha) FROM pasture_all_transitions WHERE category = '1'"+filters, (err, res) => {
+
+		  if (err) {
+		    console.log(err.stack)
+		    response.send(err)
+				response.end()
+		  } else {
+				response.send(res.rows)
+				response.end()
+		  }
+		})
+	}
+
+	Map.indicatorsPotencialIntensificacao = function(request, response){
+
+		var msfilter = request.param('MSFILTER', '');
+		var filters = '';
+
+		if(msfilter) {
+			filters = " AND "+msfilter;
+		}
+
+		client.query("SELECT avg(potencial_int) FROM (SELECT cd_geocmu, max(potencial_int) potencial_int FROM potencial_intensificacao WHERE potencial_int > 0 " +filters+" GROUP BY 1) a", (err, res) => {
+
+		  if (err) {
+		    console.log(err.stack)
+		    response.send(err)
+				response.end()
+		  } else {
+				response.send(res.rows)
+				response.end()
+		  }
+		})
+	}
+
 	Map.indicatorsRebanhoBovino = function(request, response){
 
 		var msfilter = request.param('MSFILTER', '');
@@ -252,9 +296,10 @@ module.exports = function(app){
 	Map.search = function(request, response) {
 
 		var keysearch = request.param('key', 'BRASIL').toUpperCase();
+		var regiao;
 		var result = [];
 
-		client.query("SELECT INITCAP(text) as text, value, type FROM search WHERE TEXT LIKE '%"+keysearch+"%'", (err, res) => {
+		client.query("SELECT INITCAP(text) as text, value, type, uf FROM search WHERE TEXT LIKE '%"+keysearch+"%'", (err, res) => {
 
 		  if (err) {
 		    console.log(err.stack)
@@ -262,8 +307,16 @@ module.exports = function(app){
 				response.end()
 		  } else {
 		  	res.rows.forEach(function(row){
+
+		  		if(row.uf === null) {
+		  			regiao = row.text
+		  			console.log('é null', row.text)
+		  		}else {
+		  			regiao = row.text + " (" + row.uf + ")"
+		  		}
+
 		  		result.push({
-		  			text: row.text + " (" + row.type + ")",
+		  			text: regiao,
 		  			value: row.value,
 		  			type: row.type,
 		  			name: row.text
@@ -363,16 +416,23 @@ module.exports = function(app){
 		var sqlQuery;
 
 		if(file == 'pasture') {
-		 	sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(area_ha), year FROM pasture WHERE "+region+" GROUP BY 1,2,3,4,5,7"
+		 	sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(area_ha) as area_pastagem, year FROM pasture WHERE "+region+" GROUP BY 1,2,3,4,5,7"
 		} else if (file == 'pasture_degraded') {
 
 			if(msfilter) {
 				filter = " WHERE "+msfilter;
 			}
 
-			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(area_ha) as area_ha FROM pasture_degraded "+filter+" GROUP BY 1,2,3,4,5"
+			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(area_ha) as area_past_degradada FROM pasture_degraded "+filter+" GROUP BY 1,2,3,4,5"
 		} else if (file == 'lotacao_bovina_regions') {
 			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(ua*pct_areapo) as ua, sum(n_kbcs*pct_areapo) as kbc, year FROM lotacao_bovina_regions WHERE "+region+" GROUP BY 1,2,3,4,5,8"
+		} else if (file == 'potencial_intensificacao_pecuaria') {
+
+			if(msfilter) {
+				filter = " WHERE "+msfilter;
+			}
+
+			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, AVG(potencial_int) as potencial_intensificacao FROM potencial_intensificacao "+filter+" GROUP BY 1,2,3,4,5"
 		}
 
 		client.query(sqlQuery, (err, rows) => {
@@ -403,10 +463,14 @@ module.exports = function(app){
 		var region = request.param('region', '');
 		var year = request.param('year', '');
 		var fileParam = layer+'_'+year;
+
+		if(layer != 'pasture') {
+			fileParam = layer;
+		}
 		
 		var diretorio = config.downloadDir+layer+'/'+regionType+'/'+region+'/';
 		var	pathFile = diretorio+fileParam;
-		
+		console.log(pathFile)
 		if(fileParam.indexOf("../") == 0){
 			res.send('Arquivo inválido!')
 			res.end();
@@ -436,6 +500,11 @@ module.exports = function(app){
 			var fileParamBR = year;
 			var	pathFileBR = diretorioBR+fileParamBR;
 			var nameFile = 'br_'+layer+'_'+year;
+
+			if(layer != 'pasture') {
+				pathFileBR = diretorioBR
+				nameFile = 'br_'+layer
+			}
 
 			response.setHeader('Content-disposition', 'attachment; filename='+nameFile+'.zip');
 			response.setHeader('Content-type', 'application/zip')
