@@ -90,7 +90,14 @@ module.exports = function(app){
 	Map.indicators = function(request, response){
 
 		var msfilter = request.param('MSFILTER', '');
-		client.query("SELECT year, SUM(area_ha) FROM pasture WHERE "+msfilter+" GROUP BY year ORDER BY year", (err, res) => {
+
+		client.query("SELECT year, SUM(area_ha) as area_ha, SUM(pol_ha) as area_mun FROM pasture WHERE "+msfilter+" GROUP BY year ORDER BY year", (err, res) => {
+
+			var percentual_area_ha = ((res.rows[0].area_ha * 100) / res.rows[0].area_mun);
+
+			res.rows.push({
+				percentual_area_ha: percentual_area_ha
+			})
 
 		  if (err) {
 		    console.log(err.stack)
@@ -107,12 +114,20 @@ module.exports = function(app){
 
 		var msfilter = request.param('MSFILTER', '');
 		var filters = '';
+		var otherFilter = '';
 
 		if(msfilter) {
 			filters = " AND "+msfilter;
+			otherFilter = " WHERE "+msfilter;
 		}
 
-		client.query("SELECT SUM(area_ha) FROM pasture_all_transitions WHERE category = '1'"+filters, (err, res) => {
+		client.query("SELECT SUM(area_ha), (SELECT SUM(pol_ha) FROM regions"+otherFilter+") as area_mun FROM pasture_all_transitions WHERE category = '1'"+filters, (err, res) => {
+
+			var percentual_area_ha = ((res.rows[0].sum * 100) / res.rows[0].area_mun);
+
+			res.rows.push({
+				percentual_area_ha: percentual_area_ha
+			})
 
 		  if (err) {
 		    console.log(err.stack)
@@ -173,7 +188,13 @@ module.exports = function(app){
 			filters = " WHERE "+msfilter;
 		}
 
-		client.query("SELECT SUM(area_ha) FROM pasture_degraded"+filters, (err, res) => {
+		client.query("SELECT SUM(area_ha), (SELECT SUM(pol_ha) FROM regions"+filters+") as area_mun FROM pasture_degraded"+filters, (err, res) => {
+
+			var percentual_area_ha = ((res.rows[0].sum * 100) / res.rows[0].area_mun);
+
+			res.rows.push({
+				percentual_area_ha: percentual_area_ha
+			})
 
 		  if (err) {
 		    console.log(err.stack)
@@ -332,14 +353,28 @@ module.exports = function(app){
 	Map.charts = function(request, response) {
 
 		var regionFilter = request.param('region', '');
+		var regionType = request.param('type', '');
+		var nameRegion = regionFilter.split('=')
+		var filterBiomaPast;
 		var result = [];
+		var query_past;
 
 		if(regionFilter != ''){
 			regionFilter = "WHERE "+regionFilter
-		}else{
+
+			if (regionType == 'bioma') {
+				query_past = "SELECT * FROM pasture_correction WHERE name = "+nameRegion[1]
+			} else {
+				query_past = "SELECT year, SUM(area_ha) FROM pasture "+regionFilter+" GROUP BY year ORDER BY year"
+			}
+
+		} else {
+			regionFilter_past_co = "WHERE type = 'country' "
+			query_past = "SELECT * FROM pasture_correction "+regionFilter_past_co
 		}
 
-		client.query("SELECT year, SUM(area_ha) FROM pasture "+regionFilter+" GROUP BY year ORDER BY year", (err, res) => {
+		console.log(query_past);
+		client.query(query_past, (err, res) => {
 
 			if (err) {
 		    console.log(err.stack)
@@ -350,21 +385,61 @@ module.exports = function(app){
 
 		  	res.rows.forEach(function(row){
 
-		  		series.push({
-		  			name: row.year,
-		  			value: row.sum,
-		  			year: row.year
-		  		})
+		  		if (row.type) {
+		  			series.push({
+			  			name: row.year,
+			  			value: row.area_ha,
+			  			year: row.year,
+			  			min: row.area_ha_min,
+			  			max: row.area_ha_max
+			  		})
+		  		} else {
+			  		series.push({
+			  			name: row.year,
+			  			value: row.sum,
+			  			year: row.year
+			  		})
+		  		}
+
 
 		  	})
 
 	  		result.push({
-					name: "Pastagem",
+					name: "Pastagem ha",
 					series: series
 				})
+										 
+				client.query("SELECT year, SUM(ua*pct_areapo) as ua, sum(n_kbcs*pct_areapo) as kbc FROM lotacao_bovina_regions "+regionFilter+" GROUP BY year ORDER BY year", (err, resLot) => {
 
-				response.send(result)
-				response.end()
+					if (err) {
+				    console.log(err.stack)
+				    response.send(err)
+						response.end()
+				  } else {
+
+						var seriesLotacaoBovina = [];
+
+				  	resLot.rows.forEach(function(row){
+
+				  		if(row.year != null) {
+					  		seriesLotacaoBovina.push({
+					  			name: row.year,
+					  			value: row.ua,
+					  			year: row.year
+					  		})
+				  		}
+
+				  	})
+				  		result.push({
+								name: "Rebanho Bovino - UA",
+								series: seriesLotacaoBovina
+							})
+
+						response.send(result)
+						response.end()
+				  }
+				})
+
 			}
 		})
 	}

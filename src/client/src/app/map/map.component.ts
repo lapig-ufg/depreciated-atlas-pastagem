@@ -76,8 +76,11 @@ export class MapComponent implements OnInit {
 	utfgridsource: UTFGrid;
 
 	indicatorPasture: any;
+	indicatorPasturePercentual: any;
 	indicatorPastureDegraded: any;
+	indicatorPastureDegradedPercentual: any;
 	indicatorPastureOld: any;
+	indicatorPastureOldPercentual;
 	indicatorPotencialInt: any;
 	indicatorRebanhoBovino: any;
 	indicatorPoints: any;
@@ -1222,7 +1225,8 @@ export class MapComponent implements OnInit {
 
 	private sumIndicators() {
 		this.http.get('service/map/indicators?&MSFILTER=year='+this.year+''+this.msFilterRegion).subscribe(indicatorsPasture => {
-			this.indicatorPasture = indicatorsPasture[0].sum;
+			this.indicatorPasture = indicatorsPasture[0].area_ha;
+			this.indicatorPasturePercentual = indicatorsPasture[1].percentual_area_ha;
 		});
 
 		this.http.get('service/map/indicatorsRebanhoBovino?&MSFILTER=year='+this.yearRebanho+''+this.msFilterRegion).subscribe(indicatorsRebanho => {
@@ -1249,10 +1253,12 @@ export class MapComponent implements OnInit {
 		
 		this.http.get(filterPastureDegraded).subscribe(indicatorsPastureDegraded => {
 			this.indicatorPastureDegraded = indicatorsPastureDegraded[0].sum;
+			this.indicatorPastureDegradedPercentual = indicatorsPastureDegraded[1].percentual_area_ha;
 		});
 
 		this.http.get(filterPastureOld).subscribe(indicatorsPastureOld => {
 			this.indicatorPastureOld = indicatorsPastureOld[0].sum;
+			this.indicatorPastureOldPercentual = indicatorsPastureOld[1].percentual_area_ha;
 		});
 
 
@@ -1279,7 +1285,8 @@ export class MapComponent implements OnInit {
 	}
 
 	private updateCharts() {
-		this.http.get('service/map/charts?region='+this.msFilterRegionCharts).subscribe(charts => {
+    
+		this.http.get('service/map/charts?region='+this.msFilterRegionCharts+'&type='+this.regionTypeCharts).subscribe(charts => {
 			this.chartResult = charts;
 		});
 	}

@@ -38,6 +38,10 @@
 	width: auto !important;
 }
 
+.chart-legend div {
+	width: auto !important;
+}
+
 .mat-slide-toggle-content {
 	font-size: 15px !important
 }

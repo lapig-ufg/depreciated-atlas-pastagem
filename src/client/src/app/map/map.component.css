@@ -117,6 +117,7 @@ hr {
 
 .value-indicators {
 	padding-left: 5px;
+	display: inline;
 }
 
 .button-row button,
@@ -467,5 +468,11 @@ h6 {
 	.layersConteudo {
   	max-height: 800px;
   }
+}
+
+.stylePercentual {
+	padding-left: 5px;
+  font-size: 0.8rem;
+  display: inline;
 }
 

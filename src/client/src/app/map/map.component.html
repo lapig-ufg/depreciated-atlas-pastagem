@@ -47,8 +47,12 @@
 												    <mat-icon class="iconInfo">info</mat-icon>
 												  </button>
 												</div>
-												<div class="value-indicators" *ngIf="layerPastureShow != 'pastagens-zero-transicao'">{{ indicatorPasture | number:'3.0-0' }} ha</div>
-												<div class="value-indicators" *ngIf="layerPastureShow == 'pastagens-zero-transicao'">{{ indicatorPastureOld | number:'3.0-0' }} ha</div>
+												<div class="value-indicators" *ngIf="layerPastureShow != 'pastagens-zero-transicao'">{{ indicatorPasture | number:'3.0-0' }} ha <p class="stylePercentual"> ({{ indicatorPasturePercentual | number:'1.1-2'}}%)</p>
+												</div>
+												<div class="value-indicators" *ngIf="layerPastureShow == 'pastagens-zero-transicao'">
+													{{ indicatorPastureOld | number:'3.0-0' }} ha 
+													<p class="stylePercentual">({{ indicatorPastureOldPercentual | number:'1.1-2'}}%)</p>
+												</div>
 											</div>
 											<div class="row buttons-download">
 												<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv">
@@ -116,7 +120,10 @@
 											    <mat-icon class="iconInfo">info</mat-icon>
 											  </button>
 											</div>
-											<div class="value-indicators"> {{ indicatorPastureDegraded | number:'3.0-0' }} ha com indícios de degradação </div>
+											<div class="value-indicators"> 
+												{{ indicatorPastureDegraded | number:'3.0-0' }} ha com indícios de degradação 
+												<p class="stylePercentual">({{ indicatorPastureDegradedPercentual | number:'1.1-2'}}%)</p>
+											</div>
 										</div>
 										<div class="row buttons-download">
 											<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv">
@@ -377,6 +384,7 @@
 					  	<ngx-charts-line-chart 
 					  		[view]="[600,280]" 
 					  		[results]="chartResult"
+					  		[rangeFillOpacity] = 0.15
 					  		[scheme]="colorScheme"
 					  		[legend]="false"
 					  		[legendTitle] = "false"
