@@ -476,3 +476,12 @@ h6 {
   display: inline;
 }
 
+.legend_Graphic {
+	position: absolute;
+	right: 2%
+}
+
+#seriesTooltipTemplate {
+	display: none !important;
+}
+

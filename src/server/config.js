@@ -6,12 +6,14 @@ module.exports = function(app) {
 		"appRoot": appRoot, 
 		"clientDir": appRoot + "/../client/dist/",
 		"downloadDir": "/data/download_atlas/",
-		"fotoDir": "/data/fotos_campo/",
+		"fotoDir": "/data/dados-lapig/fotos_campo/",
 		"langDir": appRoot + "/lang",
 		"logDir": appRoot + "/log/",
 		"postgres": {
-			"host": "postgres@200.137.217.158",
-			"port": "5432",
+			/*"host": "postgres@200.137.217.158",*/
+			"host": "localhost",
+			/*"port": "5432",*/
+			"port": "5433",
 			"dbname": "atlas_pastagem"
 		},
 		"port": 3000,

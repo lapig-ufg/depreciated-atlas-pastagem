@@ -8,7 +8,8 @@ module.exports = function(app){
 	var Map = {}
 
 	var config = app.config;
-	var conString = "postgres://"+config.postgres.host+":"+config.postgres.port+"/"+config.postgres.dbname;
+	var conString = "postgres://postgres@localhost:5433/atlas_pastagem";
+	/*var conString = "postgres://"+config.postgres.host+":"+config.postgres.port+"/"+config.postgres.dbname;*/
 	var client = new pg.Client(conString);
 			client.connect();
 
@@ -24,12 +25,12 @@ module.exports = function(app){
 			} else {
 				
 				var result = {
-          'type': 'Feature',
-          'geometry': JSON.parse(queryResult.rows[0]['geom'])
-        }
+		          'type': 'Feature',
+		          'geometry': JSON.parse(queryResult.rows[0]['geom'])
+		        }
 
 				response.send(result)
-		    response.end();
+		    	response.end();
 			}
 		});
 	}
@@ -92,6 +93,35 @@ module.exports = function(app){
 		var msfilter = request.param('MSFILTER', '');
 
 		client.query("SELECT year, SUM(area_ha) as area_ha, SUM(pol_ha) as area_mun FROM pasture WHERE "+msfilter+" GROUP BY year ORDER BY year", (err, res) => {
+
+			var percentual_area_ha = ((res.rows[0].area_ha * 100) / res.rows[0].area_mun);
+
+			res.rows.push({
+				percentual_area_ha: percentual_area_ha
+			})
+
+		  if (err) {
+		    console.log(err.stack)
+		    response.send(err)
+				response.end()
+		  } else {
+				response.send(res.rows)
+				response.end()
+		  }
+		})
+	}
+
+	Map.indicatorsPastureBreBiomas = function(request, response){
+
+		var msfilter = request.param('MSFILTER', '');
+		var region = request.param('region', '')
+		var otherFilter = '';
+
+		if(region) {
+			otherFilter = " WHERE "+region;
+		}
+
+		client.query("SELECT year, area_ha, (SELECT SUM(pol_ha) FROM regions"+otherFilter+") as area_mun FROM pasture_correction WHERE "+msfilter, (err, res) => {
 
 			var percentual_area_ha = ((res.rows[0].area_ha * 100) / res.rows[0].area_mun);
 
@@ -331,7 +361,6 @@ module.exports = function(app){
 
 		  		if(row.uf === null) {
 		  			regiao = row.text
-		  			console.log('é null', row.text)
 		  		}else {
 		  			regiao = row.text + " (" + row.uf + ")"
 		  		}
@@ -373,7 +402,6 @@ module.exports = function(app){
 			query_past = "SELECT * FROM pasture_correction "+regionFilter_past_co
 		}
 
-		console.log(query_past);
 		client.query(query_past, (err, res) => {
 
 			if (err) {
@@ -458,6 +486,7 @@ module.exports = function(app){
 		client.query(stateQuery, (err, res) => {
 			
 			res.rows.forEach(function(row){
+
 				result.state.push({
 					estado: row.estado,
 					value: row.sum,
@@ -473,6 +502,77 @@ module.exports = function(app){
 						value: row.sum,
 						uf: row.uf,
 						index: index++ + 'º'
+					})
+				})
+				response.send(result);
+				response.end();
+			})
+
+		});
+	}
+
+	Map.ChartsTransitions =  function(request, response){
+
+		var layer = request.param('layer', '');
+		var region = request.param('region', '');
+
+		if(region != ''){
+			region = "WHERE "+region
+		}
+
+		var queryAll = "SELECT category, SUM(area_ha) from pasture_all_transitions "+region+" GROUP BY 1 ORDER BY 1;";
+		var queryOne = "SELECT category, SUM(area_ha) from pasture_one_transitions "+region+" GROUP BY 1 ORDER BY 1;";
+		var result = {
+			'all': [],
+			'one': []
+		}
+		
+		client.query(queryAll, (err, res) => {
+			
+			res.rows.forEach(function(row){
+
+				if(row.category == 1) {
+					row.category = 'Pastagens Antigas'
+				} else if(row.category == 2) {
+					row.category = 'Pastagens antigas abandonadas/convertidas'
+				} else if(row.category == 3) {
+					row.category = 'Pastagens formadas a partir de 1985'
+				} else if(row.category == 4) {
+					row.category = 'Pastagens abandonadas/convertidas'
+				} else if(row.category == 5) {
+					row.category = 'Pastagens reformadas'
+				} else if(row.category == 6) {
+					row.category = 'Outras Pastagens'
+				}
+
+				result.all.push({
+					value: row.sum,
+					name: row.category
+				})
+			})
+
+			client.query(queryOne, (err, city) => {
+
+
+				city.rows.forEach(function(row){
+
+					if(row.category == 1) {
+						row.category = 'Pastagens formadas entre 1987 e 1996'
+					} else if(row.category == 2) {
+						row.category = 'Pastagens formadas entre 1997 e 2006'
+					} else if(row.category == 3) {
+						row.category = 'Pastagens formadas entre 2007 e 2016'
+					} else if(row.category == 4) {
+						row.category = 'Pastagens antigas convertidas entre 1987 e 1996'
+					} else if(row.category == 5) {
+						row.category = 'Pastagens antigas convertidas entre 1997 e 2006'
+					} else if(row.category == 6) {
+						row.category = 'Pastagens antigas convertidas entre 2007 e 2016'
+					}
+
+					result.one.push({
+						value: row.sum,
+						name: row.category
 					})
 				})
 				response.send(result);
@@ -545,7 +645,7 @@ module.exports = function(app){
 		
 		var diretorio = config.downloadDir+layer+'/'+regionType+'/'+region+'/';
 		var	pathFile = diretorio+fileParam;
-		console.log(pathFile)
+
 		if(fileParam.indexOf("../") == 0){
 			res.send('Arquivo inválido!')
 			res.end();

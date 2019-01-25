@@ -380,9 +380,12 @@
 				<div [ngbCollapse]="collapseCharts" id= "matgroup">
 					<mat-tab-group class="charts" [selectedIndex]="selectedIndex" #matgroup (selectedTabChange)="changeTab($event)">
 					  <mat-tab label="Série Temporal" *ngIf="true" id="tabGraficoLinhas">
-					  	<h6><b>Áreas de Pastagem - {{ regionSelected }}</b> </h6>
+					  	<h6>
+					  		<b>Áreas de Pastagem - {{ regionSelected }}</b>
+					  		<img class="legend_Graphic" [src]="'assets/legend_graphic.png'"> 
+					  	</h6>
 					  	<ngx-charts-line-chart 
-					  		[view]="[600,280]" 
+					  		[view]="[viewWidth,280]" 
 					  		[results]="chartResult"
 					  		[rangeFillOpacity] = 0.15
 					  		[scheme]="colorScheme"
@@ -390,7 +393,8 @@
 					  		[legendTitle] = "false"
 					  		[autoScale]="chartRegionScale"
 					  		[yAxis]="true" 
-					  		[xAxis]="true">
+					  		[xAxis]="true"
+					  		(select)="yearGraphic($event)">
 					  		<ng-template #tooltipTemplate let-model="model">
 		                {{model.name}}: {{ model.value | number:'1.0-0' }} ha
 		            </ng-template>
@@ -410,11 +414,32 @@
 						  	[yAxis]="true" 
 						  	[xAxis]="true" 
 						  	[showYAxisLabel]="true"
-						  	[showXAxisLabel]="true">
+						  	[showXAxisLabel]="true"
+						  	(select)="regionGraphic($event)">
 		            <ng-template #tooltipTemplate let-model="model">
 		                {{model.name}}: {{ model.value | number:'1.0-0' }} ha
 		            </ng-template>
 		          </ngx-charts-bar-horizontal>
+					  </mat-tab>
+					  <mat-tab label="Transições" *ngIf="Usetransitions"> 
+					  	<h6><b> {{ nameChartsTransitions }} - {{ regionSelected }}</b> </h6>
+					  	<ngx-charts-bar-vertical 
+						  	[view]="[viewWidth, 400]"
+						  	[barPadding]="2"
+						  	[scheme]="colorSchemeTransitions"
+						  	[showGridLines]="true" 
+						  	[roundDomains]="false" 
+						  	[roundEdges]="false" 
+						  	[results]="chartResultTransitions" 
+						  	[yAxis]="true" 
+						  	[xAxis]="true" 
+						  	[showYAxisLabel]="true"
+						  	[showXAxisLabel]="true"
+						  	(select)="regionGraphic($event)">
+		            <ng-template #tooltipTemplate let-model="model">
+		                {{model.name}}: {{ model.value | number:'1.0-0' }} ha
+		            </ng-template>
+		          </ngx-charts-bar-vertical>
 					  </mat-tab>
 					  <mat-tab label="Municípios" *ngIf="regionTypeCharts != 'municipio'">
 					  	<h6><b>Ranking dos Municípios - {{ year }}</b> </h6>

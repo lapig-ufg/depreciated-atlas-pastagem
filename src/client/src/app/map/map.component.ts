@@ -115,10 +115,14 @@ export class MapComponent implements OnInit {
 	regionSelected: 'Brasil';
 	regionTypeCharts: any;
 	selectedIndex: any;
+  viewWidth = 600;
+  Usetransitions: any;
+  chartResultTransitions: any;
+  nameChartsTransitions: any;
 
 	infoFeature: any;
 
-	model = '';
+	model: any;
   searching = false;
   searchFailed = false;
   msFilterRegion = '';
@@ -141,6 +145,7 @@ export class MapComponent implements OnInit {
     group: 'Ordinal',
     domain: ['#ffc107', '#7aa3e5', '#a8385d', '#00bfa5']
   };
+  colorSchemeTransitions: any;
   colorSchemeStates = ('solar');
   colorSchemeStatesType = ('linear');
 
@@ -201,6 +206,7 @@ export class MapComponent implements OnInit {
 		this.projection = OlProj.get('EPSG:900913');
 		this.currentZoom = 4;
 		this.regionTypeCharts = '';
+    this.model = '';
 
 		this.urls = [
     	'http://o1.lapig.iesa.ufg.br/ows',
@@ -256,8 +262,41 @@ export class MapComponent implements OnInit {
     });
   }
 
-  updateRegion(region) {
+  yearGraphic(e) {
+    var yearGraphic = e.name
+    if(e.series == 'Rebanho Bovino - UA') {
+      this.yearRebanho = yearGraphic.toString();
+      this.rebanho_bovino.layer.setVisible(true);
+    }else if (e.series == 'Pastagem ha') {
+      this.year = yearGraphic;
+    }
 
+    this.updateyear();
+  }
+
+  regionGraphic(e) {
+    var regionUf = e.name
+
+    this.http.get("service/map/chartsByYear?year="+this.year+" AND uf='"+regionUf+"'").subscribe(chartsYear => {
+      this.chartResultStates = chartsYear['state'];
+
+      var itens = {
+        item: {
+          name: this.chartResultStates[0].estado,
+          text: this.chartResultStates[0].estado,
+          type: "estado",
+          value: this.chartResultStates[0].name,
+        }
+      }
+
+      this.model = {text:this.chartResultStates[0].estado};
+      this.updateRegion(itens);
+
+    });
+
+  }
+
+  updateRegion(region) {
   	this.regionSelected = region.item.name;
   	this.regionTypeCharts = region.item.type
   	this.downloadRegionType = region.item.type;
@@ -300,15 +339,19 @@ export class MapComponent implements OnInit {
   	this.sumIndicators();
   	this.updateSourceLayer();
   	this.updateChartsYears();
+    this.updateChartsTransitions();
   	this.addPoints();
   }
 
   changeTab(event) {
   	this.changeTabSelected = event.tab.textLabel;
-
+    
   	if(event.tab.textLabel == "Série Temporal") {
+      this.viewWidth = this.viewWidth + 1;
   		this.chartRegionScale = true;
-  	}
+  	} else if (event.tab.textLabel == "Transições"){
+      this.viewWidth = this.viewWidth + 1;
+    }
   }
 
   private zoomExtent() {
@@ -401,6 +444,7 @@ export class MapComponent implements OnInit {
 			this.updateSourceLayer();
 			this.updateCharts();
 			this.updateChartsYears();
+      this.updateChartsTransitions();
 			this.addPoints();
 
 			this.selectPasture = 'areas-pastagens'
@@ -953,12 +997,9 @@ export class MapComponent implements OnInit {
 		} else if (layer == 'potencial_intensificacao_pecuaria') {
 			if(tipo == 'csv') {
 				var paramsDownload = 'file='+layer+'&filter='+this.msFilterRegionCharts;
-				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
-				console.log(this.msFilterRegionCharts);
-				
+				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload;
 			}
 		}
-		console.log(this.layerPastureShow , this.linkDownload);
 		
 	}
 
@@ -1009,6 +1050,7 @@ export class MapComponent implements OnInit {
 			this.layerPastureShow = 'pastagens-zero-transicao';
 			this.show_year_pasture = false;
 		}
+    this.updateChartsTransitions();
 
 		if(e.value == 'areas-pastagens-degraded'){
 			this.pastagens_degradadas.layer.setVisible(true);
@@ -1213,8 +1255,6 @@ export class MapComponent implements OnInit {
 				this.pontos_tvi_treinamento.layer.setVisible(this.checkedLegendTviPoint);
 			}
 		}
-
-		console.log(layer)
 	}
 
 	updateyear() {
@@ -1224,11 +1264,25 @@ export class MapComponent implements OnInit {
 	}
 
 	private sumIndicators() {
-		this.http.get('service/map/indicators?&MSFILTER=year='+this.year+''+this.msFilterRegion).subscribe(indicatorsPasture => {
-			this.indicatorPasture = indicatorsPasture[0].area_ha;
-			this.indicatorPasturePercentual = indicatorsPasture[1].percentual_area_ha;
-		});
 
+    if (this.regionTypeCharts == '') {
+      this.http.get("service/map/indicatorsPastureBreBiomas?&MSFILTER=year="+this.year+" AND type = 'country'&region="+this.msFilterRegionCharts).subscribe(indicatorsPasture => {
+        this.indicatorPasture = indicatorsPasture[0].area_ha;
+        this.indicatorPasturePercentual = indicatorsPasture[1].percentual_area_ha;
+      });
+    } else if (this.regionTypeCharts == 'bioma') {
+      var bioma = this.regionSelected.toUpperCase();
+      this.http.get("service/map/indicatorsPastureBreBiomas?&MSFILTER=year="+this.year+" AND name = '"+bioma+"'&region="+this.msFilterRegionCharts).subscribe(indicatorsPasture => {
+        this.indicatorPasture = indicatorsPasture[0].area_ha;
+        this.indicatorPasturePercentual = indicatorsPasture[1].percentual_area_ha;
+      });
+    } else {
+      this.http.get('service/map/indicators?&MSFILTER=year='+this.year+''+this.msFilterRegion).subscribe(indicatorsPasture => {
+        this.indicatorPasture = indicatorsPasture[0].area_ha;
+        this.indicatorPasturePercentual = indicatorsPasture[1].percentual_area_ha;
+      });
+    }
+    
 		this.http.get('service/map/indicatorsRebanhoBovino?&MSFILTER=year='+this.yearRebanho+''+this.msFilterRegion).subscribe(indicatorsRebanho => {
 			this.indicatorRebanhoBovino = indicatorsRebanho[0].ua;
 		});
@@ -1264,7 +1318,6 @@ export class MapComponent implements OnInit {
 
 		this.http.get(filterPotencialIntensificacao).subscribe(indicatorsPotInt => {
 			this.indicatorPotencialInt = indicatorsPotInt[0].avg;
-			console.log(this.indicatorPotencialInt);
 		});
 
 		this.http.get(filterPoints).subscribe(indicatorsPoints => {
@@ -1292,11 +1345,44 @@ export class MapComponent implements OnInit {
 	}
 
 	private updateChartsYears() {
-		this.http.get('service/map/chartsByYear?year='+this.year+''+this.msFilterRegion).subscribe(chartsYear => {
+
+		this.http.get('service/map/chartsByYear?year='+this.year+''+this.msFilterRegion+'&layer='+this.layerPastureShow).subscribe(chartsYear => {
 			this.chartResultCities = chartsYear['cities'];
 			this.chartResultStates = chartsYear['state'];
 		});
 	}
+
+  private updateChartsTransitions() {
+    if(this.layerPastureShow == 'pastagens-todas-transicoes' || this.layerPastureShow == 'pastagens-uma-transicao') {
+      this.Usetransitions = true;
+    } else {
+      this.Usetransitions = false;
+    }
+
+    this.http.get('service/map/ChartsTransitions?region='+this.msFilterRegionCharts+'&layer='+this.layerPastureShow).subscribe(chartsTrans => {
+      if(this.layerPastureShow == 'pastagens-todas-transicoes') {
+        this.chartResultTransitions = chartsTrans['all'];
+        this.nameChartsTransitions = "Todas transições de uso das pastagens (1985 - 2017)"
+        this.colorSchemeTransitions = {
+          name: 'chartsTransitions',
+          selectable: true,
+          group: 'Ordinal',
+          domain: ['#583212', '#cb1f30', '#edc346', '#ff8fe3', '#59fd59', '#bebebe']
+        };
+
+      } else {
+        this.chartResultTransitions = chartsTrans['one'];
+        this.nameChartsTransitions = "Apenas uma transição de uso das pastagens (1985 - 2017)"
+        this.colorSchemeTransitions = {
+          name: 'chartsTransitions',
+          selectable: true,
+          group: 'Ordinal',
+          domain: ['#bf7112', '#ffdf13', '#9cff13', '#ff1e13', '#1326ff', '#5afbd8']
+        };
+      }
+    });
+
+  }
 
 	addPoints() {
 		var msfilter = "?msfilter=uf!='0'";

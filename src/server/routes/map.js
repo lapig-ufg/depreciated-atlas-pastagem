@@ -5,6 +5,7 @@ module.exports = function (app) {
 	app.get('/service/map/extent', map.extent);
 	app.get('/service/map/fieldPoints', map.fieldPoints);
 	app.get('/service/map/indicators', map.indicators);
+	app.get('/service/map/indicatorsPastureBreBiomas', map.indicatorsPastureBreBiomas);
 	app.get('/service/map/indicatorsPastureOld', map.indicatorsPastureOld);
 	app.get('/service/map/indicatorsPotencialIntensificacao', map.indicatorsPotencialIntensificacao);
 	app.get('/service/map/indicatorsRebanhoBovino', map.indicatorsRebanhoBovino);
@@ -17,6 +18,7 @@ module.exports = function (app) {
 	app.get('/service/map/search', map.search);
 	app.get('/service/map/charts', map.charts);
 	app.get('/service/map/chartsByYear', map.chartsByYear);
+	app.get('/service/map/ChartsTransitions', map.ChartsTransitions);
 	app.get('/service/map/downloadCSV', map.downloadCSV);
 	app.get('/service/map/downloadSHP', map.downloadSHP);
 }
