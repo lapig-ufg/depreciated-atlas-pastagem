@@ -31,7 +31,7 @@ import Overlay from 'ol/overlay';
 import GeoJSON from 'ol/format/geojson';
 import _ol_TileUrlFunction_ from 'ol/tileurlfunction.js';
 import TileJSON from 'ol/source/tilejson.js';
-import UTFGrid from 'ol/source/tileutfgrid.js';
+import TileUTFGrid from 'ol/source/tileutfgrid';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import "rxjs/add/observable/of";
 
@@ -73,7 +73,8 @@ export class MapComponent implements OnInit {
 	projection: OlProj;
 	tileGrid: TileGrid;
 	currentZoom: Number;
-	utfgridsource: UTFGrid;
+	utfgridsource: TileUTFGrid;
+  infoOverlay: Overlay;
 
 	indicatorPasture: any;
 	indicatorPasturePercentual: any;
@@ -83,6 +84,7 @@ export class MapComponent implements OnInit {
 	indicatorPastureOldPercentual;
 	indicatorPotencialInt: any;
 	indicatorRebanhoBovino: any;
+  indicatorRebanhoBovinoPercentual: any;
 	indicatorPoints: any;
 	indicatorPointsNoStop: any;
 	indicatorPointsTVITreinamento: any;
@@ -100,9 +102,9 @@ export class MapComponent implements OnInit {
 	checkedLegendTviPoint = true;
 	checkedLegendRebanho = true;
 	checkedLegendPot_Int = true;
+  infodata: any;
 
 	year = '2017';
-	yearRebanho = '2017';
 	years: any;
 	regions: any;
 	fieldPointsStop: any;
@@ -114,6 +116,7 @@ export class MapComponent implements OnInit {
 	chartResultStates: any;
 	regionSelected: 'Brasil';
 	regionTypeCharts: any;
+  regionTypeBr: any;
 	selectedIndex: any;
   viewWidth = 600;
   Usetransitions: any;
@@ -143,7 +146,7 @@ export class MapComponent implements OnInit {
     name: 'chartsPasture',
     selectable: true,
     group: 'Ordinal',
-    domain: ['#ffc107', '#7aa3e5', '#a8385d', '#00bfa5']
+    domain: ['#ffc107', '#f48c40', '#a8385d', '#00bfa5']
   };
   colorSchemeTransitions: any;
   colorSchemeStates = ('solar');
@@ -185,6 +188,7 @@ export class MapComponent implements OnInit {
   layerPastureShow = 'areas-pastagens';
   layerPastureDegradedShow = 'areas-pastagens-degraded';
   layerPointTVIShow = 'treinamento';
+  pastagem_show: any;
   pastagens_degradadas_show: any;
   rebanho_bovino_show: any;
   potencial_intensificacao_show: any;
@@ -206,7 +210,10 @@ export class MapComponent implements OnInit {
 		this.projection = OlProj.get('EPSG:900913');
 		this.currentZoom = 4;
 		this.regionTypeCharts = '';
+    this.regionTypeBr = 'país'
     this.model = '';
+    this.infodata = { area_pasture: -1};
+    this.pastagem_show = true;
 
 		this.urls = [
     	'http://o1.lapig.iesa.ufg.br/ows',
@@ -255,8 +262,6 @@ export class MapComponent implements OnInit {
       data: {name: layer}
     });
 
-    console.log(layer)
-
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
@@ -265,10 +270,12 @@ export class MapComponent implements OnInit {
   yearGraphic(e) {
     var yearGraphic = e.name
     if(e.series == 'Rebanho Bovino - UA') {
-      this.yearRebanho = yearGraphic.toString();
+      this.year = yearGraphic.toString();
       this.rebanho_bovino.layer.setVisible(true);
     }else if (e.series == 'Pastagem ha') {
       this.year = yearGraphic;
+      this.rebanho_bovino.layer.setVisible(false);
+      this.pastagem.layer.setVisible(true);
     }
 
     this.updateyear();
@@ -298,7 +305,8 @@ export class MapComponent implements OnInit {
 
   updateRegion(region) {
   	this.regionSelected = region.item.name;
-  	this.regionTypeCharts = region.item.type
+  	this.regionTypeCharts = region.item.type;
+    this.regionTypeBr = region.item.type;
   	this.downloadRegionType = region.item.type;
   	this.downloadRegion = region.item.value;
   	var regionType = region.item.type;
@@ -413,6 +421,12 @@ export class MapComponent implements OnInit {
 		source_pontos_tvi_treinamento.refresh();
 		source_pontos_tvi_validacao.refresh();
 		source_landsat.refresh();
+
+    if(this.utfgridsource) {
+      var tileJSON = this.getTileJSON();
+      this.utfgridsource.tileUrlFunction_ = _ol_TileUrlFunction_.createFromTemplates(tileJSON.grids, this.utfgridsource.tileGrid);
+      this.utfgridsource.refresh();
+    }
   }
 
   formatLabel(value: number | null) {
@@ -434,24 +448,30 @@ export class MapComponent implements OnInit {
 			this.msFilterRegion = '';
 			this.msFilterRegionCharts = '';
 			this.regionTypeCharts = '';
+      this.regionTypeBr = 'país';
 			this.regionSelected = 'Brasil';
 			this.downloadRegionType = undefined;
   		this.downloadRegion = undefined;
   		this.disableTransitionsPastures = true;
-  		this.layerPastureShow = 'areas-pastagens';
-  		this.layerPointTVIShow = 'treinamento';
-			this.sumIndicators();
-			this.updateSourceLayer();
-			this.updateCharts();
-			this.updateChartsYears();
+      this.layerPointTVIShow = 'treinamento';
+      this.sumIndicators();
+      this.updateSourceLayer();
+      this.updateCharts();
+      this.updateChartsYears();
       this.updateChartsTransitions();
-			this.addPoints();
+      this.addPoints();
 
-			this.selectPasture = 'areas-pastagens'
-			this.selectPastureDegraded = 'areas-pastagens-degraded'
-			this.pastagens_todas_transicoes.layer.setVisible(false);
-			this.pastagens_uma_transicao.layer.setVisible(false);
-  		this.pastagem.layer.setVisible(true);
+      this.selectPastureDegraded = 'areas-pastagens-degraded'
+      this.pastagens_todas_transicoes.layer.setVisible(false);
+      this.pastagens_uma_transicao.layer.setVisible(false);
+
+      if(this.layerPastureShow == 'pastagens-uma-transicao' || this.layerPastureShow == 'pastagens-todas-transicoes'){
+  		  this.layerPastureShow = 'areas-pastagens';
+        this.selectPasture = 'areas-pastagens';
+        this.contractTypeValid = false;
+        this.show_year_pasture = true;
+        this.pastagem.layer.setVisible(true);
+      }
   }
 
 	private getResolutions(projection) {
@@ -495,7 +515,7 @@ export class MapComponent implements OnInit {
 
 	private createMap() {
 		this.createBaseLayers();
-		this.createLayers()
+		this.createLayers();
     this.map = new OlMap({
       target: 'map',
       layers: this.layers,
@@ -554,9 +574,48 @@ export class MapComponent implements OnInit {
   	}.bind(this));
 
   	this.map.addInteraction(select);
-  	this.map.addInteraction(selectOver);  	
+  	this.map.addInteraction(selectOver);
+
+    this.infoOverlay = new Overlay({
+      element: document.getElementById('map-info'),
+      offset: [15, 15],
+      stopEvent: false
+    });
+
+    this.map.addOverlay(this.infoOverlay);
+
+    this.map.on('pointermove', function(evt) {
+      if (evt.dragging) {
+        return;
+      }
+      
+      var infoOverlay = this.infoOverlay;
+      var coordinate = this.map.getEventCoordinate(evt.originalEvent);
+      var viewResolution = this.map.getView().getResolution();
+
+      this.utfgridsource.forDataAtCoordinateAndResolution(coordinate, viewResolution,
+        function (data) {
+          if(data) {
+            this.infodata = data;
+            this.infoOverlay.setPosition(coordinate);  
+          } else {
+            this.infodata = { area_pasture: -1}
+          }
+        }.bind(this));
+    }.bind(this));
 
 	}
+
+  private getTileJSON() {
+    return {
+      version: "2.1.0",
+      grids: [
+        "http://maps.lapig.iesa.ufg.br/ows?layers=pasture_rebanho_regions_utfgrid"
+        + "&MSFILTER=year="+this.year
+        + "&mode=tile&tile={x}+{y}+{z}&tilemode=gmap&map.imagetype=utfgrid" 
+      ]
+    }
+  }
 
 	public passaFoto (sentido) {
 
@@ -582,7 +641,7 @@ export class MapComponent implements OnInit {
 		if(filter == 'pasture'){
 			msfilter = '&MSFILTER='+"year="+this.year+''+this.msFilterRegion
 		} else if(filter == 'rebanho_bovino'){
-			msfilter = '&MSFILTER='+"year="+this.yearRebanho+''+this.msFilterRegion
+			msfilter = '&MSFILTER='+"year="+this.year+''+this.msFilterRegion
 		} else if (filter == 'pontos_campo_sem_parada' && this.msFilterRegionCharts != '') {
 			msfilter = '&MSFILTER='+this.msFilterRegionCharts
 		} else if (filter == 'pontos_campo_sem_parada' && this.msFilterRegionCharts == '') {
@@ -871,6 +930,14 @@ export class MapComponent implements OnInit {
 	    })
 	  }
 
+    this.utfgridsource = new TileUTFGrid({
+      tileJSON: this.getTileJSON()
+    });
+
+    var utfgridLayer = new OlTileLayer({
+      source: this.utfgridsource
+    });
+    
 		this.pastagem['layer'] = this.createTMSLayer(this.pastagem.layername, this.pastagem.visible, this.pastagem.opacity, this.pastagem.layerfilter);
 		this.pastagem_municipios['layer'] = this.createTMSLayer(this.pastagem_municipios.layername, this.pastagem_municipios.visible, this.pastagem_municipios.opacity, this.pastagem_municipios.layerfilter);
 		this.pastagens_todas_transicoes['layer'] = this.createTMSLayer(this.pastagens_todas_transicoes.layername, this.pastagens_todas_transicoes.visible, this.pastagens_todas_transicoes.opacity, this.pastagens_todas_transicoes.layerfilter);
@@ -894,12 +961,6 @@ export class MapComponent implements OnInit {
 		this.fieldPointsStop = this.createVectorLayer('fieldPointsStop', '#fc16ef', 3);
 		this.fieldPointsStop.setVisible(false);
 
-	 	this.utfgridsource = new OlTileLayer({
-	 		source: new UTFGrid({
-	    	url: 'http://o3.lapig.iesa.ufg.br/ows?layers=lotacao_bovina_regions&MSFILTER=year=2017&mode=tile&tile={x}+{y}+{z}&tilemode=gmap&map.imagetype=png'
-		  })
-		});
-
 		this.layers.push(this.pastagem['layer'])
 		this.layers.push(this.pastagem_municipios['layer'])
 		this.layers.push(this.pastagens_todas_transicoes['layer'])
@@ -921,7 +982,7 @@ export class MapComponent implements OnInit {
 		this.layers.push(this.regions);
 		this.layers.push(this.fieldPointsStop);
 		this.layers.push(this.terras_privadas.layer);
-		this.layers.push(this.utfgridsource);
+    this.layers.push(utfgridLayer)
 
 		this.layers.push()
 		this.layers = this.layers.concat(olLayers.reverse());
@@ -972,12 +1033,12 @@ export class MapComponent implements OnInit {
 				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
 		} else if(layer == 'lotacao_bovina_regions') {
 			if(tipo == 'csv') {
-				var paramsDownload = 'file='+layer+'&region=year='+this.yearRebanho+''+this.msFilterRegion+'&filter='+this.msFilterRegionCharts;
+				var paramsDownload = 'file='+layer+'&region=year='+this.year+''+this.msFilterRegion+'&filter='+this.msFilterRegionCharts;
 				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
 			} else {
-				var paramsDownload = '&MSFILTER=year='+this.yearRebanho+''+this.msFilterRegion
-				this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=lotacao_bovina_regions&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
-			}
+			  var paramsDownload = '&MSFILTER=year='+this.year+''+this.msFilterRegion
+        this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=pasture_regions_municipios&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
+      }
 		} else if (layer == 'pontos_campo') {
 			var paramsDownload = 'file=pontos_campo_parada';
 
@@ -1031,6 +1092,7 @@ export class MapComponent implements OnInit {
 			this.contractTypeValid = true;
 			this.layerPastureShow = 'pastagens-todas-transicoes';
 			this.show_year_pasture = false;
+      this.selectedIndex = 2;
 		} else if (e.value == 'pastagens-uma-transicao') {
 			this.pastagens_uma_transicao.layer.setVisible(true);
 			this.pastagens_zero_transicao.layer.setVisible(false);
@@ -1040,6 +1102,7 @@ export class MapComponent implements OnInit {
 			this.contractTypeValid = true;
 			this.layerPastureShow = 'pastagens-uma-transicao';
 			this.show_year_pasture = false;
+      this.selectedIndex = 2;
 		} else if (e.value == 'pastagens-zero-transicao') {
 			this.pastagens_zero_transicao.layer.setVisible(true);
 			this.pastagens_uma_transicao.layer.setVisible(false);
@@ -1182,13 +1245,22 @@ export class MapComponent implements OnInit {
 		} else if (layer == this.pastagem.layer) {
 			if(e.checked === false){
 				this.pastagem_municipios.layer.setVisible(false);
-			}else if (e.checked === true && this.layerPastureShow == 'municipios-pastagens'){
+        this.pastagens_zero_transicao.layer.setVisible(false);
+        this.pastagens_todas_transicoes.layer.setVisible(false);
+        this.pastagens_uma_transicao.layer.setVisible(false);
+			} else if (e.checked === true && this.layerPastureShow == 'municipios-pastagens'){
 				this.pastagem_municipios.layer.setVisible(true);
-			}
+			} else if (e.checked === true && this.layerPastureShow == 'pastagens-zero-transicao'){
+        this.pastagens_zero_transicao.layer.setVisible(true);
+      } else if (e.checked === true && this.layerPastureShow == 'pastagens-todas-transicoes'){
+        this.pastagens_todas_transicoes.layer.setVisible(true);
+      } else if (e.checked === true && this.layerPastureShow == 'pastagens-uma-transicao'){
+        this.pastagens_uma_transicao.layer.setVisible(true);
+      }
+      this.pastagem_show = e.checked;
 		} else if (layer == 'pontos_campo_parada') {
 			layer = this.fieldPointsStop;
 			this.pontos_parada = e.checked;
-			console.log(this.changeTabSelected);
 			this.selectedIndex = 4
 		} else if (layer == 'pastagem_degradada') {
 			if(this.layerPastureDegradedShow == 'areas-pastagens-degraded'){
@@ -1212,7 +1284,7 @@ export class MapComponent implements OnInit {
 			}
 		}
 
-		layer.setVisible(e.checked);
+    layer.setVisible(e.checked);
 
 	}
 
@@ -1283,8 +1355,9 @@ export class MapComponent implements OnInit {
       });
     }
     
-		this.http.get('service/map/indicatorsRebanhoBovino?&MSFILTER=year='+this.yearRebanho+''+this.msFilterRegion).subscribe(indicatorsRebanho => {
-			this.indicatorRebanhoBovino = indicatorsRebanho[0].ua;
+		this.http.get('service/map/indicatorsRebanhoBovino?&MSFILTER=year='+this.year+''+this.msFilterRegion+'&region='+this.regionTypeCharts).subscribe(indicatorsRebanho => {
+      this.indicatorRebanhoBovino = indicatorsRebanho[0].ua;
+      this.indicatorRebanhoBovinoPercentual = indicatorsRebanho[0].ua/indicatorsRebanho[0].past_ha
 		});
 
 		var filterPastureDegraded = 'service/map/indicatorsPastureDegraded?&MSFILTER='+this.msFilterRegionCharts

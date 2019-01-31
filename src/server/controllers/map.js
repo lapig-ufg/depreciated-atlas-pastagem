@@ -195,8 +195,22 @@ module.exports = function(app){
 	Map.indicatorsRebanhoBovino = function(request, response){
 
 		var msfilter = request.param('MSFILTER', '');
+		var region = request.param('region', '');
+		var area_pasture;
+		var bioma = msfilter.split("=")
+		var year = msfilter.split("AND")
+
+		if(region == '' || region == 'bioma') {
+			if(region == '') {
+				area_pasture = "(SELECT area_ha FROM pasture_correction WHERE "+msfilter+" AND type = 'country')";
+			} else {
+				area_pasture = "(SELECT area_ha FROM pasture_correction WHERE "+year[0]+" AND name = "+bioma[2]+")";
+			}
+		} else {
+			area_pasture = "(SELECT SUM(area_ha) FROM pasture WHERE "+msfilter+")";
+		}
 								 
-		client.query("SELECT year, SUM(ua*pct_areapo) as ua, sum(n_kbcs*pct_areapo) as kbc FROM lotacao_bovina_regions WHERE "+msfilter+" GROUP BY year ORDER BY year", (err, res) => {
+		client.query("SELECT year, SUM(ua) as ua, sum(n_kbcs) as kbc, "+area_pasture+" as past_ha FROM lotacao_bovina_regions WHERE "+msfilter+" GROUP BY year ORDER BY year", (err, res) => {
 
 		  if (err) {
 		    console.log(err.stack)
@@ -437,7 +451,7 @@ module.exports = function(app){
 					series: series
 				})
 										 
-				client.query("SELECT year, SUM(ua*pct_areapo) as ua, sum(n_kbcs*pct_areapo) as kbc FROM lotacao_bovina_regions "+regionFilter+" GROUP BY year ORDER BY year", (err, resLot) => {
+				client.query("SELECT year, SUM(ua) as ua, sum(n_kbcs) as kbc FROM lotacao_bovina_regions "+regionFilter+" GROUP BY year ORDER BY year", (err, resLot) => {
 
 					if (err) {
 				    console.log(err.stack)
@@ -600,7 +614,7 @@ module.exports = function(app){
 
 			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(area_ha) as area_past_degradada FROM pasture_degraded "+filter+" GROUP BY 1,2,3,4,5"
 		} else if (file == 'lotacao_bovina_regions') {
-			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(ua*pct_areapo) as ua, sum(n_kbcs*pct_areapo) as kbc, year FROM lotacao_bovina_regions WHERE "+region+" GROUP BY 1,2,3,4,5,8"
+			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(ua) as ua, sum(n_kbcs) as kbc, year FROM lotacao_bovina_regions WHERE "+region+" GROUP BY 1,2,3,4,5,8"
 		} else if (file == 'potencial_intensificacao_pecuaria') {
 
 			if(msfilter) {

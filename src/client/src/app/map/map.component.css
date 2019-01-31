@@ -37,6 +37,17 @@ hr {
 	padding: 10px;
 }
 
+.card-text {
+	text-align: center;
+	margin-bottom: 0;
+	font-weight: bold;
+}
+
+.card-body {
+	padding:5px; 
+	font-size: 13px;
+}
+
 #positionheaders {
   padding: 10px;
 }
@@ -103,14 +114,14 @@ hr {
 }
 
 .layers-options {
-	padding-left: 35px;
+	/*padding-left: 35px;*/
 
 }
 
 .layers-indicator {
 	font-size: 0.9rem;
-	padding-left: 60px;
-	padding-bottom: 15px;
+	/*padding-left: 60px;*/
+	padding-bottom: 5px;
 	margin-right: 0px !important;
 	flex-wrap: nowrap;
 }
@@ -166,12 +177,14 @@ hr {
 }
 
 .font-size-geral {
+	padding-left: 0px;
 	font-size: 0.9rem;
 }
 
 .legendasConteudo {
 	max-height: 320px;
-  overflow: auto;
+  	overflow: auto;
+  	overflow-x: hidden;
 }
 
 h6 {
@@ -204,10 +217,6 @@ h6 {
   font-weight: bold;
   border-bottom: 2px solid #717171;
   font-size: 20px;
-}
-
-.layerLegend {
-	padding: 0px 10px 10px 35px;
 }
 
 .title-atlas {
@@ -255,7 +264,6 @@ h6 {
 }
 
 .button-csv {
-	text-align: right;
 	color: #707070 !important;
 } button {
 	color: #707070 !important;
@@ -267,6 +275,10 @@ h6 {
 	color: #707070 !important;
 }
 
+.buttons-download-past {
+	padding-left: 6%;
+}
+
 .buttons-download {
 	padding-bottom: 25px;
 	margin-right: 0px;
@@ -274,7 +286,6 @@ h6 {
 
 .nameLayers {
 	font-size: 0.98rem;
-	padding-top: 7px;
 }
 
 .collapse-btn {
@@ -315,13 +326,17 @@ h6 {
   padding-top: 20px;
 }
 
-#dropdowYearRebanho {
+/*#dropdowYearRebanho {
 	padding-left: 22%;
-}
+}*/
 
 @media (max-width: 600px) { 
 	.title-atlas {
 		font-size: 1em;
+	}
+
+	.value-indicators {
+		font-size: 0.8em;
 	}
 
 	.logo-lapig {
@@ -432,12 +447,17 @@ h6 {
 	}
 
 	.layersConteudo {
-  	max-height: 510px;
-  }
+	  	max-height: 510px;
+	  }
 
-  .nameLayers {
+  	.nameLayers {
 		font-size: 0.92rem;
-		padding-top: 5px;
+		padding-left: 5px;
+		padding-bottom: 5px;
+	}
+
+	.value-indicators {
+		font-size: 0.8em;
 	}
 
 	.layers-indicator {
@@ -471,9 +491,9 @@ h6 {
 }
 
 .stylePercentual {
-	padding-left: 5px;
-  font-size: 0.8rem;
-  display: inline;
+	/*padding-left: 5px;*/
+	font-size: 0.7rem;
+	/*display: inline;*/
 }
 
 .legend_Graphic {
@@ -485,3 +505,33 @@ h6 {
 	display: none !important;
 }
 
+.slider-layer {
+	text-align: center;
+    padding-right: 0px;
+    padding-top: 3%;
+}
+
+.expansion-layer {
+	padding-left: 0px;
+}
+
+.expansion-header-layer {
+	padding-left: 0px;
+}
+
+.expansion-header-layer-legend {
+	margin-left: 0px;
+    margin-top: 0px;
+}
+
+#dropdownPoints {
+	margin-top: -20px;
+	padding-left: 10px;
+}
+
+.info_clique_mapa {
+	margin: 0px;
+    font-size: 0.7rem;
+    text-align: right;
+    padding-right: 14px;
+}
