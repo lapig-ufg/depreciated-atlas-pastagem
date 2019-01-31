@@ -22,7 +22,12 @@ module.exports = function(app) {
 	if(process.env.NODE_ENV == 'prod') {
 		config["port"] = "4004",
 		config["downloadDir"] = "/data/dados-lapig/download_atlas/",
-		config["fotoDir"] = "/data/dados-lapig/fotos_campo/"
+		config["fotoDir"] = "/data/dados-lapig/fotos_campo/",
+		config["postgres"] = {
+			"host": "postgres@200.137.217.158",
+			"port": "5432",
+			"dbname": "atlas_pastagem"
+		}
 	}
 
 	return config;

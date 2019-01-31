@@ -595,6 +595,7 @@ export class MapComponent implements OnInit {
 
       this.utfgridsource.forDataAtCoordinateAndResolution(coordinate, viewResolution,
         function (data) {
+          console.log('fer', data)
           if(data) {
             this.infodata = data;
             this.infoOverlay.setPosition(coordinate);  
@@ -609,11 +610,7 @@ export class MapComponent implements OnInit {
   private getTileJSON() {
     return {
       version: "2.1.0",
-      grids: [
-        "http://maps.lapig.iesa.ufg.br/ows?layers=pasture_rebanho_regions_utfgrid"
-        + "&MSFILTER=year="+this.year
-        + "&mode=tile&tile={x}+{y}+{z}&tilemode=gmap&map.imagetype=utfgrid" 
-      ]
+      grids: ['/service/map/info-layer?year='+this.year+'&tile={x}+{y}+{z}']
     }
   }
 

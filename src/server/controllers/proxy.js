@@ -8,12 +8,12 @@ module.exports = function(app) {
 
 	Proxy.doRequest = function(request, response, baseUrl) {
 
-		var region = request.param('region');
-		var city = request.param('city');
-		var absoluteUrl = "http://maps.lapig.iesa.ufg.br/spatial/query?region="+region+"&regionType=biome&city="+city+"&lang=pt-br";
+		var year = request.param('year');
+		var tile = request.param('tile');
+		var url = "http://maps.lapig.iesa.ufg.br/ows?layers=pasture_rebanho_regions_utfgrid&MSFILTER=year="+year+"&mode=tile&tile="+tile+"&tilemode=gmap&map.imagetype=utfgrid";
 
 	  requester({
-	  		uri: absoluteUrl
+	  		uri: url
 	  	,	timeout: 50000
 	  	, headers: {
 	  			'Accept': request.headers['accept']
