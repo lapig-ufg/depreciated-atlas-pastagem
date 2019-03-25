@@ -119,6 +119,7 @@ export class MapComponent implements OnInit {
   regionTypeBr: any;
 	selectedIndex: any;
   viewWidth = 600;
+  viewWidthMobile = 350;
   Usetransitions: any;
   chartResultTransitions: any;
   nameChartsTransitions: any;
@@ -188,6 +189,7 @@ export class MapComponent implements OnInit {
   layerPastureShow = 'areas-pastagens';
   layerPastureDegradedShow = 'areas-pastagens-degraded';
   layerPointTVIShow = 'treinamento';
+  layerPointFieldShow = 'parada';
   pastagem_show: any;
   pastagens_degradadas_show: any;
   rebanho_bovino_show: any;
@@ -356,9 +358,11 @@ export class MapComponent implements OnInit {
     
   	if(event.tab.textLabel == "Série Temporal") {
       this.viewWidth = this.viewWidth + 1;
+      this.viewWidthMobile =  this.viewWidthMobile + 1;
   		this.chartRegionScale = true;
   	} else if (event.tab.textLabel == "Transições"){
       this.viewWidth = this.viewWidth + 1;
+      this.viewWidthMobile =  this.viewWidthMobile + 1;
     }
   }
 
@@ -454,6 +458,7 @@ export class MapComponent implements OnInit {
   		this.downloadRegion = undefined;
   		this.disableTransitionsPastures = true;
       this.layerPointTVIShow = 'treinamento';
+      this.layerPointFieldShow = 'parada';
       this.sumIndicators();
       this.updateSourceLayer();
       this.updateCharts();
@@ -595,7 +600,6 @@ export class MapComponent implements OnInit {
 
       this.utfgridsource.forDataAtCoordinateAndResolution(coordinate, viewResolution,
         function (data) {
-          console.log('fer', data)
           if(data) {
             this.infodata = data;
             this.infoOverlay.setPosition(coordinate);  
@@ -1202,10 +1206,12 @@ export class MapComponent implements OnInit {
 				this.pontos_sem_parada_show = true;
 				this.fieldPointsStop.setVisible(false)
 				this.pontos_campo_sem_parada.layer.setVisible(true)
+        this.layerPointFieldShow = 'carro'
 			} else {
 				this.pontos_sem_parada_show = false;
 				this.fieldPointsStop.setVisible(true)
 				this.pontos_campo_sem_parada.layer.setVisible(false)
+        this.layerPointFieldShow = 'parada'
 			}
 		} else {
 			this.tipoTVI = e.value
@@ -1256,7 +1262,12 @@ export class MapComponent implements OnInit {
       }
       this.pastagem_show = e.checked;
 		} else if (layer == 'pontos_campo_parada') {
-			layer = this.fieldPointsStop;
+      console.log(this.layerPointFieldShow)
+      if (this.layerPointFieldShow == 'parada') {
+			  layer = this.fieldPointsStop;
+      } else {
+        layer = this.pontos_campo_sem_parada.layer;
+      }
 			this.pontos_parada = e.checked;
 			this.selectedIndex = 4
 		} else if (layer == 'pastagem_degradada') {

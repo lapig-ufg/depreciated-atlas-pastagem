@@ -24,199 +24,284 @@
 	      <div class="collapseLayer">
 	      	<mat-tab-group class="layersConteudo">
 						<mat-tab label="Pastagem">
-			      	<div class="form-group" id="layers_pastagens">
-			      		<div class="regions-row">
-									<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-									  <ng-template #rt let-r="result" let-t="term">
-										  <ngb-highlight [result]="r.text" [term]="t"></ngb-highlight>
-										</ng-template>
-									  <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Escolha uma região" (selectItem)="updateRegion($event)" [resultTemplate]="rt" [inputFormatter]="formatter"/>
-									  <img [hidden]="model == ''" class="clear-region-btn" (click)="getMatchRegion()" src="assets/clear_button.png" />
-									  <span *ngIf="searching">localizando...</span>
-									  <div class="invalid-feedback" *ngIf="searchFailed">Desculpe, Região não encontrada.</div>
-									</div>
-							  </div>
-				      	<div>
-				    			<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row-box-name">
-										<mat-slide-toggle name="onofflayer" (change)="layerchecked(pastagem.layer, $event)" [(ngModel)]="checked">
-											<h5 class="nameLayers"><b>Área de Pastagem - {{ regionSelected }}</b></h5>
-										</mat-slide-toggle>
-									</div>
-								</div>
-								<div class="row layers-indicator">
-									<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-										<button class="button-row" mat-icon-button>
-									    <mat-icon class="iconInfo">info</mat-icon>
-									  </button>
-									</div>
-									<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators">{{ indicatorPasture | number:'3.0-0' }} ha</div>
-								</div>
-								<div class="layers-options">
-									<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 font-size-geral">
-										<div class="example-selected-value">Opções de visualização:</div>
-										<div class="row">
-											<div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7 options-radio-button">
-												<mat-radio-group #radiogroup [(ngModel)]="selectPasture">
-												  <mat-radio-button (change)="opcoesVisualizacao($event)" value="areas-pastagens">
-												  	Áreas
-												  </mat-radio-button>
-												  <mat-radio-button (change)="opcoesVisualizacao($event)" value="municipios-pastagens">
-												  	Municípios
-												  </mat-radio-button>
-												  <mat-radio-button (change)="opcoesVisualizacao($event)" value="pastagens-zero-transicao">
-												  	Pastagens Antigas
-												  </mat-radio-button>
-												  <mat-radio-button (change)="opcoesVisualizacao($event)" value="pastagens-todas-transicoes" [disabled]="disableTransitionsPastures">
-												  	Transições de Uso (1985 - 2017)
-												  </mat-radio-button>
-												  <mat-radio-button (change)="opcoesVisualizacao($event)" value="pastagens-uma-transicao" [disabled]="disableTransitionsPastures">
-												  	Apenas 1 Transição
-												  </mat-radio-button>
-												</mat-radio-group>
-											</div>
-											<div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-												<mat-form-field>
-												  <mat-select placeholder="" (selectionChange)="updateyear()" [value]="year" [(ngModel)]="year">
-												    <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
-												  </mat-select>
-												</mat-form-field>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="form-group separacaoLayers" id="layers_degradacao">
-								<div>
-				    			<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row-box-name">
-										<mat-slide-toggle (change)="layerchecked('pastagem_degradada', $event)">
-											<h5 class="nameLayers"><b>Pastagem Degradada (2017)</b></h5>
-										</mat-slide-toggle>
-									</div>
-								</div>
-								<div class="row layers-indicator">
-									<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-										<button class="button-row" mat-icon-button>
-									    <mat-icon class="iconInfo">info</mat-icon>
-									  </button>
-									</div>
-									<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators"> {{ indicatorPastureDegraded | number:'3.0-0' }} ha com indícios de degradação </div>
-								</div>
-							</div>
-							<div class="form-group separacaoLayers" id="layers_produtividade">
-								<div>
-				    			<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row-box-name">
-										<mat-slide-toggle (change)="layerchecked('rebanho_bovino', $event)">
-											<h5 class="nameLayers"><b>Rebanho Bovino - UA</b></h5>
-										</mat-slide-toggle>
-									</div>
-								</div>
-								<div class="row layers-indicator">
-									<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-										<button class="button-row" mat-icon-button>
-									    <mat-icon class="iconInfo">info</mat-icon>
-									  </button>
-									</div>
-									<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators"> {{ indicatorRebanhoBovino | number:'3.0-0' }} UA </div>
-								</div>
-								<!-- <div class="row">
-									<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4" id='dropdowYearRebanho'>
-										<mat-form-field>
-										  <mat-select placeholder="" [disabled]=!rebanho_bovino_show (selectionChange)="updateyear()" [value]="yearRebanho" [(ngModel)]="yearRebanho">
-										    <mat-option *ngFor="let yearRebanho of years" [value]="yearRebanho">{{ yearRebanho }}</mat-option>
-										  </mat-select>
-										</mat-form-field>
-									</div>
-								</div> -->
-							</div>
-							<div class="form-group separacaoLayers" id="layers_pontos">
-								<div>
-									<div>
-					    			<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row-box-name">
-											<mat-slide-toggle (change)="layerchecked('pontos_campo_parada', $event)">
-												<h5 class="nameLayers"><b>Pontos de Campo</b></h5>
-											</mat-slide-toggle>
-										</div>
-									</div>
-									<div class="row layers-indicator">
-										<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-											<button class="button-row" mat-icon-button>
-										    <mat-icon class="iconInfo">info</mat-icon>
-										  </button>
-										</div>
-										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators" *ngIf="this.tipoCampo == 'parada'">
-											{{ indicatorPoints }} pontos
-										</div>
-										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators" *ngIf="this.tipoCampo == 'carro'">
-											{{ indicatorPointsNoStop | number:'2.0-0' }} pontos
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv" id="dropdownPoints">
-											<mat-form-field>
-											  <mat-select [formControl]="dropdowPontosdeCampo" [disabled]=!pontos_parada (selectionChange)="tipoCampoSelected('campo', $event)">
-											    <mat-option value="parada">Pastagem</mat-option>
-											    <mat-option value="carro">Uso e Cobertura</mat-option>
-											  </mat-select>
-											</mat-form-field>
-										</div>
-									</div>
-								</div>
-								<div>
-									<div>
-					    			<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 row-box-name">
-											<mat-slide-toggle (change)="layerchecked('pontos_tvi', $event)">
-												<h5 class="nameLayers"><b>Pontos Visualmente Inspecionados</b></h5>
-											</mat-slide-toggle>
-										</div>
-									</div>
-									<div class="row layers-indicator">
-										<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-											<button class="button-row" mat-icon-button>
-										    <mat-icon class="iconInfo">info</mat-icon>
-										  </button>
-										</div>
-										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators" *ngIf="this.tipoTVI == 'treinamento'">
-											{{ indicatorPointsTVITreinamento | number:'2.0-0' }} pontos
-										</div>
-										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators" *ngIf="this.tipoTVI == 'validacao'">
-											{{ indicatorPointsTVIValidacao | number:'2.0-0' }} pontos
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv" id="dropdownPoints">
-											<mat-form-field>
-											  <mat-select [formControl]="dropdowPontosTVI" [disabled]=!pontos_tvi_show (selectionChange)="tipoCampoSelected('tvi', $event)">
-											    <mat-option value="treinamento">Treinamento</mat-option>
-											    <mat-option value="validacao">Validação</mat-option>
-											  </mat-select>
-											</mat-form-field>
-										</div>
-									</div>
-									<!-- <div class="row layers-options">
+							<mat-accordion>
+				      	<div id="layers_pastagens">
+				      		<div class="regions-row">
 										<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-											<div>Opções de visualização:</div>
-											<div>
-												<mat-form-field class="optionPontosTVI">
-												  <mat-select placeholder="Ano">
-												    <mat-option>2017</mat-option>
-												    <mat-option>2016</mat-option>
-												    <mat-option>2015</mat-option>
-												    <mat-option>2014</mat-option>
-												  </mat-select>
-												</mat-form-field>
-												<mat-form-field class="optionPontosTVI">
-												  <mat-select placeholder="Votos">
-												    <mat-option>1</mat-option>
-												    <mat-option>2</mat-option>
-												    <mat-option>3</mat-option>
-												    <mat-option>4</mat-option>
-												  </mat-select>
-												</mat-form-field>
-											</div>
+										  <ng-template #rt let-r="result" let-t="term">
+											  <ngb-highlight [result]="r.text" [term]="t"></ngb-highlight>
+											</ng-template>
+										  <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Escolha Bioma / Estado / Município..." (selectItem)="updateRegion($event)" [resultTemplate]="rt" [inputFormatter]="formatter"/>
+										  <img [hidden]="model == ''" class="clear-region-btn" (click)="getMatchRegion()" src="assets/clear_button.png" />
+										  <span *ngIf="searching">localizando...</span>
+										  <div class="invalid-feedback" *ngIf="searchFailed">Desculpe, Região não encontrada.</div>
 										</div>
-									</div> -->
+								  </div>
+					      	<div class="row">
+					    			<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
+											<mat-slide-toggle name="onofflayer" (change)="layerchecked(pastagem.layer, $event)" [(ngModel)]="checked">
+											</mat-slide-toggle>
+										</div>
+										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
+											<mat-expansion-panel [expanded] = true>
+												<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
+									      	<div>
+															<h5 class="nameLayers" *ngIf="layerPastureShow != 'pastagens-zero-transicao'"><b>Área de Pastagem - {{ regionSelected }}</b></h5>
+															<h5 class="nameLayers" *ngIf="layerPastureShow == 'pastagens-zero-transicao'"><b>Áreas de Pastagens Antigas (1985 - 2017)</b></h5>
+													</div>
+												</mat-expansion-panel-header>
+												<div class="row layers-indicator">
+													<div>
+														<button class="button-row" mat-icon-button>
+													    <mat-icon class="iconInfo">info</mat-icon>
+													  </button>
+													</div>
+													<div class="value-indicators" *ngIf="layerPastureShow != 'pastagens-zero-transicao'">
+														{{ indicatorPasture | number:'3.0-0' }} ha 
+														<p class="stylePercentual"> ({{ indicatorPasturePercentual | number:'1.1-2'}}% do(a) {{ regionTypeBr }})</p>
+													</div>
+													<div class="value-indicators" *ngIf="layerPastureShow == 'pastagens-zero-transicao'">
+														{{ indicatorPastureOld | number:'3.0-0' }} ha 
+														<p class="stylePercentual">({{ indicatorPastureOldPercentual | number:'1.1-2'}}% do(a) {{ regionTypeBr }})</p>
+													</div>
+												</div>
+												<div class="layers-options">
+													<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 font-size-geral">
+														<div class="example-selected-value">Opções de visualização:</div>
+														<div class="row">
+															<div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7 options-radio-button">
+																<mat-radio-group #radiogroup [(ngModel)]="selectPasture">
+																  <mat-radio-button (change)="opcoesVisualizacao($event)" value="areas-pastagens">
+																  	Áreas
+																  </mat-radio-button>
+																  <mat-radio-button (change)="opcoesVisualizacao($event)" value="municipios-pastagens">
+																  	Municípios
+																  </mat-radio-button>
+																  <mat-radio-button (change)="opcoesVisualizacao($event)" value="pastagens-zero-transicao">
+																  	Pastagens Antigas
+																  </mat-radio-button>
+																  <mat-radio-button (change)="opcoesVisualizacao($event)" value="pastagens-todas-transicoes" [disabled]="disableTransitionsPastures">
+																  	Transições de Uso (1985 - 2017)
+																  </mat-radio-button>
+																  <mat-radio-button (change)="opcoesVisualizacao($event)" value="pastagens-uma-transicao" [disabled]="disableTransitionsPastures">
+																  	Apenas 1 Transição
+																  </mat-radio-button>
+																</mat-radio-group>
+															</div>
+															<div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3" *ngIf="show_year_pasture">
+																<mat-form-field>
+																  <mat-select placeholder="" [disabled]=!pastagem_show (selectionChange)="updateyear()" [value]="year" [(ngModel)]="year">
+																    <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+																  </mat-select>
+																</mat-form-field>
+															</div>
+														</div>
+													</div>
+												</div>
+											</mat-expansion-panel>
+										</div>
+									</div>
 								</div>
-							</div>
+								<div class="separacaoLayers" id="layers_degradacao">
+									<div class="row">
+					    			<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
+											<mat-slide-toggle (change)="layerchecked('pastagem_degradada', $event)"></mat-slide-toggle>
+										</div>
+										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
+											<mat-expansion-panel>
+												<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
+													<div>
+														<h5 class="nameLayers"><b>Pastagem Degradada (2017)</b></h5>
+													</div>
+												</mat-expansion-panel-header>
+												<div class="row layers-indicator">
+													<div>
+														<button class="button-row" mat-icon-button>
+													    <mat-icon class="iconInfo">info</mat-icon>
+													  </button>
+													</div>
+													<div class="value-indicators"> 
+														{{ indicatorPastureDegraded | number:'3.0-0' }} ha com
+														<p style="margin-bottom: 0px">indícios de degradação.</p>
+														<p class="stylePercentual">({{ indicatorPastureDegradedPercentual | number:'1.1-2'}}% do(a) {{ regionTypeBr }})</p> 
+													</div>
+												</div>
+												<div class="layers-options">
+													<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 font-size-geral">
+														<div class="example-selected-value">Opções de visualização:</div>
+														<div class="row">
+															<div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7 options-radio-button">
+																<mat-radio-group [disabled]=!pastagens_degradadas_show #radiogroup [(ngModel)]="selectPastureDegraded">
+																  <mat-radio-button (change)="opcoesVisualizacao($event)" value="areas-pastagens-degraded">
+																  	Áreas
+																  </mat-radio-button>
+																  <mat-radio-button (change)="opcoesVisualizacao($event)" value="municipios-pastagens-degraded">
+																  	Municípios
+																  </mat-radio-button>
+																</mat-radio-group>
+															</div>
+														</div>
+													</div>
+												</div>
+											</mat-expansion-panel>
+										</div>
+									</div>
+								</div>
+								<div class="separacaoLayers" id="layers_produtividade">
+									<div class="row">
+					    			<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
+											<mat-slide-toggle (change)="layerchecked('rebanho_bovino', $event)"></mat-slide-toggle>
+										</div>
+										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
+											<mat-expansion-panel>
+												<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
+													<div>
+														<h5 class="nameLayers"><b>Rebanho Bovino - UA ({{ year }})</b></h5>
+													</div>
+												</mat-expansion-panel-header>
+												<div class="row layers-indicator">
+													<div>
+														<button class="button-row" mat-icon-button>
+													    <mat-icon class="iconInfo">info</mat-icon>
+													  </button>
+													</div>
+													<div class="value-indicators"> 
+														{{ indicatorRebanhoBovino | number:'3.0-0' }} UA 
+														<p class="stylePercentual">({{ indicatorRebanhoBovinoPercentual | number:'1.1-2'}} UA/ha no(a) {{ regionTypeBr }})</p>
+													</div>
+												</div>
+											</mat-expansion-panel>
+										</div>
+									</div>
+								</div>
+								<div class=" separacaoLayers" id="layer_potencial">
+									<div class="row">
+										<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
+											<mat-slide-toggle (change)="layerchecked('potencial_intensificacao', $event)"></mat-slide-toggle>
+										</div>
+										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
+											<mat-expansion-panel>
+												<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
+													<div>
+															<h5 class="nameLayers"><b>Potencial de Intensificação da Pecuária</b></h5>
+													</div>
+												</mat-expansion-panel-header>
+												<div class="row layers-indicator">
+													<div>
+														<button class="button-row" mat-icon-button>
+													    <mat-icon class="iconInfo">info</mat-icon>
+													  </button>
+													</div>
+													<div class="value-indicators"> {{ indicatorPotencialInt | number:'1.1-2' }} UA/ha </div>
+												</div>
+											</mat-expansion-panel>
+										</div>
+									</div>
+								</div>
+								<div class="separacaoLayers" id="layers_pontos">
+									<div class="row">
+					    			<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
+											<mat-slide-toggle (change)="layerchecked('pontos_campo_parada', $event)">
+											</mat-slide-toggle>
+										</div>
+										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
+											<mat-expansion-panel>
+												<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
+													<div>
+														<h5 class="nameLayers"><b>Pontos de Campo</b></h5>
+													</div>
+												</mat-expansion-panel-header>
+												<div class="row layers-indicator">
+													<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+														<button class="button-row" mat-icon-button>
+													    <mat-icon class="iconInfo">info</mat-icon>
+													  </button>
+													</div>
+													<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators" *ngIf="this.tipoCampo == 'parada'">
+														{{ indicatorPoints }} pontos
+													</div>
+													<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators" *ngIf="this.tipoCampo == 'carro'">
+														{{ indicatorPointsNoStop | number:'2.0-0' }} pontos
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv" id="dropdownPoints">
+														<mat-form-field>
+														  <mat-select [formControl]="dropdowPontosdeCampo" [disabled]=!pontos_parada (selectionChange)="tipoCampoSelected('campo', $event)">
+														    <mat-option value="parada">Pastagem</mat-option>
+														    <mat-option value="carro">Uso e Cobertura</mat-option>
+														  </mat-select>
+														</mat-form-field>
+													</div>
+												</div>
+											</mat-expansion-panel>
+										</div>
+									</div>
+								</div>
+								<div class="separacaoLayers" id="layers_pontos_tvi">
+									<div class="row">
+										<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
+												<mat-slide-toggle (change)="layerchecked('pontos_tvi', $event)">
+												</mat-slide-toggle>
+										</div>
+										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
+											<mat-expansion-panel>
+												<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
+													<div>
+														<h5 class="nameLayers"><b>Pontos Visualmente Inspecionados</b></h5>
+													</div>
+												</mat-expansion-panel-header>
+												<div class="row layers-indicator">
+													<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+														<button class="button-row" mat-icon-button>
+													    <mat-icon class="iconInfo">info</mat-icon>
+													  </button>
+													</div>
+													<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators" *ngIf="this.tipoTVI == 'treinamento'">
+														{{ indicatorPointsTVITreinamento | number:'2.0-0' }} pontos
+													</div>
+													<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 value-indicators" *ngIf="this.tipoTVI == 'validacao'">
+														{{ indicatorPointsTVIValidacao | number:'2.0-0' }} pontos
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 button-csv" id="dropdownPoints">
+														<mat-form-field>
+														  <mat-select [formControl]="dropdowPontosTVI" [disabled]=!pontos_tvi_show (selectionChange)="tipoCampoSelected('tvi', $event)">
+														    <mat-option value="treinamento">Treinamento</mat-option>
+														    <mat-option value="validacao">Validação</mat-option>
+														  </mat-select>
+														</mat-form-field>
+													</div>
+												</div>
+											</mat-expansion-panel>
+										</div>
+										<!-- <div class="row layers-options">
+											<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+												<div>Opções de visualização:</div>
+												<div>
+													<mat-form-field class="optionPontosTVI">
+													  <mat-select placeholder="Ano">
+													    <mat-option>2017</mat-option>
+													    <mat-option>2016</mat-option>
+													    <mat-option>2015</mat-option>
+													    <mat-option>2014</mat-option>
+													  </mat-select>
+													</mat-form-field>
+													<mat-form-field class="optionPontosTVI">
+													  <mat-select placeholder="Votos">
+													    <mat-option>1</mat-option>
+													    <mat-option>2</mat-option>
+													    <mat-option>3</mat-option>
+													    <mat-option>4</mat-option>
+													  </mat-select>
+													</mat-form-field>
+												</div>
+											</div>
+										</div> -->
+									</div>
+								</div>
+							</mat-accordion>
 						</mat-tab>
 						<mat-tab label="Mapa Base">
 							<div class="form-group baseMap">
@@ -233,7 +318,7 @@
 									Relevo
 								</mat-slide-toggle><br/><br/>
 								<mat-slide-toggle (change)="baseLayerChecked('landsat', $event)" [(ngModel)]="landsat.visible">
-									Landsat - 2017
+									Landsat - {{ year }}
 								</mat-slide-toggle><br/>
 							</div>
 						</mat-tab>
@@ -251,7 +336,7 @@
 								<mat-slide-toggle (change)="layerchecked(terras_indigenas.layer, $event)" class="slideTerrasIndigenas" >
 									Terras Indígenas
 								</mat-slide-toggle><br/><br/>
-								<mat-slide-toggle [disabled]="true">
+								<mat-slide-toggle (change)="layerchecked(terras_privadas.layer, $event)" class="slideEstados" >
 									Terras Privadas
 								</mat-slide-toggle><br/><br/>
 								<mat-slide-toggle (change)="layerchecked(unidades_protecao_integral.layer, $event)" class="slideUnidadesConservacao" >
@@ -280,72 +365,134 @@
 								<mat-tab label="Legendas" *ngIf="true" id="tabLegendas">
 							  	<div class="legendasConteudo">
 							      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
-							      	<div *ngIf="checked">
-												<div>
-													<h6>
-														<img [src]="checkedLegendPasture ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pasture')" > 
-														<b>Área de Pastagem - {{ regionSelected }}</b>
-													</h6>
-												</div>
-												<div class= "layerLegend">
-													<img *ngIf="layerPastureShow == 'areas-pastagens'" src="http://o4.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture&format=image%2Fpng">
-													<img *ngIf="layerPastureShow == 'municipios-pastagens'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_regions_municipios&format=image%2Fpng">
-													<img *ngIf="layerPastureShow == 'pastagens-todas-transicoes'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_all_transitions&format=image%2Fpng">
-													<img *ngIf="layerPastureShow == 'pastagens-uma-transicao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_one_transitions&format=image%2Fpng">
-													<img *ngIf="layerPastureShow == 'pastagens-zero-transicao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_zero_transitions&format=image%2Fpng">
-												</div>
-											</div>
-										</div>
-										<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
-							      	<div *ngIf="pastagens_degradadas_show">
-												<div>
-													<h6>
-														<img [src]="checkedLegendPastureDegraded ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pasture_degraded')" > 
-														<b>Pastagem Degradada - {{ regionSelected }}</b>
-													</h6>
-												</div>
-												<div class= "layerLegend">
-													<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_degraded&format=image%2Fpng">
+							      	<div class="row" *ngIf="checked">
+							      		<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
+													<img [src]="checkedLegendPasture ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pasture')" > 
+							      		</div>
+							      		<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
+							      			<mat-expansion-panel [expanded] = true>
+														<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
+															<div>
+																<p class="nameLayerLegend">
+																	<b>Área de Pastagem - {{ regionSelected }}</b>
+																</p>
+															</div>
+														</mat-expansion-panel-header>
+														<div>
+															<img *ngIf="layerPastureShow == 'areas-pastagens'" src="http://o4.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture&format=image%2Fpng">
+															<img *ngIf="layerPastureShow == 'municipios-pastagens'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_regions_municipios&format=image%2Fpng">
+															<img *ngIf="layerPastureShow == 'pastagens-todas-transicoes'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_all_transitions&format=image%2Fpng">
+															<img *ngIf="layerPastureShow == 'pastagens-uma-transicao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_one_transitions&format=image%2Fpng">
+															<img *ngIf="layerPastureShow == 'pastagens-zero-transicao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_zero_transitions&format=image%2Fpng">
+														</div>
+													</mat-expansion-panel>
 												</div>
 											</div>
 										</div>
 										<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
-							      	<div *ngIf="rebanho_bovino_show">
-												<div>
-													<h6>
-														<img [src]="checkedLegendRebanho ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('rebanho_bovino')" > 
-														<b>Rebanho Bovino - UA</b>
-													</h6>
-												</div>
-												<div class= "layerLegend">
-													<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=lotacao_bovina_regions&format=image%2Fpng">
-												</div>
-											</div>
-										</div>
-										<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
-							      	<div *ngIf="pontos_sem_parada_show">
-												<div>
-													<h6>
-														<img [src]="checkedLegendFieldPointNoStop ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pontos_campo_sem_parada')" > 
-														<b>Pontos de campo - Uso e Cobertura</b>
-													</h6>
-												</div>
-												<div class= "layerLegend">
-													<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_campo_sem_parada&format=image%2Fpng">
+							      	<div class="row" *ngIf="pastagens_degradadas_show">
+							      		<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
+													<img [src]="checkedLegendPastureDegraded ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pasture_degraded')" > 
+							      		</div>
+							      		<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
+								      		<mat-expansion-panel [expanded] = true>
+														<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
+															<div>
+																<p class="nameLayerLegend">
+																	<b>Pastagem Degradada - {{ regionSelected }}</b>
+																</p>
+															</div>
+														</mat-expansion-panel-header>
+														<div>
+															<img *ngIf="layerPastureDegradedShow == 'areas-pastagens-degraded'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_degraded&format=image%2Fpng">
+															<img *ngIf="layerPastureDegradedShow == 'municipios-pastagens-degraded'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_degraded_regions_municipios&format=image%2Fpng">
+														</div>
+													</mat-expansion-panel>
 												</div>
 											</div>
 										</div>
 										<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
-							      	<div *ngIf="pontos_tvi_show">
-												<div>
-													<h6>
-														<img [src]="checkedLegendTviPoint ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pontos_tvi')" > 
-														<b>Pontos Visualmente Inspecionados</b>
-													</h6>
+							      	<div class="row" *ngIf="rebanho_bovino_show">
+							      		<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
+													<img [src]="checkedLegendRebanho ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('rebanho_bovino')" > 
+							      		</div>
+							      		<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
+								      		<mat-expansion-panel [expanded] = true>
+														<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
+															<div>
+																<p class="nameLayerLegend">
+																	<b>Rebanho Bovino - UA</b>
+																</p>
+															</div>
+														</mat-expansion-panel-header>
+														<div>
+															<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=lotacao_bovina_regions&format=image%2Fpng">
+														</div>
+													</mat-expansion-panel>
 												</div>
-												<div class= "layerLegend">
-													<img *ngIf="layerPointTVIShow == 'treinamento'" src="http://o4.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_tvi_treinamento&format=image%2Fpng">
-													<img *ngIf="layerPointTVIShow == 'validacao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_tvi_validacao&format=image%2Fpng">
+											</div>
+										</div>
+										<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
+							      	<div class="row" *ngIf="potencial_intensificacao_show">
+							      		<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
+													<img [src]="checkedLegendPot_Int ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('potencial_intensificacao')" > 
+							      		</div>
+							      		<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
+								      		<mat-expansion-panel [expanded] = true>
+														<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
+															<div>
+																<p class="nameLayerLegend">
+																	<b>Potencial de Intenficação da Pecuária</b>
+																</p>
+															</div>
+														</mat-expansion-panel-header>
+														<div>
+															<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=potencial_intensificacao_pecuaria&format=image%2Fpng">
+														</div>
+													</mat-expansion-panel>
+							      		</div>
+											</div>
+										</div>
+										<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
+							      	<div class="row" *ngIf="pontos_sem_parada_show">
+							      		<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
+													<img [src]="checkedLegendFieldPointNoStop ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pontos_campo_sem_parada')" > 
+							      		</div>
+							      		<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
+								      		<mat-expansion-panel [expanded] = true>
+														<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
+															<div>
+																<p class="nameLayerLegend">
+																	<b>Pontos de campo - Uso e Cobertura</b>
+																</p>
+															</div>
+														</mat-expansion-panel-header>
+														<div>
+															<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_campo_sem_parada&format=image%2Fpng">
+														</div>
+													</mat-expansion-panel>
+												</div>	
+											</div>
+										</div>
+										<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
+							      	<div class="row" *ngIf="pontos_tvi_show">
+							      		<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
+													<img [src]="checkedLegendTviPoint ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pontos_tvi')" >
+							      		</div>
+							      		<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
+								      		<mat-expansion-panel [expanded] = true>
+														<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
+															<div>
+																<p class="nameLayerLegend">
+																	<b>Pontos Visualmente Inspecionados</b>
+																</p>
+															</div>
+														</mat-expansion-panel-header>
+														<div>
+															<img *ngIf="layerPointTVIShow == 'treinamento'" src="http://o4.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_tvi_treinamento&format=image%2Fpng">
+															<img *ngIf="layerPointTVIShow == 'validacao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_tvi_validacao&format=image%2Fpng">
+														</div>
+													</mat-expansion-panel>
 												</div>
 											</div>
 										</div>
@@ -354,7 +501,7 @@
 							  <mat-tab label="Série Temporal" *ngIf="true" id="tabGraficoLinhas">
 							  	<h6><b>Áreas de Pastagem - {{ regionSelected }}</b> </h6>
 							  	<ngx-charts-line-chart 
-							  		[view]="[340,200]" 
+							  		[view]="[viewWidthMobile,200]" 
 							  		[results]="chartResult"
 							  		[scheme]="colorScheme"
 							  		[legend]="false"
@@ -386,6 +533,26 @@
 				                {{model.name}}: {{ model.value | number:'1.0-0' }} ha
 				            </ng-template>
 				          </ngx-charts-bar-horizontal>
+							  </mat-tab>
+							  <mat-tab label="Transições" *ngIf="Usetransitions"> 
+							  	<h6><b> {{ nameChartsTransitions }} - {{ regionSelected }}</b> </h6>
+							  	<ngx-charts-bar-vertical 
+								  	[view]="[viewWidthMobile, 300]"
+								  	[barPadding]="2"
+								  	[scheme]="colorSchemeTransitions"
+								  	[showGridLines]="true" 
+								  	[roundDomains]="false" 
+								  	[roundEdges]="false" 
+								  	[results]="chartResultTransitions" 
+								  	[yAxis]="true" 
+								  	[xAxis]="true" 
+								  	[showYAxisLabel]="true"
+								  	[showXAxisLabel]="true"
+								  	(select)="regionGraphic($event)">
+				            <ng-template #tooltipTemplate let-model="model">
+				                {{model.name}}: {{ model.value | number:'1.0-0' }} ha
+				            </ng-template>
+				          </ngx-charts-bar-vertical>
 							  </mat-tab>
 							  <mat-tab label="Municípios" *ngIf="regionTypeCharts != 'municipio'">
 							  	<h6><b>Ranking dos Municípios - {{ year }}</b> </h6>

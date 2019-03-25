@@ -78,19 +78,21 @@ hr {
 }
 
 .layers-options {
-	padding-left: 40px;
+	/*padding-left: 40px;*/
 
 }
 
 .layers-indicator {
 	font-size: 0.8rem;
-	padding-left: 50px;
+	/*padding-left: 50px;*/
 	padding-bottom: 5px;
 	margin-right: 0px !important;
+	flex-wrap: nowrap;
 }
 
 .value-indicators {
-	padding-left: 0px;
+	padding-left: 5px;
+	display: inline;
 }
 
 .button-row button,
@@ -164,11 +166,11 @@ hr {
 }
 
 #layers_degradacao {
-	margin-bottom: 20px;
+	/*margin-bottom: 20px;*/
 }
 
 .font-size-geral {
-	padding-top: 10px;
+	padding-left: 0px;
 	font-size: 0.78rem;
 }
 
@@ -248,8 +250,8 @@ h6 {
 .clear-region-btn {
 	height: 18px;
 	position: absolute;
-	left: 88%;
-	top: 10px;
+	left: 85%;
+	top: 8px;
 	cursor: pointer;
 	opacity: 0.8;
 }
@@ -275,7 +277,9 @@ h6 {
 
 .nameLayers {
 	font-size: 0.85rem;
-	padding-top: 7px;
+	padding-left: 5px;
+	padding-bottom: 5%;
+	/*padding-top: 7px;*/
 }
 
 .collapse-btn {
@@ -289,7 +293,7 @@ h6 {
 }
 
 .separacaoLayers {
-	border-top: 1px solid #717171;
+	border-top: 1px solid #d1d1d1;
 }
 
 .optionPontosTVI {
@@ -351,4 +355,54 @@ h6 {
 
 .form-control {
 	font-size: 0.8rem;
+}
+
+.stylePercentual {
+	/*padding-left: 5px;*/
+	font-size: 0.7rem;
+	margin-bottom: 8px;
+	/*display: inline;*/
+}
+
+.legend_Graphic {
+	position: absolute;
+	right: 2%
+}
+
+#seriesTooltipTemplate {
+	display: none !important;
+}
+
+.slider-layer {
+	text-align: center;
+    padding-right: 0px;
+    padding-top: 3%;
+}
+
+.expansion-layer {
+	padding-left: 0px;
+}
+
+.expansion-header-layer {
+	padding-left: 0px;
+}
+
+.expansion-header-layer-legend {
+	margin-left: 0px;
+    margin-top: 0px;
+}
+
+#dropdownPoints {
+	padding-left: 18%;
+}
+
+.info_clique_mapa {
+	margin: 0px;
+    font-size: 0.7rem;
+    text-align: right;
+    padding-right: 14px;
+}
+
+.nameLayerLegend {
+	margin-bottom: 4%;
 }
