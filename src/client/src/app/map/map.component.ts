@@ -649,7 +649,11 @@ export class MapComponent implements OnInit {
 			msfilter = "&MSFILTER=uf!='0'"
 		} else if (filter == 'pastagens_zero_transicao'){
 			msfilter = "&MSFILTER=category='1'"+''+this.msFilterRegion
-		}
+		} else if (filter == 'pasture_degraded_class' && this.msFilterRegionCharts == '') {
+      msfilter = "&MSFILTER=category='1'"
+    } else if (filter == 'pasture_degraded_class' && this.msFilterRegionCharts != '') {
+      msfilter = "&MSFILTER=category='1'"+''+this.msFilterRegion
+    }
 		
 		for (let url of this.urls) {
 			result.push(url
@@ -808,7 +812,7 @@ export class MapComponent implements OnInit {
 			layername: "pasture_degraded",
 			visible: false,
 			opacity: 1,
-			layerfilter: 'pontos_campo_sem_parada'
+			layerfilter: 'pasture_degraded_class'
 		}
 
 		this.pastagem_degradada_municipios = {

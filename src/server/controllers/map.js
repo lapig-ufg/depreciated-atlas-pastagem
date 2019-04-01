@@ -8,8 +8,8 @@ module.exports = function(app){
 	var Map = {}
 
 	var config = app.config;
-	/*var conString = "postgres://postgres@localhost:5433/atlas_pastagem";*/
-	var conString = "postgres://"+config.postgres.host+":"+config.postgres.port+"/"+config.postgres.dbname;
+	var conString = "postgres://postgres@localhost:5433/atlas_pastagem";
+	/*var conString = "postgres://"+config.postgres.host+":"+config.postgres.port+"/"+config.postgres.dbname;*/
 	
 	var client = new pg.Client(conString);
 			client.connect();
@@ -227,13 +227,17 @@ module.exports = function(app){
 	Map.indicatorsPastureDegraded = function(request, response){
 
 		var msfilter = request.param('MSFILTER', '');
-		var filters = '';
+		var filters = " WHERE category='1'";
+		var filtersRegions = '';
 
 		if(msfilter) {
-			filters = " WHERE "+msfilter;
+			filters = filters+" AND "+msfilter;
+			filtersRegions = " WHERE "+msfilter;
 		}
 
-		client.query("SELECT SUM(area_ha), (SELECT SUM(pol_ha) FROM regions"+filters+") as area_mun FROM pasture_degraded"+filters, (err, res) => {
+		console.log(filters);
+
+		client.query("SELECT SUM(area_ha), (SELECT SUM(pol_ha) FROM regions"+filtersRegions+") as area_mun FROM pasture_degraded_class"+filters, (err, res) => {
 
 			var percentual_area_ha = ((res.rows[0].sum * 100) / res.rows[0].area_mun);
 
@@ -603,6 +607,7 @@ module.exports = function(app){
 		var file = request.param('file', '');
 		var msfilter = request.param('filter', '');
 		var filter = '';
+		var filtersPastureDegraded = " WHERE category='1'";
 		var sqlQuery;
 
 		if(file == 'pasture') {
@@ -610,10 +615,10 @@ module.exports = function(app){
 		} else if (file == 'pasture_degraded') {
 
 			if(msfilter) {
-				filter = " WHERE "+msfilter;
+				filtersPastureDegraded = filtersPastureDegraded+" AND "+msfilter;
 			}
 
-			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(area_ha) as area_past_degradada FROM pasture_degraded "+filter+" GROUP BY 1,2,3,4,5"
+			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(area_ha) as area_past_degradada FROM pasture_degraded_class "+filtersPastureDegraded+" GROUP BY 1,2,3,4,5"
 		} else if (file == 'lotacao_bovina_regions') {
 			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(ua) as ua, sum(n_kbcs) as kbc, year FROM lotacao_bovina_regions WHERE "+region+" GROUP BY 1,2,3,4,5,8"
 		} else if (file == 'potencial_intensificacao_pecuaria') {
