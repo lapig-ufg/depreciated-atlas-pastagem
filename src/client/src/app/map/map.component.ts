@@ -104,7 +104,8 @@ export class MapComponent implements OnInit {
 	checkedLegendPot_Int = true;
   infodata: any;
 
-	year = '2017';
+	year = '2018';
+  yearIndicatorLotacao = '2017'
 	years: any;
 	regions: any;
 	fieldPointsStop: any;
@@ -593,7 +594,8 @@ export class MapComponent implements OnInit {
       if (evt.dragging) {
         return;
       }
-      
+
+
       var infoOverlay = this.infoOverlay;
       var coordinate = this.map.getEventCoordinate(evt.originalEvent);
       var viewResolution = this.map.getView().getResolution();
@@ -642,7 +644,12 @@ export class MapComponent implements OnInit {
 		if(filter == 'pasture'){
 			msfilter = '&MSFILTER='+"year="+this.year+''+this.msFilterRegion
 		} else if(filter == 'rebanho_bovino'){
-			msfilter = '&MSFILTER='+"year="+this.year+''+this.msFilterRegion
+      if (this.year == '2018'){
+        this.yearIndicatorLotacao = '2017';
+      } else {
+        this.yearIndicatorLotacao = this.year;
+      }
+			msfilter = '&MSFILTER='+"year="+this.yearIndicatorLotacao+''+this.msFilterRegion
 		} else if (filter == 'pontos_campo_sem_parada' && this.msFilterRegionCharts != '') {
 			msfilter = '&MSFILTER='+this.msFilterRegionCharts
 		} else if (filter == 'pontos_campo_sem_parada' && this.msFilterRegionCharts == '') {
@@ -1021,20 +1028,20 @@ export class MapComponent implements OnInit {
 			var layerDow;
 
 			if(this.msFilterRegionCharts != ''){
-				var paramsDownload = '&MSFILTER='+this.msFilterRegionCharts
+				var paramsDownload = "&MSFILTER=category='1'"+''+this.msFilterRegion
 			} else {
-				var paramsDownload = "&MSFILTER=uf!='0'"
+				var paramsDownload = "&MSFILTER=category='1'"
 			}
 
-			if(this.layerPastureDegradedShow == 'municipios-pastagens-degraded') {
-				layerDow = 'pasture_degraded_regions_municipios'
-			} else {
-				layerDow = 'pasture_degraded'
-			}
+      if (this.layerPastureDegradedShow = 'areas-pastagens-degraded') {
+        var paramsDownload = 'file='+layer+'&regionType='+this.downloadRegionType+'&region='+this.downloadRegion
+        this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
+      } else {
+        this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=pasture_degraded_regions_municipios&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
+      }
 
-			this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME='+layerDow+'&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
 		}else if (tipo == 'csv' && layer == 'pasture_degraded') {
-				var paramsDownload = 'file='+layer+'&filter='+this.msFilterRegionCharts;
+				var paramsDownload = 'file='+layer+"&filter=category='1'"+''+this.msFilterRegion;
 				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
 		} else if(layer == 'lotacao_bovina_regions') {
 			if(tipo == 'csv') {
@@ -1366,8 +1373,14 @@ export class MapComponent implements OnInit {
         this.indicatorPasturePercentual = indicatorsPasture[1].percentual_area_ha;
       });
     }
+
+    if (this.year == '2018'){
+      this.yearIndicatorLotacao = '2017';
+    } else {
+      this.yearIndicatorLotacao = this.year;
+    }
     
-		this.http.get('service/map/indicatorsRebanhoBovino?&MSFILTER=year='+this.year+''+this.msFilterRegion+'&region='+this.regionTypeCharts).subscribe(indicatorsRebanho => {
+		this.http.get('service/map/indicatorsRebanhoBovino?&MSFILTER=year='+this.yearIndicatorLotacao+''+this.msFilterRegion+'&region='+this.regionTypeCharts).subscribe(indicatorsRebanho => {
       this.indicatorRebanhoBovino = indicatorsRebanho[0].ua;
       this.indicatorRebanhoBovinoPercentual = indicatorsRebanho[0].ua/indicatorsRebanho[0].past_ha
 		});

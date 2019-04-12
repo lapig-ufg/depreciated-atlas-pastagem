@@ -175,7 +175,7 @@
 											<mat-expansion-panel>
 												<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
 													<div>
-															<h5 class="nameLayers"><b>Rebanho Bovino - UA ({{ year }})</b></h5>
+															<h5 class="nameLayers"><b>Rebanho Bovino - UA ({{ yearIndicatorLotacao }})</b></h5>
 													</div>
 												</mat-expansion-panel-header>
 												<div class="row layers-indicator">
@@ -695,7 +695,7 @@
   </div>
 </div>
 <div [hidden]="infodata.area_pasture == -1" id="map-info" class="card" style="background-color: #ffffff99;">
-  <div class="card-body">
+  <div *ngIf="infodata.year != '2018'" class="card-body">
 		<p class="card-text">{{ infodata.municipio }} - {{ infodata.uf }}</p>
     	<table>
     		<tbody>
@@ -710,6 +710,25 @@
 	    		<tr>
 	    			<th>Lotação Bovina: </th>
 	    				<td>{{infodata.ua/infodata.past_ha | number:'1.0-2' }} UA/ha</td>
+	    		</tr>
+	    		<tr>
+	    			<th>Ano: </th>
+	    				<td>{{infodata.year}}</td>
+	    		</tr>
+	    		<tr>
+	    			<th>Código Município: </th>
+	    				<td>{{infodata.cd_geocmu}}</td>
+	    		</tr>
+    		</tbody>
+    	</table>
+  </div>
+  <div *ngIf="infodata.year == '2018'" class="card-body">
+		<p class="card-text">{{ infodata.municipio }} - {{ infodata.uf }}</p>
+    	<table>
+    		<tbody>
+	    		<tr>
+	    			<th>Área de Pastagem: </th>
+	    				<td>{{infodata.past_ha | number:'1.0-0' }} ha</td>
 	    		</tr>
 	    		<tr>
 	    			<th>Ano: </th>

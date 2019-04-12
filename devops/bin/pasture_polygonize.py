@@ -95,7 +95,7 @@ def polygonize(input_feature, input_feature_srs, input_feature_def, input_value_
 		dn = ogr.FieldDefn("dn", ogr.OFTInteger)
 		dst_layer.CreateField(dn)
 		
-		conn_str = "PG: host=10.0.0.26 dbname=atlas_pastagem user=postgres password=lapig123"
+		conn_str = "PG: host=localhost port=5432 dbname=atlas_pastagem user=postgres password=lapig123"
 
 		# user: lapig
 		# senha: L4P1Gsu
@@ -110,10 +110,11 @@ def polygonize(input_feature, input_feature_srs, input_feature_def, input_value_
 			area_field = ogr.FieldDefn("area_ha", ogr.OFTReal)
 			area_field.SetWidth(32)
 			area_field.SetPrecision(8)
-			out_lyr.CreateField(area_field)
 
 			year_field = ogr.FieldDefn("year", ogr.OFTInteger)
 			year_field.SetWidth(4)
+
+			out_lyr.CreateField(area_field)
 			out_lyr.CreateField(year_field)
 
 			for i in range(input_feature_def.GetFieldCount()):
@@ -164,18 +165,19 @@ def feature_loop(input_zone_polygon):
 		FID_List = range(vector_layer.GetFeatureCount())
 		    
 		def parallelProcess(input_zone_polygon, FID):
-			for year in range(1985, 2018):
-				input_value_raster = '/data/PROCESSAMENTO/SENTINEL/mosaic_final/'+str(year)+'.tif'
-				shp = ogr.Open(input_zone_polygon)
-				vector_layer = shp.GetLayer()
-				input_feature = vector_layer.GetFeature(FID)
-				input_feature_srs = vector_layer.GetSpatialRef()
-				input_feature_def = vector_layer.GetLayerDefn()
-				try:
-					polygonize(input_feature, input_feature_srs, input_feature_def, input_value_raster, FID, year)
-				except Exception:
-					traceback.print_exc()
-					print('ERROR: '+ str(FID) + " - " + input_feature.GetField('MUNICIPIO') + " - " + str(year));
+			# for year in range(1985, 2018):
+			year = 2018
+			input_value_raster = '/data/Fernanda/2018.tif'
+			shp = ogr.Open(input_zone_polygon)
+			vector_layer = shp.GetLayer()
+			input_feature = vector_layer.GetFeature(FID)
+			input_feature_srs = vector_layer.GetSpatialRef()
+			input_feature_def = vector_layer.GetLayerDefn()
+			try:
+				polygonize(input_feature, input_feature_srs, input_feature_def, input_value_raster, FID, year)
+			except Exception:
+				traceback.print_exc()
+				print('ERROR: '+ str(FID) + " - " + input_feature.GetField('MUNICIPIO') + " - " + str(year));
 
 		num_cores = 20
 		Parallel(n_jobs=num_cores)(delayed(parallelProcess)(input_zone_polygon, FID) for FID in FID_List)

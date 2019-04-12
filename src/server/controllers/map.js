@@ -121,7 +121,7 @@ module.exports = function(app){
 		if(region) {
 			otherFilter = " WHERE "+region;
 		}
-
+		
 		client.query("SELECT year, area_ha, (SELECT SUM(pol_ha) FROM regions"+otherFilter+") as area_mun FROM pasture_correction WHERE "+msfilter, (err, res) => {
 
 			var percentual_area_ha = ((res.rows[0].area_ha * 100) / res.rows[0].area_mun);
@@ -234,8 +234,6 @@ module.exports = function(app){
 			filters = filters+" AND "+msfilter;
 			filtersRegions = " WHERE "+msfilter;
 		}
-
-		console.log(filters);
 
 		client.query("SELECT SUM(area_ha), (SELECT SUM(pol_ha) FROM regions"+filtersRegions+") as area_mun FROM pasture_degraded_class"+filters, (err, res) => {
 
@@ -493,7 +491,7 @@ module.exports = function(app){
 
 	Map.chartsByYear = function(request, response) {
 
-		var year = request.param('year', 2017);
+		var year = request.param('year', 2018);
 		var index = 1;
 		var stateQuery = "SELECT INITCAP(estado) as estado, uf, SUM(area_ha), year from pasture WHERE year="+year+" GROUP BY estado, uf, year ORDER BY 3 DESC"
 		var cityQuery = "SELECT INITCAP(municipio) as municipio, uf, SUM(area_ha), year from pasture WHERE year="+year+" GROUP BY 1, 2, 4 ORDER BY 3 DESC LIMIT 10"
