@@ -1071,7 +1071,10 @@ export class MapComponent implements OnInit {
 			if(tipo == 'csv') {
 				var paramsDownload = 'file='+layer+'&filter='+this.msFilterRegionCharts;
 				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload;
-			}
+			} else {
+        var paramsDownload = 'file='+layer+'&regionType='+this.downloadRegionType+'&region='+this.downloadRegion
+        this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
+      }
 		}
 		
 	}
