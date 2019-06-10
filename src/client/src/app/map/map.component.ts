@@ -1044,12 +1044,19 @@ export class MapComponent implements OnInit {
 				var paramsDownload = 'file='+layer+"&filter=category='1'"+''+this.msFilterRegion;
 				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
 		} else if(layer == 'lotacao_bovina_regions') {
+        var yearRebanhoBovino;
+        if(this.year == '2018') {
+          yearRebanhoBovino = '2017'
+        } else {
+          yearRebanhoBovino = this.year
+        }
+        
 			if(tipo == 'csv') {
-				var paramsDownload = 'file='+layer+'&region=year='+this.year+''+this.msFilterRegion+'&filter='+this.msFilterRegionCharts;
+				var paramsDownload = 'file='+layer+'&region=year='+yearRebanhoBovino+''+this.msFilterRegion+'&filter='+this.msFilterRegionCharts;
 				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
 			} else {
-			  var paramsDownload = '&MSFILTER=year='+this.year+''+this.msFilterRegion
-        this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=pasture_regions_municipios&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
+			  var paramsDownload = '&MSFILTER=year='+yearRebanhoBovino+''+this.msFilterRegion
+        this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=lotacao_bovina_regions&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
       }
 		} else if (layer == 'pontos_campo') {
 			var paramsDownload = 'file=pontos_campo_parada';
