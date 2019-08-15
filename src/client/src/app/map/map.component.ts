@@ -740,14 +740,14 @@ export class MapComponent implements OnInit {
 			visible: false,
 			layer: new OlTileLayer({
 				source: new TileWMS({
-          url: 'http://seeg-mapbiomas.terras.agr.br/wms',
+          url: 'http://mapbiomas-staging.terras.agr.br/wms',
           projection: 'EPSG:3857',
           params: {'LAYERS': 'rgb', 
           					'SERVICE': 'WMS',
           					'TILED': true,
           					'VERSION': '1.1.1',
           					'TRANSPARENT': 'true', 
-          					'MAP': 'wms/v/3.0/classification/rgb.map', 
+          					'MAP': 'wms/v/staging/classification/rgb.map', 
           					'YEAR': this.year
          	},
          	serverType: 'mapserver',
@@ -925,22 +925,12 @@ export class MapComponent implements OnInit {
 		}
 
 		this.terras_privadas = {
+			label: 'Terras Privadas do CAR',
+			tooltip: 'Terras Privadas do CAR',
+			layername: "geo_car_imovel",
 			visible: false,
-			layer: new OlTileLayer({
-				source: new TileWMS({
-          url: 'http://geoserver.imaflora.org/geoserver/ima-geo/wms',
-          projection: 'EPSG:3857',
-          params: {'LAYERS': 'ima-geo:v_car0518_mapbiomas', 
-          					'SERVICE': 'WMS',
-          					'VERSION': '1.1.1',
-          					'TRANSPARENT': 'true', 
-         	},
-         	serverType: 'mapserver',
-          tileGrid: this.tileGrid
-        }),
-				visible: false,
-	    })
-	  }
+			opacity: 1
+		}
 
     this.utfgridsource = new TileUTFGrid({
       tileJSON: this.getTileJSON()
@@ -968,6 +958,7 @@ export class MapComponent implements OnInit {
 		this.pontos_campo_sem_parada['layer'] = this.createTMSLayer(this.pontos_campo_sem_parada.layername, this.pontos_campo_sem_parada.visible, this.pontos_campo_sem_parada.opacity, this.pontos_campo_sem_parada.layerfilter)
 		this.pontos_tvi_treinamento['layer'] = this.createTMSLayer(this.pontos_tvi_treinamento.layername, this.pontos_tvi_treinamento.visible, this.pontos_tvi_treinamento.opacity, this.pontos_tvi_treinamento.layerfilter)
 		this.pontos_tvi_validacao['layer'] = this.createTMSLayer(this.pontos_tvi_validacao.layername, this.pontos_tvi_validacao.visible, this.pontos_tvi_validacao.opacity, this.pontos_tvi_validacao.layerfilter)
+		this.terras_privadas['layer'] = this.createTMSLayer(this.terras_privadas.layername, this.terras_privadas.visible, this.terras_privadas.opacity, '')
 
 		this.regions = this.createVectorLayer('regions', '#663300', 3);
 		this.fieldPointsStop = this.createVectorLayer('fieldPointsStop', '#fc16ef', 3);
