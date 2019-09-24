@@ -12,7 +12,7 @@ module.exports = function(app) {
 		"postgres": {
 			"host": "postgres@localhost",
 			"port": "5433",
-			"dbname": "atlas_pastagem"
+			"dbname": "lapig"
 		},
 		"port": 3000,
 	};
@@ -24,7 +24,7 @@ module.exports = function(app) {
 		config["postgres"] = {
 			"host": "postgres@200.137.217.158",
 			"port": "5432",
-			"dbname": "atlas_pastagem"
+			"dbname": "lapig"
 		}
 	}
 
