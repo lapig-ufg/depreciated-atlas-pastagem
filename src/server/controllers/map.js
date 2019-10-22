@@ -122,7 +122,7 @@ module.exports = function(app){
 			otherFilter = " WHERE "+region;
 		}
 		
-		client.query("SELECT year, area_ha, (SELECT SUM(pol_ha) FROM regions"+otherFilter+") as area_mun FROM pasture_correction WHERE "+msfilter, (err, res) => {
+		client.query("SELECT year, area_ha, (SELECT SUM(pol_ha) FROM regions "+otherFilter+") as area_mun FROM pasture_correction WHERE "+msfilter, (err, res) => {
 
 			var percentual_area_ha = ((res.rows[0].area_ha * 100) / res.rows[0].area_mun);
 
