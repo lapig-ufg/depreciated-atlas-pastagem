@@ -3,8 +3,8 @@
   	<div class="title-atlas">Atlas Digital das Pastagens Brasileiras</div>
   </div>
   <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 logos-atlas">
-  		<a href="https://pastagem.org/index.php/pt-br/" target="_blank"><img class="logo-ufg" src="assets/ufg.png" /></a>
-  		<a href="https://www.lapig.iesa.ufg.br/lapig/" target="_blank"><img  class="logo-lapig" src="assets/logo.png" /></a>
+  		<a href="https://pastagem.org/index.php/pt-br/" target="_blank"><img class="logo-ufg" src="atlas/assets/ufg.png" /></a>
+  		<a href="https://www.lapig.iesa.ufg.br/lapig/" target="_blank"><img  class="logo-lapig" src="atlas/assets/logo.png" /></a>
   </div>
 </nav>
 <div class="container-fluid">
@@ -27,7 +27,7 @@
 											  <ngb-highlight [result]="r.text" [term]="t"></ngb-highlight>
 											</ng-template>
 										  <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Escolha um bioma / estado / município..." (selectItem)="updateRegion($event)" [resultTemplate]="rt" [inputFormatter]="formatter"/>
-										  <img [hidden]="model == ''" class="clear-region-btn" (click)="getMatchRegion()" src="assets/clear_button.png" />
+										  <img [hidden]="model == ''" class="clear-region-btn" (click)="getMatchRegion()" src="atlas/assets/clear_button.png" />
 										  <span *ngIf="searching">localizando...</span>
 										  <div class="invalid-feedback" *ngIf="searchFailed">Desculpe, Região não encontrada.</div>
 										</div>
@@ -388,7 +388,7 @@
 					  <mat-tab label="Série Temporal" *ngIf="true" id="tabGraficoLinhas">
 					  	<h6>
 					  		<b>Áreas de Pastagem - {{ regionSelected }}</b>
-					  		<img class="legend_Graphic" [src]="'assets/legend_graphic.png'"> 
+					  		<img class="legend_Graphic" [src]="'atlas/assets/legend_graphic.png'"> 
 					  	</h6>
 					  	<p class="info_clique_mapa">*Clique em um ano do gráfico para atualizar o mapa e indicadores.</p>
 					  	<ngx-charts-line-chart 
@@ -477,7 +477,7 @@
 					  	</div>
 					  	<div class="row" *ngIf="this.infoFeature.foto != ''">
 				  			<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 conteinerFotosCampo">
-        					<img class="fotosCampo" src="/assets/fotos_campo/{{infoFeature.id}}/{{infoFeature.foto[fotoAtual - 1]}}">
+        					<img class="fotosCampo" src="/atlas/assets/fotos_campo/{{infoFeature.id}}/{{infoFeature.foto[fotoAtual - 1]}}">
         					<div class="row" style="padding-left: 18px">
         						<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
 	        						<button mat-raised-button (click)="passaFoto('anterior')" [disabled]="!(this.fotoAtual > 1)">
@@ -563,7 +563,7 @@
 			      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
 			      	<div class="row" *ngIf="checked">
 		      			<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
-									<img [src]="checkedLegendPasture ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pasture')" > 
+									<img [src]="checkedLegendPasture ? 'atlas/assets/layer-visible.png' : 'atlas/assets/layer-not-visible.png'" (click)="legendchecked('pasture')" > 
 		      			</div>
 		      			<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
 				      		<mat-expansion-panel [expanded] = true>
@@ -586,7 +586,7 @@
 						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
 			      	<div class="row" *ngIf="pastagens_degradadas_show">
 		      			<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
-									<img [src]="checkedLegendPastureDegraded ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pasture_degraded')" > 
+									<img [src]="checkedLegendPastureDegraded ? 'atlas/assets/layer-visible.png' : 'atlas/assets/layer-not-visible.png'" (click)="legendchecked('pasture_degraded')" > 
 		      			</div>
 		      			<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
 				      		<mat-expansion-panel [expanded] = true>
@@ -606,7 +606,7 @@
 						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
 			      	<div class="row" *ngIf="rebanho_bovino_show">
 			      		<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
-									<img [src]="checkedLegendRebanho ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('rebanho_bovino')" > 
+									<img [src]="checkedLegendRebanho ? 'atlas/assets/layer-visible.png' : 'atlas/assets/layer-not-visible.png'" (click)="legendchecked('rebanho_bovino')" > 
 			      		</div>
 			      		<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
 				      		<mat-expansion-panel [expanded] = true>
@@ -627,7 +627,7 @@
 						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
 			      	<div class="row" *ngIf="potencial_intensificacao_show">
 			      		<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
-									<img [src]="checkedLegendPot_Int ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('potencial_intensificacao')" > 
+									<img [src]="checkedLegendPot_Int ? 'atlas/assets/layer-visible.png' : 'atlas/assets/layer-not-visible.png'" (click)="legendchecked('potencial_intensificacao')" > 
 			      		</div>
 			      		<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
 				      		<mat-expansion-panel [expanded] = true>
@@ -648,7 +648,7 @@
 						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
 			      	<div class="row" *ngIf="pontos_sem_parada_show">
 			      		<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
-									<img [src]="checkedLegendFieldPointNoStop ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pontos_campo_sem_parada')" > 
+									<img [src]="checkedLegendFieldPointNoStop ? 'atlas/assets/layer-visible.png' : 'atlas/assets/layer-not-visible.png'" (click)="legendchecked('pontos_campo_sem_parada')" > 
 			      		</div>
 			      		<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
 				      		<mat-expansion-panel [expanded] = true>
@@ -669,7 +669,7 @@
 						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
 			      	<div class="row" *ngIf="pontos_tvi_show">
 			      		<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
-									<img [src]="checkedLegendTviPoint ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pontos_tvi')" > 
+									<img [src]="checkedLegendTviPoint ? 'atlas/assets/layer-visible.png' : 'atlas/assets/layer-not-visible.png'" (click)="legendchecked('pontos_tvi')" > 
 			      		</div>
 			      		<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
 				      		<mat-expansion-panel [expanded] = true>
