@@ -740,14 +740,13 @@ export class MapComponent implements OnInit {
 			visible: false,
 			layer: new OlTileLayer({
 				source: new TileWMS({
-          url: 'http://mapbiomas-staging.terras.agr.br/wms',
+          url: 'http://workspace.mapbiomas.org/wms',
           projection: 'EPSG:3857',
           params: {'LAYERS': 'rgb', 
           					'SERVICE': 'WMS',
-          					'TILED': true,
           					'VERSION': '1.1.1',
-          					'TRANSPARENT': 'true', 
-          					'MAP': 'wms/v/staging/classification/rgb.map', 
+										'TRANSPARENT': 'true',
+          					'MAP': 'wms/v/4.0/classification/rgb.map', 
           					'YEAR': this.year
          	},
          	serverType: 'mapserver',
