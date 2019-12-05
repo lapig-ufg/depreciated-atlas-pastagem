@@ -10,9 +10,11 @@ module.exports = function(app) {
 		"langDir": appRoot + "/lang",
 		"logDir": appRoot + "/log/",
 		"postgres": {
-			"host": "postgres@localhost",
-			"port": "5433",
-			"dbname": "lapig"
+			"host": "localhost",
+			"port": "5432",
+			"dbname": "lapig",
+			"user": "postgres",
+			"password": "postgres",
 		},
 		"port": 3000,
 	};

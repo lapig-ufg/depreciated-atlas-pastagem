@@ -6,7 +6,7 @@
 		  <tr class="table-row a01">
 		  	<td class="title-row"><b>Descrição:</b></td>
 		  	<td class="content-row">
-		  		Mapeamento anual das pastagens brasileiras, realizado através do uso de séries de dados Landsat de 1985 a 2017. Utilizando abordagens de classificação supervisionada (Random Forest) através da plataforma Earth Engine da Google. Para mais informações acesse o <a href="https://storage.googleapis.com/mapbiomas/base-de-dados/metodologia/colecao-3_0/Pasture-Appendix-ATBD-Colec%CC%A7a%CC%83o-3-V1.pdf"> ATBD Mapbiomas.</a>
+		  		Mapeamento anual das pastagens brasileiras, realizado através do uso de séries de dados Landsat de 1985 a 2018. Utilizando abordagens de classificação supervisionada (Random Forest) através da plataforma Earth Engine da Google. Para mais informações acesse o <a href="https://storage.googleapis.com/mapbiomas/base-de-dados/metodologia/colecao-3_0/Pasture-Appendix-ATBD-Colec%CC%A7a%CC%83o-3-V1.pdf" target="_blank"> ATBD Mapbiomas.</a>
 		  	</td>
 		  </tr>
 			<tr class="table-row">
@@ -25,7 +25,7 @@
 			<tr class="table-row">
 				<td class="title-row"><b>Data:</b></td>
 				<td class="content-row">
-					De 1985 a 2017.
+					De 1985 a 2018.
 				</td>
 			</tr>
 			<tr class="table-row a01">
@@ -152,7 +152,7 @@
 		  <tr class="table-row a01">
 		  	<td class="title-row"><b>Descrição:</b></td>
 		  	<td class="content-row">
-		  		Cálculo realizado considerando a composição do rebanho para o censo agropecuário. Para os anos de 1986 a 1999, utilizou-se os dados do censo agropecuário de 1996. Para os anos de 2000 a 2017. utilizou-se os dados do censo agropecuário de 2006. Sendo que uma Unidade Animal (UA), equivale a um animal de 450 kg vivo.
+		  		Cálculo realizado considerando a composição do rebanho para o censo agropecuário. Para os anos de 1986 a 1999, utilizou-se os dados do censo agropecuário de 1996. Para os anos de 2000 a 2018. utilizou-se os dados do censo agropecuário de 2006. Sendo que uma Unidade Animal (UA), equivale a um animal de 450 kg vivo.
 		  	</td>
 		  </tr>
 			<tr class="table-row">
@@ -171,7 +171,7 @@
 			<tr class="table-row">
 				<td class="title-row"><b>Data:</b></td>
 				<td class="content-row">
-					1985 á 2017.
+					1985 á 2018.
 				</td>
 			</tr>
 			<tr class="table-row a01">
@@ -220,6 +220,80 @@
 		</tbody>
 	</table>
 </div>
+<div mat-dialog-content style="text-align: justify;" *ngIf="data.name == 'potencial_intensificacao'">
+  <h3 class="title-metadados">Potencial de Intensificação da Pecuária.</h3>
+  <table>
+    <tbody>
+      <tr class="table-row a01">
+        <td class="title-row"><b>Descrição:</b></td>
+        <td class="content-row">
+          Mapeamento do Potencial de intensificação da pecuária a pasto no Brasil, gerado pelo Lapig. Este dado é gerado
+          a partir da diferença entre a taxa de lotação bovina (2015) e capacidade de suporte potencial (produção de
+          forragem). <a href="https://www.lapig.iesa.ufg.br/drive/index.php/s/ro3HbTu47d1nw14" target="_blank"> Confira
+            o artigo completo</a>.
+        </td>
+      </tr>
+      <tr class="table-row">
+        <td class="title-row"><b>Formato:</b></td>
+        <td class="content-row">
+          Shapefile (*.SHP), com arquivos complementares (*.PRJ, *DBF, *.SHX, *.SBX, *MAP).
+        </td>
+      </tr>
+      <tr class="table-row a01">
+        <td class="title-row"><b>Região:</b></td>
+        <td class="content-row">
+          Nível de Brasil, permitindo analisar por diversas regiões de interesse (e.g. biomas, estados, municípios).
+        </td>
+      </tr>
+      <tr class="table-row">
+        <td class="title-row"><b>Data:</b></td>
+        <td class="content-row">
+					2017
+        </td>
+      </tr>
+      <tr class="table-row a01">
+        <td class="title-row"><b>Escala:</b></td>
+        <td class="content-row">
+					1:250.000
+        </td>
+      </tr>
+      <tr class="table-row">
+        <td class="title-row"><b>Sistemas de Referência e Coordenadas</b></td>
+        <td class="content-row">
+          Superfície de referência SIRGAS 2000, sistema de coordenadas em graus.
+        </td>
+      </tr>
+      <tr class="table-row a01">
+        <td class="title-row"><b>Projeção cartográfica:</b></td>
+        <td class="content-row">
+          Universal de Mercator.
+        </td>
+      </tr>
+      <tr class="table-row a01">
+        <td class="title-row"><b>Codificação de caractere:</b></td>
+        <td class="content-row">
+          Latin 1.
+        </td>
+      </tr>
+      <tr class="table-row">
+        <td class="title-row"><b>Fonte:</b></td>
+        <td class="content-row">
+          Laboratório de Processamento de Imagens e Geoprocessamento - Lapig (geração do dado).
+          Projeto Spatial metrics and baselines of degradation patterns and provision of ecosystem services by pastures
+          in
+          Brazil. (viabilizador).
+        </td>
+      </tr>
+      <tr class="table-row a01">
+        <td class="title-row"><b>Contato:</b></td>
+        <td class="content-row">
+          Fernanda Stefani - fer.stefani.souza@gmail.com<br />
+          Lana Teixeira - lanamarast@gmail.com
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 <div mat-dialog-content style="text-align: justify;" *ngIf="data.name == 'pontos_campo_parada'">
 	<h3 class="title-metadados">Pontos Amostrais obtidos em campo.</h3>
 	<table>
@@ -227,7 +301,12 @@
 		  <tr class="table-row a01">
 		  	<td class="title-row"><b>Descrição:</b></td>
 		  	<td class="content-row">
-		  		
+		  		Com o propósito de validar mapas produzidos pelo LAPIG-UFG no âmbito do MapBiomas e de subsidiar pesquisas
+		  		voltadas à qualificação das pastagens brasileiras, seis atividades de campo foram realizadas durante os anos de
+		  		2017 e 2018. Um grande conjunto de pontos georreferenciados foi formado e organizado com dados de uso/cobertura do
+		  		solo e indicativos de qualidade das pastagens. <a
+		  		  href="https://www.lapig.iesa.ufg.br/drive/index.php/s/EFiSMalIvyfsDLs" target="_blank"> Confira o relatório
+		  		  completo</a>.
 		  	</td>
 		  </tr>
 			<tr class="table-row">
@@ -282,7 +361,8 @@
 				<td class="title-row"><b>Fonte:</b></td>
 				<td class="content-row">
 					Laboratório de Processamento de Imagens e Geoprocessamento - Lapig (geração do dado).
-					Projeto de Mapeamento Anual da Cobertura e Uso do Solo do Brasil - MapBiomas (viabilizador). 
+					Projeto Spatial metrics and baselines of degradation patterns and provision of ecosystem services by pastures in
+					Brazil. (viabilizador).
 				</td>
 			</tr>
 			<tr class="table-row a01">
@@ -302,7 +382,12 @@
 		  <tr class="table-row a01">
 		  	<td class="title-row"><b>Descrição:</b></td>
 		  	<td class="content-row">
-		  		
+		  		Conjunto georreferenciado de pontos para todo o território brasileiro, sendo atribuídas classes de uso e cobertura
+		  		do solo referente a cada ano no período de 1985 a 2017. Foram utilizadas imagens Landsat provenientes dos sensores
+		  		TM, ETM+ e OLI. Buscou-se também abordar os critérios adotados, dificuldades e especificidades encontradas quanto
+		  		a interpretação de imagens em cada um dos 6 biomas brasileiros. <a
+		  		  href="https://www.lapig.iesa.ufg.br/drive/index.php/s/5VPL1NfRCtLBMtr" target="_blank">Confira o artigo
+		  		  completo</a>.
 		  	</td>
 		  </tr>
 			<tr class="table-row">
@@ -351,7 +436,8 @@
 				<td class="title-row"><b>Fonte:</b></td>
 				<td class="content-row">
 					Laboratório de Processamento de Imagens e Geoprocessamento - Lapig (geração do dado).
-					Projeto de Mapeamento Anual da Cobertura e Uso do Solo do Brasil - MapBiomas (viabilizador). 
+					Projeto Spatial metrics and baselines of degradation patterns and provision of ecosystem services by pastures in
+					Brazil. (viabilizador).
 				</td>
 			</tr>
 			<tr class="table-row a01">

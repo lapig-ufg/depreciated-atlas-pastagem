@@ -8,7 +8,7 @@ module.exports = function(app){
 	var Map = {}
 
 	var config = app.config;
-	/*var conString = "postgres://postgres@localhost:5433/atlas_pastagem";*/
+	//var conString = "postgres://postgres@localhost:5433/lapig";
 	var conString = "postgres://" + config.postgres.user + ":" + config.postgres.password + "@" + config.postgres.host + ":" + config.postgres.port + "/" + config.postgres.dbname;
 	
 	var client = new pg.Client(conString);
