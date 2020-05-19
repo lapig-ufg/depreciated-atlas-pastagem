@@ -161,6 +161,7 @@ export class MapComponent implements OnInit {
   pastagens_zero_transicao: any;
   pastagens_degradadas: any;
   pastagem_degradada_municipios: any;
+  classes_degradacao_pastagem: any;
   rebanho_bovino: any;
   potencial_intensificacao: any;
   estados: any;
@@ -264,7 +265,6 @@ export class MapComponent implements OnInit {
       width: '650px',
       data: {name: layer}
     });
-		console.log('Fernanda estou: ', layer)
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
@@ -392,6 +392,7 @@ export class MapComponent implements OnInit {
 		var source_pastagens_zero_transicoes = this.pastagens_zero_transicao.layer.getSource();
 		var source_pastagens_degradadas = this.pastagens_degradadas.layer.getSource();
 		var source_pastagens_degradadas_regions = this.pastagem_degradada_municipios.layer.getSource();
+		var source_classes_degradacao_pastagem = this.classes_degradacao_pastagem.layer.getSource();
 		var source_rebanho_bovino = this.rebanho_bovino.layer.getSource();
 		var source_potencial_intensificacao = this.potencial_intensificacao.layer.getSource();
 		var source_pontos_sem_parada = this.pontos_campo_sem_parada.layer.getSource();
@@ -406,6 +407,7 @@ export class MapComponent implements OnInit {
 		source_pastagens_zero_transicoes.setUrls(this.getUrls(this.pastagens_zero_transicao.layername, this.pastagens_zero_transicao.layerfilter))
 		source_pastagens_degradadas.setUrls(this.getUrls(this.pastagens_degradadas.layername, this.pastagens_degradadas.layerfilter))
 		source_pastagens_degradadas_regions.setUrls(this.getUrls(this.pastagem_degradada_municipios.layername, this.pastagem_degradada_municipios.layerfilter))
+		source_classes_degradacao_pastagem.setUrls(this.getUrls(this.classes_degradacao_pastagem.layername, this.classes_degradacao_pastagem.layerfilter))
 		source_rebanho_bovino.setUrls(this.getUrls(this.rebanho_bovino.layername, this.rebanho_bovino.layerfilter))
 		source_potencial_intensificacao.setUrls(this.getUrls(this.potencial_intensificacao.layername, this.potencial_intensificacao.layerfilter))
 		source_pontos_sem_parada.setUrls(this.getUrls(this.pontos_campo_sem_parada.layername, this.pontos_campo_sem_parada.layerfilter))
@@ -420,6 +422,7 @@ export class MapComponent implements OnInit {
 		source_pastagens_zero_transicoes.refresh();
 		source_pastagens_degradadas.refresh();
 		source_pastagens_degradadas_regions.refresh();
+		source_classes_degradacao_pastagem.refresh();
 		source_rebanho_bovino.refresh();
 		source_potencial_intensificacao.refresh();
 		source_pontos_sem_parada.refresh();
@@ -467,7 +470,7 @@ export class MapComponent implements OnInit {
       this.updateChartsTransitions();
       this.addPoints();
 
-      this.selectPastureDegraded = 'areas-pastagens-degraded'
+      // this.selectPastureDegraded = 'areas-pastagens-degraded'
       this.pastagens_todas_transicoes.layer.setVisible(false);
       this.pastagens_uma_transicao.layer.setVisible(false);
 
@@ -830,6 +833,15 @@ export class MapComponent implements OnInit {
 			layerfilter: 'pontos_campo_sem_parada'
 		}
 
+		this.classes_degradacao_pastagem = {
+			label: 'Classes de Degradação das Pastagens no Brasil',
+			tooltip: 'Classes de Degradação das Pastagens no Brasil',
+			layername: "classes_degradacao_pastagem",
+			visible: false,
+			opacity: 1,
+			layerfilter: 'pontos_campo_sem_parada'
+		}
+
 		this.rebanho_bovino = {
 			label: 'Rebanho Bovino - UA',
 			tooltip: 'Rebanho Bovino - UA',
@@ -946,6 +958,7 @@ export class MapComponent implements OnInit {
 		this.pastagens_zero_transicao['layer'] = this.createTMSLayer(this.pastagens_zero_transicao.layername, this.pastagens_zero_transicao.visible, this.pastagens_zero_transicao.opacity, this.pastagens_zero_transicao.layerfilter);
 		this.pastagens_degradadas['layer'] = this.createTMSLayer(this.pastagens_degradadas.layername, this.pastagens_degradadas.visible, this.pastagens_degradadas.opacity, this.pastagens_degradadas.layerfilter);
 		this.pastagem_degradada_municipios['layer'] = this.createTMSLayer(this.pastagem_degradada_municipios.layername, this.pastagem_degradada_municipios.visible, this.pastagem_degradada_municipios.opacity, this.pastagem_degradada_municipios.layerfilter);
+		this.classes_degradacao_pastagem['layer'] = this.createTMSLayer(this.classes_degradacao_pastagem.layername, this.classes_degradacao_pastagem.visible, this.classes_degradacao_pastagem.opacity, this.classes_degradacao_pastagem.layerfilter)
 		this.rebanho_bovino['layer'] = this.createTMSLayer(this.rebanho_bovino.layername, this.rebanho_bovino.visible, this.rebanho_bovino.opacity, this.rebanho_bovino.layerfilter);
 		this.potencial_intensificacao['layer'] = this.createTMSLayer(this.potencial_intensificacao.layername, this.potencial_intensificacao.visible, this.potencial_intensificacao.opacity, this.potencial_intensificacao.layerfilter);
 		this.estados['layer'] = this.createTMSLayer(this.estados.layername, this.estados.visible, this.estados.opacity, '')
@@ -970,6 +983,7 @@ export class MapComponent implements OnInit {
 		this.layers.push(this.pastagens_zero_transicao['layer'])
 		this.layers.push(this.pastagens_degradadas['layer'])
 		this.layers.push(this.pastagem_degradada_municipios['layer'])
+		this.layers.push(this.classes_degradacao_pastagem['layer'])
 		this.layers.push(this.rebanho_bovino['layer'])
 		this.layers.push(this.potencial_intensificacao['layer'])
 		this.layers.push(this.estados['layer'])
@@ -984,7 +998,7 @@ export class MapComponent implements OnInit {
 		this.layers.push(this.regions);
 		this.layers.push(this.fieldPointsStop);
 		this.layers.push(this.terras_privadas.layer);
-    this.layers.push(utfgridLayer)
+		this.layers.push(utfgridLayer)
 
 		this.layers.push()
 		this.layers = this.layers.concat(olLayers.reverse());
@@ -1130,11 +1144,18 @@ export class MapComponent implements OnInit {
 		if(e.value == 'areas-pastagens-degraded'){
 			this.pastagens_degradadas.layer.setVisible(true);
 			this.pastagem_degradada_municipios.layer.setVisible(false);
+			this.classes_degradacao_pastagem.layer.setVisible(false);
 			this.layerPastureDegradedShow = 'areas-pastagens-degraded';
 		} else if (e.value == 'municipios-pastagens-degraded') {
 			this.pastagem_degradada_municipios.layer.setVisible(true);
 			this.pastagens_degradadas.layer.setVisible(false);
+			this.classes_degradacao_pastagem.layer.setVisible(false);
 			this.layerPastureDegradedShow = 'municipios-pastagens-degraded';
+		} else if (e.value == 'classes_degradacao_pastagem') {
+			this.classes_degradacao_pastagem.layer.setVisible(true);
+			this.pastagem_degradada_municipios.layer.setVisible(false);
+			this.pastagens_degradadas.layer.setVisible(false);
+			this.layerPastureDegradedShow = 'classes_degradacao_pastagem';
 		}
 
 	}
@@ -1284,8 +1305,10 @@ export class MapComponent implements OnInit {
 		} else if (layer == 'pastagem_degradada') {
 			if(this.layerPastureDegradedShow == 'areas-pastagens-degraded'){
 				layer = this.pastagens_degradadas.layer;
-			} else {
+			} else if (this.layerPastureDegradedShow == 'municipios-pastagens-degraded') {
 				layer = this.pastagem_degradada_municipios.layer;
+			} else if (this.layerPastureDegradedShow == 'classes_degradacao_pastagem') {
+				layer = this.classes_degradacao_pastagem.layer;
 			}
 			this.pastagens_degradadas_show = e.checked;
 		} else if (layer == 'rebanho_bovino') {
@@ -1328,6 +1351,8 @@ export class MapComponent implements OnInit {
 				this.pastagens_degradadas.layer.setVisible(this.checkedLegendPastureDegraded);
 			} else if (this.layerPastureDegradedShow == 'municipios-pastagens-degraded') {
 				this.pastagem_degradada_municipios.layer.setVisible(this.checkedLegendPastureDegraded);
+			}else if (this.layerPastureDegradedShow == 'classes_degradacao_pastagem') {
+				this.classes_degradacao_pastagem.layer.setVisible(this.checkedLegendPastureDegraded);
 			}
 		} else if (layer == 'rebanho_bovino') {
 			this.checkedLegendRebanho = !this.checkedLegendRebanho;
