@@ -227,15 +227,15 @@ module.exports = function(app){
 	Map.indicatorsPastureDegraded = function(request, response){
 
 		var msfilter = request.param('MSFILTER', '');
-		var filters = " WHERE category='1'";
+		var filters = " WHERE classe !=1";
 		var filtersRegions = '';
 
 		if(msfilter) {
 			filters = filters+" AND "+msfilter;
 			filtersRegions = " WHERE "+msfilter;
 		}
-
-		client.query("SELECT SUM(area_ha), (SELECT SUM(pol_ha) FROM regions"+filtersRegions+") as area_mun FROM pasture_degraded_class"+filters, (err, res) => {
+		console.log()
+		client.query("SELECT SUM(area_ha), (SELECT SUM(pol_ha) FROM regions"+filtersRegions+") as area_mun FROM classes_degradacao_pastagem"+filters, (err, res) => {
 
 			var percentual_area_ha = ((res.rows[0].sum * 100) / res.rows[0].area_mun);
 

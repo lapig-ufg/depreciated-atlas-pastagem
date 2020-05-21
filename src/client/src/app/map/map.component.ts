@@ -189,7 +189,7 @@ export class MapComponent implements OnInit {
   region_geom: any;
   linkDownload: any;
   layerPastureShow = 'areas-pastagens';
-  layerPastureDegradedShow = 'areas-pastagens-degraded';
+  layerPastureDegradedShow = 'classes_degradacao_pastagem';
   layerPointTVIShow = 'treinamento';
   layerPointFieldShow = 'parada';
   pastagem_show: any;
@@ -1141,22 +1141,22 @@ export class MapComponent implements OnInit {
 		}
     this.updateChartsTransitions();
 
-		if(e.value == 'areas-pastagens-degraded'){
-			this.pastagens_degradadas.layer.setVisible(true);
-			this.pastagem_degradada_municipios.layer.setVisible(false);
-			this.classes_degradacao_pastagem.layer.setVisible(false);
-			this.layerPastureDegradedShow = 'areas-pastagens-degraded';
-		} else if (e.value == 'municipios-pastagens-degraded') {
-			this.pastagem_degradada_municipios.layer.setVisible(true);
-			this.pastagens_degradadas.layer.setVisible(false);
-			this.classes_degradacao_pastagem.layer.setVisible(false);
-			this.layerPastureDegradedShow = 'municipios-pastagens-degraded';
-		} else if (e.value == 'classes_degradacao_pastagem') {
-			this.classes_degradacao_pastagem.layer.setVisible(true);
-			this.pastagem_degradada_municipios.layer.setVisible(false);
-			this.pastagens_degradadas.layer.setVisible(false);
-			this.layerPastureDegradedShow = 'classes_degradacao_pastagem';
-		}
+		// if(e.value == 'areas-pastagens-degraded'){
+		// 	this.pastagens_degradadas.layer.setVisible(true);
+		// 	this.pastagem_degradada_municipios.layer.setVisible(false);
+		// 	this.classes_degradacao_pastagem.layer.setVisible(false);
+		// 	this.layerPastureDegradedShow = 'areas-pastagens-degraded';
+		// } else if (e.value == 'municipios-pastagens-degraded') {
+		// 	this.pastagem_degradada_municipios.layer.setVisible(true);
+		// 	this.pastagens_degradadas.layer.setVisible(false);
+		// 	this.classes_degradacao_pastagem.layer.setVisible(false);
+		// 	this.layerPastureDegradedShow = 'municipios-pastagens-degraded';
+		// } else if (e.value == 'classes_degradacao_pastagem') {
+		// 	this.classes_degradacao_pastagem.layer.setVisible(true);
+		// 	this.pastagem_degradada_municipios.layer.setVisible(false);
+		// 	this.pastagens_degradadas.layer.setVisible(false);
+		// 	this.layerPastureDegradedShow = 'classes_degradacao_pastagem';
+		// }
 
 	}
 
@@ -1302,14 +1302,16 @@ export class MapComponent implements OnInit {
       }
 			this.pontos_parada = e.checked;
 			this.selectedIndex = 4
-		} else if (layer == 'pastagem_degradada') {
-			if(this.layerPastureDegradedShow == 'areas-pastagens-degraded'){
-				layer = this.pastagens_degradadas.layer;
-			} else if (this.layerPastureDegradedShow == 'municipios-pastagens-degraded') {
-				layer = this.pastagem_degradada_municipios.layer;
-			} else if (this.layerPastureDegradedShow == 'classes_degradacao_pastagem') {
-				layer = this.classes_degradacao_pastagem.layer;
-			}
+		} else if (layer == 'classes_degradacao_pastagem') {
+			// if(this.layerPastureDegradedShow == 'areas-pastagens-degraded'){
+			// 	layer = this.pastagens_degradadas.layer;
+			// } else if (this.layerPastureDegradedShow == 'municipios-pastagens-degraded') {
+			// 	layer = this.pastagem_degradada_municipios.layer;
+			// } else if (this.layerPastureDegradedShow == 'classes_degradacao_pastagem') {
+			// 	layer = this.classes_degradacao_pastagem.layer;
+			// }
+			// this.pastagens_degradadas_show = e.checked;
+			layer = this.classes_degradacao_pastagem.layer;
 			this.pastagens_degradadas_show = e.checked;
 		} else if (layer == 'rebanho_bovino') {
 			layer = this.rebanho_bovino.layer;
@@ -1345,15 +1347,20 @@ export class MapComponent implements OnInit {
 			} else if (this.layerPastureShow == 'pastagens-zero-transicao') {
 				this.pastagens_zero_transicao.layer.setVisible(this.checkedLegendPasture);
 			}
-		} else if (layer == 'pasture_degraded') {
+		} 
+		// else if (layer == 'pasture_degraded') {
+		// 	this.checkedLegendPastureDegraded = !this.checkedLegendPastureDegraded;
+		// 	if (this.layerPastureDegradedShow == 'areas-pastagens-degraded'){
+		// 		this.pastagens_degradadas.layer.setVisible(this.checkedLegendPastureDegraded);
+		// 	} else if (this.layerPastureDegradedShow == 'municipios-pastagens-degraded') {
+		// 		this.pastagem_degradada_municipios.layer.setVisible(this.checkedLegendPastureDegraded);
+		// 	}else if (this.layerPastureDegradedShow == 'classes_degradacao_pastagem') {
+		// 		this.classes_degradacao_pastagem.layer.setVisible(this.checkedLegendPastureDegraded);
+		// 	}
+		// } 
+		else if (this.layerPastureDegradedShow == 'classes_degradacao_pastagem') {
 			this.checkedLegendPastureDegraded = !this.checkedLegendPastureDegraded;
-			if (this.layerPastureDegradedShow == 'areas-pastagens-degraded'){
-				this.pastagens_degradadas.layer.setVisible(this.checkedLegendPastureDegraded);
-			} else if (this.layerPastureDegradedShow == 'municipios-pastagens-degraded') {
-				this.pastagem_degradada_municipios.layer.setVisible(this.checkedLegendPastureDegraded);
-			}else if (this.layerPastureDegradedShow == 'classes_degradacao_pastagem') {
-				this.classes_degradacao_pastagem.layer.setVisible(this.checkedLegendPastureDegraded);
-			}
+			this.classes_degradacao_pastagem.layer.setVisible(this.checkedLegendPastureDegraded);
 		} else if (layer == 'rebanho_bovino') {
 			this.checkedLegendRebanho = !this.checkedLegendRebanho;
 			this.rebanho_bovino.layer.setVisible(this.checkedLegendRebanho);
