@@ -509,10 +509,9 @@
 									</h6>
 									<p class="info_clique_mapa">*Área em hectares</p>
 							<ngx-charts-advanced-pie-chart
-								[view]="[viewWidth, auto]"
+								[view]="[viewWidth, 400]"
 								[scheme]="colorSchemeDegradation"
 								[results]="chartDegradationResult"
-								[gradient]="gradient"
 								>
 								<ng-template #tooltipTemplate let-model="model">
 										{{model.name}}: {{ model.value | number:'1.0-0' }} ha
