@@ -114,6 +114,7 @@ export class MapComponent implements OnInit {
 
 	charts: any;
 	chartResult: any;
+	chartDegradationResult: any;
 	chartResultStates: any;
 	regionSelected: 'Brasil';
 	regionTypeCharts: any;
@@ -149,6 +150,9 @@ export class MapComponent implements OnInit {
     selectable: true,
     group: 'Ordinal',
     domain: ['#ffc107', '#f48c40', '#a8385d', '#00bfa5']
+	};
+	colorSchemeDegradation = {
+    domain: ['#579e4e', '#c8e88f', '#f8cd88', '#db473f']
   };
   colorSchemeTransitions: any;
   colorSchemeStates = ('solar');
@@ -1472,6 +1476,10 @@ export class MapComponent implements OnInit {
 		this.http.get('atlas/service/map/charts?region='+this.msFilterRegionCharts+'&type='+this.regionTypeCharts).subscribe(charts => {
 			this.chartResult = charts;
 		});
+
+		this.http.get('atlas/service/map/ChartsClassDegradation?region='+this.msFilterRegionCharts).subscribe(chartsDegradation => {
+			this.chartDegradationResult = chartsDegradation;
+		});
 	}
 
 	private updateChartsYears() {
@@ -1535,6 +1543,7 @@ export class MapComponent implements OnInit {
 	ngOnInit() {
 		this.layerLegend = "Área de Pastagem"
 		this.regionSelected = 'Brasil';
+		this.updateCharts();
 		this.updateChartsYears();
 		this.sumIndicators();
 		this.chartRegionScale = true;

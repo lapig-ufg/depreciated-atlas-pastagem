@@ -19,6 +19,7 @@ module.exports = function (app) {
 	app.get('/service/map/charts', map.charts);
 	app.get('/service/map/chartsByYear', map.chartsByYear);
 	app.get('/service/map/ChartsTransitions', map.ChartsTransitions);
+	app.get('/service/map/ChartsClassDegradation', map.ChartsClassDegradation);
 	app.get('/service/map/downloadCSV', map.downloadCSV);
 	app.get('/service/map/downloadSHP', map.downloadSHP);
 }

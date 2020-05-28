@@ -599,6 +599,41 @@ module.exports = function(app){
 		});
 	}
 
+	Map.ChartsClassDegradation =  function(request, response){
+
+		var region = request.param('region', '');
+
+		if(region != ''){
+			region = "WHERE "+region
+		}
+
+		var query = "SELECT classe, SUM(area_ha) from classes_degradacao_pastagem "+region+" GROUP BY 1 ORDER BY 1;";
+		var result = []
+
+		client.query(query, (err, res) => {
+			
+			res.rows.forEach(function(row){
+
+				if(row.classe == 1) {
+					row.classe = 'Não Degradada'
+				} else if(row.classe == 2) {
+					row.classe = 'Leve'
+				} else if(row.classe == 3) {
+					row.classe = 'Moderada'
+				} else if(row.classe == 4) {
+					row.classe = 'Severa'
+				} 
+
+				result.push({
+					name: row.classe,
+					value: parseFloat(row.sum)
+				})
+			})
+			response.send(result);
+			response.end();
+		});
+	}
+
 	Map.downloadCSV = function(request, response) {
 
 		var region = request.param('region', '');

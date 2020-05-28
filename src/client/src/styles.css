@@ -42,6 +42,14 @@
 	width: auto !important;
 }
 
+.advanced-pie-legend .legend-items-container .legend-items {
+	white-space: unset !important;
+}
+
+.advanced-pie-legend .legend-items-container .legend-items .legend-item {
+	margin-bottom: 20px !important;
+}
+
 .mat-slide-toggle-content {
 	font-size: 15px !important
 }

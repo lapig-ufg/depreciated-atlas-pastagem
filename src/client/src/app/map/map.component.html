@@ -461,7 +461,7 @@
 		                {{model.name}}: {{ model.value | number:'1.0-0' }} ha
 		            </ng-template>
 		          </ngx-charts-bar-horizontal>
-					  </mat-tab>
+						</mat-tab>
 					  <mat-tab label="Transições" *ngIf="Usetransitions"> 
 					  	<h6><b> {{ nameChartsTransitions }} - {{ regionSelected }}</b> </h6>
 					  	<ngx-charts-bar-vertical 
@@ -502,7 +502,23 @@
 		              </tr>
 		            </tbody>
 		          </table>
-					  </mat-tab>
+						</mat-tab>
+						<mat-tab label="Pastagem Degradada">
+								<h6>
+										<b>Áreas de Pastagem com Indício de Degradação - {{ regionSelected }}</b>
+									</h6>
+									<p class="info_clique_mapa">*Área em hectares</p>
+							<ngx-charts-advanced-pie-chart
+								[view]="[viewWidth, auto]"
+								[scheme]="colorSchemeDegradation"
+								[results]="chartDegradationResult"
+								[gradient]="gradient"
+								>
+								<ng-template #tooltipTemplate let-model="model">
+										{{model.name}}: {{ model.value | number:'1.0-0' }} ha
+		            </ng-template>
+							</ngx-charts-advanced-pie-chart>
+						</mat-tab>
 					  <mat-tab label="Pontos Campo" *ngIf="this.pontos_parada">
 					  	<div class="row" *ngIf="this.infoFeature.foto == ''">
 					  		<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 instrucoesPontosCampo">
