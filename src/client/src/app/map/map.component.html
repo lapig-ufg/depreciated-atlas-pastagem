@@ -505,9 +505,9 @@
 						</mat-tab>
 						<mat-tab label="Pastagem Degradada">
 								<h6>
-										<b>Áreas de Pastagem com Indício de Degradação - {{ regionSelected }}</b>
-									</h6>
-									<p class="info_clique_mapa">*Área em hectares</p>
+									<b>Áreas de Pastagem com Indício de Degradação - {{ regionSelected }}</b>
+								</h6>
+								<p class="info_clique_mapa">*Área em hectares</p>
 							<ngx-charts-advanced-pie-chart
 								[view]="[viewWidth, 400]"
 								[scheme]="colorSchemeDegradation"
@@ -517,6 +517,10 @@
 										{{model.name}}: {{ model.value | number:'1.0-0' }} ha
 		            </ng-template>
 							</ngx-charts-advanced-pie-chart>
+							<p class="info_clique_mapa" style="text-align: left; padding-left:14px">*A diferença entre a área de pastagem aqui apresentada e a área mapeada, 
+									é explicada pelo ajuste de área a partir da análise de acurácia, detalhada em 
+									<a href="https://www.sciencedirect.com/science/article/pii/S0034425719303207?via%3Dihub" target="_blank">(Parente et al. 2019)</a>
+							</p>
 						</mat-tab>
 					  <mat-tab label="Pontos Campo" *ngIf="this.pontos_parada">
 					  	<div class="row" *ngIf="this.infoFeature.foto == ''">
