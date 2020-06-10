@@ -607,7 +607,7 @@
 							  	</div>
 							  	<div class="row" *ngIf="this.infoFeature.foto != ''">
 						  			<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 containerFotosCampo">
-		        					<img class="fotosCampo" src="/STORAGE/fotos_campo/{{infoFeature.id}}/{{infoFeature.foto[fotoAtual - 1]}}">
+		        					<img class="fotosCampo" src="atlas/assets/fotos_campo/{{infoFeature.id}}/{{infoFeature.foto[fotoAtual - 1]}}">
 		        					<div class="row">
 		        						<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
 			        						<button mat-raised-button (click)="passaFoto('anterior')" [disabled]="!(this.fotoAtual > 1)">
