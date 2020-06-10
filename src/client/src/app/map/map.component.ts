@@ -35,7 +35,7 @@ import TileUTFGrid from 'ol/source/tileutfgrid';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import "rxjs/add/observable/of";
 
-const SEARCH_URL = 'atlas/service/map/search';
+const SEARCH_URL = 'service/map/search';
 const PARAMS = new HttpParams({
   fromObject: {
     format: 'json'
@@ -291,7 +291,7 @@ export class MapComponent implements OnInit {
   regionGraphic(e) {
     var regionUf = e.name
 
-    this.http.get("atlas/service/map/chartsByYear?year="+this.year+" AND uf='"+regionUf+"'").subscribe(chartsYear => {
+    this.http.get("service/map/chartsByYear?year="+this.year+" AND uf='"+regionUf+"'").subscribe(chartsYear => {
       this.chartResultStates = chartsYear['state'];
 
       var itens = {
@@ -374,7 +374,7 @@ export class MapComponent implements OnInit {
   private zoomExtent() {
   	var map = this.map;
   	if (this.regionTypeCharts != '') {
-			this.http.get('atlas/service/map/extent?region=text='+"'"+this.region_geom+"'").subscribe(extentResult => {
+			this.http.get('service/map/extent?region=text='+"'"+this.region_geom+"'").subscribe(extentResult => {
 				var features = (new GeoJSON()).readFeatures(extentResult, {
 				  dataProjection : 'EPSG:4326',
 				  featureProjection: 'EPSG:3857'
@@ -568,7 +568,8 @@ export class MapComponent implements OnInit {
     		this.totalFotos = featureSel.get('foto').length
     		this.fotoAtual = 1
 	    	this.infoFeature = {
-	    		id: featureSel.get('id'),
+					id: featureSel.get('id'),
+					path_foto: featureSel.get('path_foto'),
 	    		foto: featureSel.get('foto'),
 	    		cobertura: featureSel.get('cobertura'),
 	    		obs: featureSel.get('obs'),
@@ -585,7 +586,7 @@ export class MapComponent implements OnInit {
 	    	}
     	}
   	}.bind(this));
-
+		console.log('foto:', this.infoFeature)
   	this.map.addInteraction(select);
   	this.map.addInteraction(selectOver);
 
@@ -623,7 +624,7 @@ export class MapComponent implements OnInit {
   private getTileJSON() {
     return {
       version: "2.1.0",
-      grids: ['/atlas/service/map/info-layer?year='+this.year+'&tile={x}+{y}+{z}']
+      grids: ['/service/map/info-layer?year='+this.year+'&tile={x}+{y}+{z}']
     }
   }
 
@@ -1013,23 +1014,23 @@ export class MapComponent implements OnInit {
 		if(layer == 'pasture'){
 			if(tipo == 'csv') {
 				var paramsDownload = 'file='+layer+'&region=year='+this.year+''+this.msFilterRegion+'&filter='+this.msFilterRegionCharts;
-				this.linkDownload = 'atlas/service/map/downloadCSV?'+paramsDownload	
+				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload	
 			} else if (tipo == 'shp') {
 				if (this.layerPastureShow == 'areas-pastagens') {
 				var paramsDownload = 'file='+layer+'&regionType='+this.downloadRegionType+'&region='+this.downloadRegion+'&year='+this.year
-				this.linkDownload = 'atlas/service/map/downloadSHP?'+paramsDownload
+				this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
 				} else if (this.layerPastureShow == 'municipios-pastagens') {
 					var paramsDownload = '&MSFILTER=year='+this.year+''+this.msFilterRegion
 					this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=pasture_regions_municipios&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
 				} else if (this.layerPastureShow == 'pastagens-zero-transicao') {
 					var paramsDownload = 'file=old_pasture&regionType='+this.downloadRegionType+'&region='+this.downloadRegion+'&year='+this.year
-					this.linkDownload = 'atlas/service/map/downloadSHP?'+paramsDownload
+					this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
 				} else if (this.layerPastureShow == 'pastagens-todas-transicoes') {
 					var paramsDownload = 'file=pasture_all_transitions&regionType='+this.downloadRegionType+'&region='+this.downloadRegion+'&year='+this.year
-					this.linkDownload = 'atlas/service/map/downloadSHP?'+paramsDownload
+					this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
 				} else if (this.layerPastureShow == 'pastagens-uma-transicao') {
 					var paramsDownload = 'file=pasture_all_transitions&regionType='+this.downloadRegionType+'&region='+this.downloadRegion+'&year='+this.year
-					this.linkDownload = 'atlas/service/map/downloadSHP?'+paramsDownload
+					this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
 				}
 			}
 		} else if (tipo == 'shp' && layer == 'pasture_degraded') {
@@ -1043,14 +1044,14 @@ export class MapComponent implements OnInit {
 
       if (this.layerPastureDegradedShow = 'areas-pastagens-degraded') {
         var paramsDownload = 'file='+layer+'&regionType='+this.downloadRegionType+'&region='+this.downloadRegion
-        this.linkDownload = 'atlas/service/map/downloadSHP?'+paramsDownload
+        this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
       } else {
         this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=pasture_degraded_regions_municipios&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
       }
 
 		}else if (tipo == 'csv' && layer == 'pasture_degraded') {
 				var paramsDownload = 'file='+layer+"&filter=category='1'"+''+this.msFilterRegion;
-				this.linkDownload = 'atlas/service/map/downloadCSV?'+paramsDownload
+				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
 		} else if(layer == 'lotacao_bovina_regions') {
         var yearRebanhoBovino;
         if(this.year == '2018') {
@@ -1061,7 +1062,7 @@ export class MapComponent implements OnInit {
         
 			if(tipo == 'csv') {
 				var paramsDownload = 'file='+layer+'&region=year='+yearRebanhoBovino+''+this.msFilterRegion+'&filter='+this.msFilterRegionCharts;
-				this.linkDownload = 'atlas/service/map/downloadCSV?'+paramsDownload
+				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
 			} else {
 			  var paramsDownload = '&MSFILTER=year='+yearRebanhoBovino+''+this.msFilterRegion
         this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=lotacao_bovina_regions&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
@@ -1073,7 +1074,7 @@ export class MapComponent implements OnInit {
 				paramsDownload = 'file=pontos_campo_sem_parada'
 			}
 
-			this.linkDownload = 'atlas/service/map/downloadSHP?'+paramsDownload
+			this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
 		} else if (layer == 'pontos_tvi') {
 			var paramsDownload = 'file=pontos_tvi_treinamento';
 
@@ -1081,14 +1082,14 @@ export class MapComponent implements OnInit {
 				paramsDownload = 'file=pontos_tvi_validacao'
 			}
 
-			this.linkDownload = 'atlas/service/map/downloadSHP?'+paramsDownload
+			this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
 		} else if (layer == 'potencial_intensificacao_pecuaria') {
 			if(tipo == 'csv') {
 				var paramsDownload = 'file='+layer+'&filter='+this.msFilterRegionCharts;
-				this.linkDownload = 'atlas/service/map/downloadCSV?'+paramsDownload;
+				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload;
 			} else {
         var paramsDownload = 'file='+layer+'&regionType='+this.downloadRegionType+'&region='+this.downloadRegion
-        this.linkDownload = 'atlas/service/map/downloadSHP?'+paramsDownload
+        this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
       }
 		}
 		
@@ -1393,18 +1394,18 @@ export class MapComponent implements OnInit {
 	private sumIndicators() {
 
     if (this.regionTypeCharts == '') {
-      this.http.get("atlas/service/map/indicatorsPastureBreBiomas?&MSFILTER=year="+this.year+" AND type = 'country'&region="+this.msFilterRegionCharts).subscribe(indicatorsPasture => {
+      this.http.get("service/map/indicatorsPastureBreBiomas?&MSFILTER=year="+this.year+" AND type = 'country'&region="+this.msFilterRegionCharts).subscribe(indicatorsPasture => {
         this.indicatorPasture = indicatorsPasture[0].area_ha;
         this.indicatorPasturePercentual = indicatorsPasture[1].percentual_area_ha;
       });
     } else if (this.regionTypeCharts == 'bioma') {
       var bioma = this.regionSelected.toUpperCase();
-      this.http.get("atlas/service/map/indicatorsPastureBreBiomas?&MSFILTER=year="+this.year+" AND name = '"+bioma+"'&region="+this.msFilterRegionCharts).subscribe(indicatorsPasture => {
+      this.http.get("service/map/indicatorsPastureBreBiomas?&MSFILTER=year="+this.year+" AND name = '"+bioma+"'&region="+this.msFilterRegionCharts).subscribe(indicatorsPasture => {
         this.indicatorPasture = indicatorsPasture[0].area_ha;
         this.indicatorPasturePercentual = indicatorsPasture[1].percentual_area_ha;
       });
     } else {
-      this.http.get('atlas/service/map/indicators?&MSFILTER=year='+this.year+''+this.msFilterRegion).subscribe(indicatorsPasture => {
+      this.http.get('service/map/indicators?&MSFILTER=year='+this.year+''+this.msFilterRegion).subscribe(indicatorsPasture => {
         this.indicatorPasture = indicatorsPasture[0].area_ha;
         this.indicatorPasturePercentual = indicatorsPasture[1].percentual_area_ha;
       });
@@ -1416,27 +1417,27 @@ export class MapComponent implements OnInit {
       this.yearIndicatorLotacao = this.year;
     }
     
-		this.http.get('atlas/service/map/indicatorsRebanhoBovino?&MSFILTER=year='+this.yearIndicatorLotacao+''+this.msFilterRegion+'&region='+this.regionTypeCharts).subscribe(indicatorsRebanho => {
+		this.http.get('service/map/indicatorsRebanhoBovino?&MSFILTER=year='+this.yearIndicatorLotacao+''+this.msFilterRegion+'&region='+this.regionTypeCharts).subscribe(indicatorsRebanho => {
       this.indicatorRebanhoBovino = indicatorsRebanho[0].ua;
       this.indicatorRebanhoBovinoPercentual = indicatorsRebanho[0].ua/indicatorsRebanho[0].past_ha
 		});
 
-		var filterPastureDegraded = 'atlas/service/map/indicatorsPastureDegraded?&MSFILTER='+this.msFilterRegionCharts
-		var filterPastureOld = 'atlas/service/map/indicatorsPastureOld?&MSFILTER='+this.msFilterRegionCharts
-		var filterPotencialIntensificacao = 'atlas/service/map/indicatorsPotencialIntensificacao?&MSFILTER='+this.msFilterRegionCharts
-		var filterPoints = 'atlas/service/map/indicatorsPoints?&MSFILTER='+this.msFilterRegionCharts
-		var filterPointsNoStop = 'atlas/service/map/indicatorsPointsNoStop?&MSFILTER='+this.msFilterRegionCharts
-		var filterPointsTVITreinamento = 'atlas/service/map/indicatorsPointsTVITreinamento?&MSFILTER='+this.msFilterRegionCharts
-		var filterPointsTVIValidacao = 'atlas/service/map/indicatorsPointsTVIValidacao?&MSFILTER='+this.msFilterRegionCharts
+		var filterPastureDegraded = 'service/map/indicatorsPastureDegraded?&MSFILTER='+this.msFilterRegionCharts
+		var filterPastureOld = 'service/map/indicatorsPastureOld?&MSFILTER='+this.msFilterRegionCharts
+		var filterPotencialIntensificacao = 'service/map/indicatorsPotencialIntensificacao?&MSFILTER='+this.msFilterRegionCharts
+		var filterPoints = 'service/map/indicatorsPoints?&MSFILTER='+this.msFilterRegionCharts
+		var filterPointsNoStop = 'service/map/indicatorsPointsNoStop?&MSFILTER='+this.msFilterRegionCharts
+		var filterPointsTVITreinamento = 'service/map/indicatorsPointsTVITreinamento?&MSFILTER='+this.msFilterRegionCharts
+		var filterPointsTVIValidacao = 'service/map/indicatorsPointsTVIValidacao?&MSFILTER='+this.msFilterRegionCharts
 		
 		if(this.msFilterRegionCharts == ''){
-			filterPastureDegraded = 'atlas/service/map/indicatorsPastureDegraded'
-			filterPastureOld = 'atlas/service/map/indicatorsPastureOld'
-			filterPotencialIntensificacao = 'atlas/service/map/indicatorsPotencialIntensificacao'
-			filterPoints = 'atlas/service/map/indicatorsPoints'
-			filterPointsNoStop = 'atlas/service/map/indicatorsPointsNoStop'
-			filterPointsTVITreinamento = 'atlas/service/map/indicatorsPointsTVITreinamento'
-			filterPointsTVIValidacao = 'atlas/service/map/indicatorsPointsTVIValidacao'
+			filterPastureDegraded = 'service/map/indicatorsPastureDegraded'
+			filterPastureOld = 'service/map/indicatorsPastureOld'
+			filterPotencialIntensificacao = 'service/map/indicatorsPotencialIntensificacao'
+			filterPoints = 'service/map/indicatorsPoints'
+			filterPointsNoStop = 'service/map/indicatorsPointsNoStop'
+			filterPointsTVITreinamento = 'service/map/indicatorsPointsTVITreinamento'
+			filterPointsTVIValidacao = 'service/map/indicatorsPointsTVIValidacao'
 		}
 		
 		this.http.get(filterPastureDegraded).subscribe(indicatorsPastureDegraded => {
@@ -1473,18 +1474,18 @@ export class MapComponent implements OnInit {
 
 	private updateCharts() {
     
-		this.http.get('atlas/service/map/charts?region='+this.msFilterRegionCharts+'&type='+this.regionTypeCharts).subscribe(charts => {
+		this.http.get('service/map/charts?region='+this.msFilterRegionCharts+'&type='+this.regionTypeCharts).subscribe(charts => {
 			this.chartResult = charts;
 		});
 
-		this.http.get('atlas/service/map/ChartsClassDegradation?region='+this.msFilterRegionCharts).subscribe(chartsDegradation => {
+		this.http.get('service/map/ChartsClassDegradation?region='+this.msFilterRegionCharts).subscribe(chartsDegradation => {
 			this.chartDegradationResult = chartsDegradation;
 		});
 	}
 
 	private updateChartsYears() {
 
-		this.http.get('atlas/service/map/chartsByYear?year='+this.year+''+this.msFilterRegion+'&layer='+this.layerPastureShow).subscribe(chartsYear => {
+		this.http.get('service/map/chartsByYear?year='+this.year+''+this.msFilterRegion+'&layer='+this.layerPastureShow).subscribe(chartsYear => {
 			this.chartResultCities = chartsYear['cities'];
 			this.chartResultStates = chartsYear['state'];
 		});
@@ -1497,7 +1498,7 @@ export class MapComponent implements OnInit {
       this.Usetransitions = false;
     }
 
-    this.http.get('atlas/service/map/ChartsTransitions?region='+this.msFilterRegionCharts+'&layer='+this.layerPastureShow).subscribe(chartsTrans => {
+    this.http.get('service/map/ChartsTransitions?region='+this.msFilterRegionCharts+'&layer='+this.layerPastureShow).subscribe(chartsTrans => {
       if(this.layerPastureShow == 'pastagens-todas-transicoes') {
         this.chartResultTransitions = chartsTrans['all'];
         this.nameChartsTransitions = "Todas transições de uso das pastagens (1985 - 2017)"
@@ -1527,7 +1528,7 @@ export class MapComponent implements OnInit {
 		if (this.msFilterRegionCharts) {
 			msfilter = '?msfilter='+this.msFilterRegionCharts;
 		}
-		var fieldValidationUrl = '/atlas/service/map/fieldPoints'+msfilter;
+		var fieldValidationUrl = '/service/map/fieldPoints'+msfilter;
 
 		this.http.get(fieldValidationUrl).subscribe(fieldValResult => {
 			var features = (new GeoJSON()).readFeatures(fieldValResult, {
@@ -1548,11 +1549,11 @@ export class MapComponent implements OnInit {
 		this.sumIndicators();
 		this.chartRegionScale = true;
 
-		this.http.get('atlas/service/map/years').subscribe(years => {
+		this.http.get('service/map/years').subscribe(years => {
 			this.years = years;
 		});
 
-		this.http.get('atlas/service/map/charts').subscribe(charts => {
+		this.http.get('service/map/charts').subscribe(charts => {
 			this.chartResult = charts;
 		});
 

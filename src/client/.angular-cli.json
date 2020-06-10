@@ -9,6 +9,7 @@
       "outDir": "dist",
       "assets": [
         "assets",
+        "assets/fotos_campo",
         "favicon.ico"
       ],
       "index": "index.html",
