@@ -20,8 +20,8 @@ module.exports = function(app) {
 	};
 
 	if(process.env.NODE_ENV == 'prod') {
-		config["downloadDir"] = "/storage/download_atlas/",
-		config["fotoDir"] = "/storage/fotos_campo/",
+		config["downloadDir"] = "/STORAGE/download_atlas/",
+		config["fotoDir"] = "/STORAGE/fotos_campo/",
 		config["postgres"] = {
 			"host": "172.18.0.4",
 			"port": 5432,
