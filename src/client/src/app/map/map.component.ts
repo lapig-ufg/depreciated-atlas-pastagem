@@ -1032,24 +1032,11 @@ export class MapComponent implements OnInit {
 					this.linkDownload = 'atlas/service/map/downloadSHP?'+paramsDownload
 				}
 			}
-		} else if (tipo == 'shp' && layer == 'pasture_degraded') {
-			var layerDow;
-
-			if(this.msFilterRegionCharts != ''){
-				var paramsDownload = "&MSFILTER=category='1'"+''+this.msFilterRegion
-			} else {
-				var paramsDownload = "&MSFILTER=category='1'"
-			}
-
-      if (this.layerPastureDegradedShow = 'areas-pastagens-degraded') {
-        var paramsDownload = 'file='+layer+'&regionType='+this.downloadRegionType+'&region='+this.downloadRegion
-        this.linkDownload = 'atlas/service/map/downloadSHP?'+paramsDownload
-      } else {
-        this.linkDownload = 'http://ows.lapig.iesa.ufg.br/ows?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=pasture_degraded_regions_municipios&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
-      }
-
-		}else if (tipo == 'csv' && layer == 'pasture_degraded') {
-				var paramsDownload = 'file='+layer+"&filter=category='1'"+''+this.msFilterRegion;
+		} else if (tipo == 'shp' && layer == 'classes_degradacao_pastagem') {
+			var paramsDownload = 'file='+layer+'&regionType='+this.downloadRegionType+'&region='+this.downloadRegion
+			this.linkDownload = 'atlas/service/map/downloadSHP?'+paramsDownload
+		}else if (tipo == 'csv' && layer == 'classes_degradacao_pastagem') {
+				var paramsDownload = 'file='+layer+'&filter='+this.msFilterRegionCharts;
 				this.linkDownload = 'atlas/service/map/downloadCSV?'+paramsDownload
 		} else if(layer == 'lotacao_bovina_regions') {
         var yearRebanhoBovino;

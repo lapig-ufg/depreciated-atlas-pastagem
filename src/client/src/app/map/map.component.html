@@ -115,57 +115,6 @@
 											<mat-slide-toggle (change)="layerchecked('classes_degradacao_pastagem', $event)"></mat-slide-toggle>
 										</div>
 										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
-											<!-- <mat-expansion-panel>
-												<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
-													<div>
-															<h5 class="nameLayers"><b>Pastagem Degradada (2017)</b></h5>
-													</div>
-												</mat-expansion-panel-header>
-												<div class="row layers-indicator">
-													<div>
-														<button class="button-row" (click)="openDialog('pastagem_degradada')" mat-icon-button>
-													    <mat-icon class="iconInfo">info</mat-icon>
-													  </button>
-													</div>
-													<div class="value-indicators"> 
-														{{ indicatorPastureDegraded | number:'3.0-0' }} ha com
-														<p style="margin-bottom: 0px">indícios de degradação </p>
-														<p class="stylePercentual">({{ indicatorPastureDegradedPercentual | number:'1.1-2'}}% do(a) {{ regionTypeBr }})</p>
-													</div>
-													<div class="buttons-download-past">
-															<a style="margin-left: 10px;"  href="{{ linkDownload }}">
-																<button mat-raised-button href (click)="buttonDownload('csv', 'pasture_degraded', $event)" value='buttonCSV'>
-																	<b>CSV</b>
-																</button>
-															</a>
-															<a style="margin-left: 10px;"  href="{{ linkDownload }}">
-																<button mat-raised-button (click)="buttonDownload('shp', 'pasture_degraded', $event)">
-																	<b>SHP</b>
-																</button>
-															</a>
-													</div>
-												</div>
-												<div class="layers-options">
-													<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 font-size-geral">
-														<div class="example-selected-value">Opções de visualização:</div>
-														<div class="row">
-															<div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7 options-radio-button">
-																<mat-radio-group [disabled]=!pastagens_degradadas_show #radiogroup [(ngModel)]="selectPastureDegraded">
-																  <mat-radio-button (change)="opcoesVisualizacao($event)" value="areas-pastagens-degraded">
-																  	Áreas
-																  </mat-radio-button>
-																  <mat-radio-button (change)="opcoesVisualizacao($event)" value="municipios-pastagens-degraded">
-																  	Municípios
-																	</mat-radio-button>
-																	<mat-radio-button (change)="opcoesVisualizacao($event)" value="classes_degradacao_pastagem">
-																  	Classes de Degradação
-																  </mat-radio-button>
-																</mat-radio-group>
-															</div>
-														</div>
-													</div>
-												</div>
-											</mat-expansion-panel> -->
 											<mat-expansion-panel>
 												<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
 													<div>
@@ -179,22 +128,22 @@
 													  </button>
 													</div>
 													<div class="value-indicators"> 
-														{{ indicatorPastureDegraded | number:'3.0-0' }} ha com
-														<p style="margin-bottom: 0px">indícios de degradação </p>
+														{{ indicatorPastureDegraded | number:'3.0-0' }} ha
+														<p style="margin-bottom: 0px">com indícios de degradação </p>
 														<p class="stylePercentual">({{ indicatorPastureDegradedPercentual | number:'1.1-2'}}% do(a) {{ regionTypeBr }})</p>
 													</div>
-													<!-- <div class="buttons-download-past">
+													<div class="buttons-download-past">
 															<a style="margin-left: 10px;"  href="{{ linkDownload }}">
-																<button mat-raised-button href (click)="buttonDownload('csv', 'pasture_degraded', $event)" value='buttonCSV'>
+																<button mat-raised-button href (click)="buttonDownload('csv', 'classes_degradacao_pastagem', $event)" value='buttonCSV'>
 																	<b>CSV</b>
 																</button>
 															</a>
-															<a style="margin-left: 10px;"  href="{{ linkDownload }}">
-																<button mat-raised-button (click)="buttonDownload('shp', 'pasture_degraded', $event)">
+															<a style="margin-left: 10px;"  href="{{ linkDownload }}" matTooltip="Para download selecione uma região (Bioma / Estado / Município...)" [matTooltipDisabled]="regionSelected != 'Brasil'">
+																<button mat-raised-button (click)="buttonDownload('shp', 'classes_degradacao_pastagem', $event)" [disabled]="regionSelected == 'Brasil'">
 																	<b>SHP</b>
 																</button>
 															</a>
-													</div> -->
+													</div>
 												</div>
 											</mat-expansion-panel>
 										</div>

@@ -5,7 +5,7 @@ module.exports = function(app) {
 	var config = {
 		"appRoot": appRoot, 
 		"clientDir": appRoot + "/../client/dist/",
-		"downloadDir": "/data/dados-lapig/download_atlas/",
+		"downloadDir": "/Users/ferstefani/Documents/download_atlas/",
 		"fotoDir": "/Users/ferstefani/Documents/fotos_campo/",
 		"langDir": appRoot + "/lang",
 		"logDir": appRoot + "/log/",

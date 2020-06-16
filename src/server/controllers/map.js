@@ -640,18 +640,15 @@ module.exports = function(app){
 		var file = request.param('file', '');
 		var msfilter = request.param('filter', '');
 		var filter = '';
-		var filtersPastureDegraded = " WHERE category='1'";
 		var sqlQuery;
 
 		if(file == 'pasture') {
 		 	sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(area_ha) as area_pastagem, year FROM pasture WHERE "+region+" GROUP BY 1,2,3,4,5,7"
-		} else if (file == 'pasture_degraded') {
-
+		} else if (file == 'classes_degradacao_pastagem') {
 			if(msfilter) {
-				filtersPastureDegraded = filtersPastureDegraded+" AND "+msfilter;
+				filter = " WHERE "+msfilter;
 			}
-
-			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(area_ha) as area_past_degradada FROM pasture_degraded_class "+filtersPastureDegraded+" GROUP BY 1,2,3,4,5"
+			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, area_ha as area_past_degradada, classe FROM classes_degradacao_pastagem "+filter
 		} else if (file == 'lotacao_bovina_regions') {
 			sqlQuery =  "SELECT cd_geouf, cd_geocmu, uf, estado, municipio, SUM(ua) as ua, sum(n_kbcs) as kbc, year FROM lotacao_bovina_regions WHERE "+region+" GROUP BY 1,2,3,4,5,8"
 		} else if (file == 'potencial_intensificacao_pecuaria') {
@@ -694,6 +691,9 @@ module.exports = function(app){
 
 		if(layer != 'pasture') {
 			fileParam = layer;
+			if (layer = 'classes_degradacao_pastagem') {
+				fileParam = layer+'_2018';
+			}
 		}
 		
 		var diretorio = config.downloadDir+layer+'/'+regionType+'/'+region+'/';
