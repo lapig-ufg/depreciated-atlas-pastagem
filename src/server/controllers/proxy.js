@@ -10,7 +10,7 @@ module.exports = function(app) {
 
 		var year = request.param('year');
 		var tile = request.param('tile');
-		var url = "http://maps.lapig.iesa.ufg.br/ows?layers=pasture_rebanho_regions_utfgrid&MSFILTER=year="+year+"&mode=tile&tile="+tile+"&tilemode=gmap&map.imagetype=utfgrid";
+		var url = "http://ows.lapig.iesa.ufg.br/ows?layers=pasture_rebanho_regions_utfgrid&MSFILTER=year="+year+"&mode=tile&tile="+tile+"&tilemode=gmap&map.imagetype=utfgrid";
 
 	  requester({
 	  		uri: url
@@ -25,7 +25,7 @@ module.exports = function(app) {
 	  }, function(error, proxyResponse, body) {
 	  	
 	  	if(error) {
-	  		console.log(error);
+	  		console.log('proxy error: ',error);
 	  		response.end();	
 	  	}
 

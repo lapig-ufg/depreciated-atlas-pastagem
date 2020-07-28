@@ -5,8 +5,8 @@ module.exports = function(app) {
 	var config = {
 		"appRoot": appRoot, 
 		"clientDir": appRoot + "/../client/dist/",
-		"downloadDir": "/Users/ferstefani/Documents/download_atlas/",
-		"fotoDir": "/Users/ferstefani/Documents/fotos_campo/",
+		"downloadDir": "/data/dados-lapig/download_atlas/",
+		"fotoDir": "/data/dados-lapig/atlas-files/fotos_campo/",
 		"langDir": appRoot + "/lang",
 		"logDir": appRoot + "/log/",
 		"postgres": {
@@ -21,7 +21,7 @@ module.exports = function(app) {
 
 	if(process.env.NODE_ENV == 'prod') {
 		config["downloadDir"] = "/STORAGE/download_atlas/",
-		config["fotoDir"] = "/STORAGE/fotos_campo/",
+		config["fotoDir"] = "/STORAGE/atlas-files/fotos_campo/",
 		config["postgres"] = {
 			"host": "172.18.0.4",
 			"port": 5432,

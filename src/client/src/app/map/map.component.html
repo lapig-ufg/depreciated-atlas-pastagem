@@ -65,11 +65,11 @@
 																<b>CSV</b>
 															</button>
 														</a>
-														<a style="margin-left: 10px;" href="{{ linkDownload }}">
+														<!-- <a style="margin-left: 10px;" href="{{ linkDownload }}">
 															<button mat-raised-button (click)="buttonDownload('shp', 'pasture', $event)" [disabled]="contractTypeValid">
 																<b>SHP</b>
 															</button>
-														</a>
+														</a> -->
 													</div>
 												</div>
 												<div class="layers-options">
@@ -138,11 +138,11 @@
 																	<b>CSV</b>
 																</button>
 															</a>
-															<a style="margin-left: 10px;"  href="{{ linkDownload }}" matTooltip="Para download selecione uma região (Bioma / Estado / Município...)" [matTooltipDisabled]="regionSelected != 'Brasil'">
+															<!-- <a style="margin-left: 10px;"  href="{{ linkDownload }}" matTooltip="Para download selecione uma região (Bioma / Estado / Município...)" [matTooltipDisabled]="regionSelected != 'Brasil'">
 																<button mat-raised-button (click)="buttonDownload('shp', 'classes_degradacao_pastagem', $event)" [disabled]="regionSelected == 'Brasil'">
 																	<b>SHP</b>
 																</button>
-															</a>
+															</a> -->
 													</div>
 												</div>
 											</mat-expansion-panel>
@@ -158,7 +158,7 @@
 											<mat-expansion-panel>
 												<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
 													<div>
-															<h5 class="nameLayers"><b>Rebanho Bovino - UA ({{ yearIndicatorLotacao }})</b></h5>
+															<h5 class="nameLayers"><b>Rebanho Bovino - UA ({{ year }})</b></h5>
 													</div>
 												</mat-expansion-panel-header>
 												<div class="row layers-indicator">
@@ -213,11 +213,11 @@
 																<b>CSV</b>
 															</button>
 														</a>
-														<a style="margin-left: 10px;" href="{{ linkDownload }}">
+														<!-- <a style="margin-left: 10px;" href="{{ linkDownload }}">
 															<button mat-raised-button (click)="buttonDownload('shp', 'potencial_intensificacao_pecuaria', $event)">
 																<b>SHP</b>
 															</button>
-														</a>
+														</a> -->
 													</div>
 												</div>
 											</mat-expansion-panel>
@@ -250,7 +250,7 @@
 													</div>
 													<div class="buttons-download-past">
 														<a style="margin-left: 30px;" href="{{ linkDownload }}">
-															<button mat-raised-button (click)="buttonDownload(tipoCampo, 'pontos_campo', $event)">
+															<button mat-raised-button (click)="buttonDownload(tipoCampo, 'pontos_campo', $event)" disabled=true>
 																<b>SHP</b>
 															</button>
 														</a>
@@ -294,7 +294,8 @@
 													</div>
 													<div class="buttons-download-past">
 														<a style="margin-left: 15px;" href="{{ linkDownload }}">
-															<button mat-raised-button (click)="buttonDownload(tipoTVI, 'pontos_tvi', $event)">
+															<button mat-raised-button (click)="buttonDownload(tipoTVI, 'pontos_tvi', $event)"
+															  disabled=true>
 																<b>SHP</b>
 															</button>
 														</a>
