@@ -65,8 +65,11 @@
 																<b>CSV</b>
 															</button>
 														</a>
-														<a style="margin-left: 10px;" href="{{ linkDownload }}">
-															<button mat-raised-button (click)="buttonDownload('shp', 'pasture', $event)" [disabled]="contractTypeValid">
+														<a style="margin-left: 10px;" href="{{ linkDownload }}"
+														  matTooltip="Para download selecione uma região (Bioma / Estado / Município...)"
+														  [matTooltipDisabled]="regionSelected != 'Brasil'">
+															<button mat-raised-button (click)="buttonDownload('shp', 'pasture', $event)"
+															  [disabled]="contractTypeValid || regionSelected == 'Brasil'">
 																<b>SHP</b>
 															</button>
 														</a>
