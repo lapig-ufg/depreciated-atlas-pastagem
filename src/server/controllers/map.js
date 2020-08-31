@@ -691,9 +691,9 @@ module.exports = function(app){
 
 		if(layer != 'pasture') {
 			fileParam = layer;
-			if (layer = 'classes_degradacao_pastagem') {
-				fileParam = layer+'_2018';
-			}
+			// if (layer = 'classes_degradacao_pastagem') {
+			// 	fileParam = layer+'_2018';
+			// }
 		}
 		
 		var diretorio = config.downloadDir+layer+'/'+regionType+'/'+region+'/';
