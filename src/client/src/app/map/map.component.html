@@ -69,7 +69,7 @@
 														  matTooltip="Para download selecione uma região (Bioma / Estado / Município...)"
 														  [matTooltipDisabled]="regionSelected != 'Brasil'">
 															<button mat-raised-button (click)="buttonDownload('shp', 'pasture', $event)"
-															  [disabled]="contractTypeValid || regionSelected == 'Brasil'">
+															  [disabled]="contractTypeValid">
 																<b>SHP</b>
 															</button>
 														</a>
