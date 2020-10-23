@@ -61,7 +61,7 @@
 													</div>
 													<div class="buttons-download-past">
 														<a style="margin-left: 10px;" href="{{ linkDownload }}">
-															<button mat-raised-button href (click)="buttonDownload('csv', 'pasture', $event)" value='buttonCSV' [disabled]="contractTypeValid">
+															<button mat-raised-button href (click)="buttonDownload('csv', 'pasture', $event)" value='buttonCSV'>
 																<b>CSV</b>
 															</button>
 														</a>
@@ -702,7 +702,7 @@
   </div>
 </div>
 <div [hidden]="infodata.area_pasture == -1" id="map-info" class="card" style="background-color: #ffffff99;">
-  <div *ngIf="infodata.year != '2018'" class="card-body">
+  <div *ngIf="infodata.year != '2019'" class="card-body">
 		<p class="card-text">{{ infodata.municipio }} - {{ infodata.uf }}</p>
     	<table>
     		<tbody>
@@ -729,7 +729,7 @@
     		</tbody>
     	</table>
   </div>
-  <div *ngIf="infodata.year == '2018'" class="card-body">
+  <div *ngIf="infodata.year == '2019'" class="card-body">
 		<p class="card-text">{{ infodata.municipio }} - {{ infodata.uf }}</p>
     	<table>
     		<tbody>

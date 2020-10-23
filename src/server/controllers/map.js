@@ -491,7 +491,7 @@ module.exports = function(app){
 
 	Map.chartsByYear = function(request, response) {
 
-		var year = request.param('year', 2018);
+		var year = request.param('year', 2019);
 		var index = 1;
 		var stateQuery = "SELECT INITCAP(estado) as estado, uf, SUM(area_ha), year from pasture WHERE year="+year+" GROUP BY estado, uf, year ORDER BY 3 DESC"
 		var cityQuery = "SELECT INITCAP(municipio) as municipio, uf, SUM(area_ha), year from pasture WHERE year="+year+" GROUP BY 1, 2, 4 ORDER BY 3 DESC LIMIT 10"
