@@ -209,7 +209,7 @@ export class MapComponent implements OnInit {
   estadosCharts = "estados";
 
   pontos_parada = false;
-	contractTypeValid = true;
+	contractTypeValid = false;
 	disableTransitionsPastures = true;
 
 	constructor(private http: HttpClient, private _service: SearchService, public dialog: MatDialog) { 
@@ -1089,7 +1089,7 @@ export class MapComponent implements OnInit {
 			this.pastagens_todas_transicoes.layer.setVisible(false);
 			this.pastagens_uma_transicao.layer.setVisible(false);
 			this.pastagens_zero_transicao.layer.setVisible(false);
-			this.contractTypeValid = true;
+			this.contractTypeValid = false;
 			this.layerPastureShow = 'areas-pastagens';
 			this.show_year_pasture = true;
 		} else if (e.value == 'municipios-pastagens') {
