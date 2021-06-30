@@ -16,6 +16,14 @@ load('config.js', {'verbose': false})
 .into(app);
 
 	app.use(cookie);
+
+	app.get('/atlas', function(req, res) {
+		res.redirect('/');
+	});
+
+	app.get('/index.php/pt-br/', function(req, res) {
+		res.redirect('/');
+	});
 	
 	app.use(compression());
 	app.use(express.static(app.config.clientDir));
