@@ -3,8 +3,8 @@
   	<div class="title-atlas">Atlas Digital das Pastagens Brasileiras</div>
   </div>
   <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 logos-atlas">
-  		<a href="https://pastagem.org/index.php/pt-br/" target="_blank"><img class="logo-ufg" src="atlas/assets/ufg.png" /></a>
-  		<a href="https://www.lapig.iesa.ufg.br/lapig/" target="_blank"><img  class="logo-lapig" src="atlas/assets/logo.png" /></a>
+  		<a href="https://pastagem.org/index.php/pt-br/" target="_blank"><img class="logo-ufg" src="assets/ufg.png" /></a>
+  		<a href="https://www.lapig.iesa.ufg.br/lapig/" target="_blank"><img  class="logo-lapig" src="assets/logo.png" /></a>
   </div>
 </nav>
 <div class="container-fluid">
@@ -27,7 +27,7 @@
 											  <ngb-highlight [result]="r.text" [term]="t"></ngb-highlight>
 											</ng-template>
 										  <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Escolha um bioma / estado / município..." (selectItem)="updateRegion($event)" [resultTemplate]="rt" [inputFormatter]="formatter"/>
-										  <img [hidden]="model == ''" class="clear-region-btn" (click)="getMatchRegion()" src="atlas/assets/clear_button.png" />
+										  <img [hidden]="model == ''" class="clear-region-btn" (click)="getMatchRegion()" src="assets/clear_button.png" />
 										  <span *ngIf="searching">localizando...</span>
 										  <div class="invalid-feedback" *ngIf="searchFailed">Desculpe, Região não encontrada.</div>
 										</div>
@@ -52,11 +52,11 @@
 													  </button>
 													</div>
 													<div class="value-indicators" *ngIf="layerPastureShow != 'pastagens-zero-transicao'">
-														{{ indicatorPasture | number:'3.0-0' }} ha 
+														{{ indicatorPasture | number:'3.0-0' }} ha
 														<p class="stylePercentual"> ({{ indicatorPasturePercentual | number:'1.1-2'}}% do(a) {{ regionTypeBr }})</p>
 													</div>
 													<div class="value-indicators" *ngIf="layerPastureShow == 'pastagens-zero-transicao'">
-														{{ indicatorPastureOld | number:'3.0-0' }} ha 
+														{{ indicatorPastureOld | number:'3.0-0' }} ha
 														<p class="stylePercentual">({{ indicatorPastureOldPercentual | number:'1.1-2'}}% do(a) {{ regionTypeBr }})</p>
 													</div>
 													<div class="buttons-download-past">
@@ -130,7 +130,7 @@
 													    <mat-icon class="iconInfo">info</mat-icon>
 													  </button>
 													</div>
-													<div class="value-indicators"> 
+													<div class="value-indicators">
 														{{ indicatorPastureDegraded | number:'3.0-0' }} ha
 														<p style="margin-bottom: 0px">com indícios de degradação </p>
 														<p class="stylePercentual">({{ indicatorPastureDegradedPercentual | number:'1.1-2'}}% do(a) {{ regionTypeBr }})</p>
@@ -170,8 +170,8 @@
 													    <mat-icon class="iconInfo">info</mat-icon>
 													  </button>
 													</div>
-													<div class="value-indicators"> 
-														{{ indicatorRebanhoBovino | number:'3.0-0' }} UA 
+													<div class="value-indicators">
+														{{ indicatorRebanhoBovino | number:'3.0-0' }} UA
 														<p class="stylePercentual">({{ indicatorRebanhoBovinoPercentual | number:'1.1-2'}} UA/ha no(a) {{ regionTypeBr }})</p>
 													</div>
 													<div class="buttons-download-past">
@@ -375,18 +375,18 @@
 					  <mat-tab label="Série Temporal" *ngIf="true" id="tabGraficoLinhas">
 					  	<h6>
 					  		<b>Áreas de Pastagem - {{ regionSelected }}</b>
-					  		<img class="legend_Graphic" [src]="'atlas/assets/legend_graphic.png'"> 
+					  		<img class="legend_Graphic" [src]="'assets/legend_graphic.png'">
 					  	</h6>
 					  	<p class="info_clique_mapa">*Clique em um ano do gráfico para atualizar o mapa e indicadores.</p>
-					  	<ngx-charts-line-chart 
-					  		[view]="[viewWidth,280]" 
+					  	<ngx-charts-line-chart
+					  		[view]="[viewWidth,280]"
 					  		[results]="chartResult"
 					  		[rangeFillOpacity] = 0.15
 					  		[scheme]="colorScheme"
 					  		[legend]="false"
 					  		[legendTitle] = "false"
 					  		[autoScale]="chartRegionScale"
-					  		[yAxis]="true" 
+					  		[yAxis]="true"
 					  		[xAxis]="true"
 					  		(select)="yearGraphic($event)">
 					  		<ng-template #tooltipTemplate let-model="model">
@@ -394,19 +394,19 @@
 		            </ng-template>
         			</ngx-charts-line-chart>
 					  </mat-tab>
-					  <mat-tab label="Estados" *ngIf="regionTypeCharts != 'estado' && regionTypeCharts != 'municipio'"> 
+					  <mat-tab label="Estados" *ngIf="regionTypeCharts != 'estado' && regionTypeCharts != 'municipio'">
 					  	<h6><b>Áreas de Pastagens nos Estados - {{ year }} {{ regionTypeCharts }}</b> </h6>
-					  	<ngx-charts-bar-horizontal 
+					  	<ngx-charts-bar-horizontal
 						  	[view]="[500,auto]"
 						  	[barPadding]="2"
 						  	[scheme]="colorSchemeStates"
 						  	[schemeType]="colorSchemeStatesType"
-						  	[showGridLines]="true" 
-						  	[roundDomains]="false" 
-						  	[roundEdges]="false" 
-						  	[results]="chartResultStates" 
-						  	[yAxis]="true" 
-						  	[xAxis]="true" 
+						  	[showGridLines]="true"
+						  	[roundDomains]="false"
+						  	[roundEdges]="false"
+						  	[results]="chartResultStates"
+						  	[yAxis]="true"
+						  	[xAxis]="true"
 						  	[showYAxisLabel]="true"
 						  	[showXAxisLabel]="true"
 						  	(select)="regionGraphic($event)">
@@ -415,18 +415,18 @@
 		            </ng-template>
 		          </ngx-charts-bar-horizontal>
 						</mat-tab>
-					  <mat-tab label="Transições" *ngIf="Usetransitions"> 
+					  <mat-tab label="Transições" *ngIf="Usetransitions">
 					  	<h6><b> {{ nameChartsTransitions }} - {{ regionSelected }}</b> </h6>
-					  	<ngx-charts-bar-vertical 
+					  	<ngx-charts-bar-vertical
 						  	[view]="[viewWidth, 400]"
 						  	[barPadding]="2"
 						  	[scheme]="colorSchemeTransitions"
-						  	[showGridLines]="true" 
-						  	[roundDomains]="false" 
-						  	[roundEdges]="false" 
-						  	[results]="chartResultTransitions" 
-						  	[yAxis]="true" 
-						  	[xAxis]="true" 
+						  	[showGridLines]="true"
+						  	[roundDomains]="false"
+						  	[roundEdges]="false"
+						  	[results]="chartResultTransitions"
+						  	[yAxis]="true"
+						  	[xAxis]="true"
 						  	[showYAxisLabel]="true"
 						  	[showXAxisLabel]="true"
 						  	(select)="regionGraphic($event)">
@@ -470,8 +470,8 @@
 										{{model.name}}: {{ model.value | number:'1.0-0' }} ha
 		            </ng-template>
 							</ngx-charts-advanced-pie-chart>
-							<p class="info_clique_mapa" style="text-align: left; padding-left:14px">*A diferença entre a área de pastagem aqui apresentada e a área mapeada, 
-									é explicada pelo ajuste de área a partir da análise de acurácia, detalhada em 
+							<p class="info_clique_mapa" style="text-align: left; padding-left:14px">*A diferença entre a área de pastagem aqui apresentada e a área mapeada,
+									é explicada pelo ajuste de área a partir da análise de acurácia, detalhada em
 									<a href="https://www.sciencedirect.com/science/article/pii/S0034425719303207?via%3Dihub" target="_blank">(Parente et al. 2019)</a>
 							</p>
 						</mat-tab>
@@ -483,7 +483,7 @@
 					  	</div>
 					  	<div class="row" *ngIf="this.infoFeature.foto != ''">
 				  			<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 conteinerFotosCampo">
-        					<img class="fotosCampo" src="atlas/assets/fotos_campo/{{infoFeature.id}}/{{infoFeature.foto[fotoAtual - 1]}}">
+        					<img class="fotosCampo" src="assets/fotos_campo/{{infoFeature.id}}/{{infoFeature.foto[fotoAtual - 1]}}">
         					<div class="row" style="padding-left: 18px">
         						<div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
 	        						<button mat-raised-button (click)="passaFoto('anterior')" [disabled]="!(this.fotoAtual > 1)">
@@ -569,7 +569,7 @@
 			      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
 			      	<div class="row" *ngIf="checked">
 		      			<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
-									<img [src]="checkedLegendPasture ? 'atlas/assets/layer-visible.png' : 'atlas/assets/layer-not-visible.png'" (click)="legendchecked('pasture')" > 
+									<img [src]="checkedLegendPasture ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pasture')" >
 		      			</div>
 		      			<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
 				      		<mat-expansion-panel [expanded] = true>
@@ -592,7 +592,7 @@
 						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
 			      	<div class="row" *ngIf="pastagens_degradadas_show">
 		      			<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
-									<img [src]="checkedLegendPastureDegraded ? 'atlas/assets/layer-visible.png' : 'atlas/assets/layer-not-visible.png'" (click)="legendchecked('pasture_degraded')" > 
+									<img [src]="checkedLegendPastureDegraded ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pasture_degraded')" >
 		      			</div>
 		      			<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
 				      		<mat-expansion-panel [expanded] = true>
@@ -604,7 +604,7 @@
 										<div>
 											<!-- <img *ngIf="layerPastureDegradedShow == 'areas-pastagens-degraded'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_degraded&format=image%2Fpng"> -->
 											<!-- <img *ngIf="layerPastureDegradedShow == 'municipios-pastagens-degraded'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_degraded_regions_municipios&format=image%2Fpng"> -->
-											<img *ngIf="layerPastureDegradedShow == 'classes_degradacao_pastagem'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=classes_degradacao_pastagem&format=image%2Fpng">											
+											<img *ngIf="layerPastureDegradedShow == 'classes_degradacao_pastagem'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=classes_degradacao_pastagem&format=image%2Fpng">
 										</div>
 									</mat-expansion-panel>
 								</div>
@@ -613,7 +613,7 @@
 						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
 			      	<div class="row" *ngIf="rebanho_bovino_show">
 			      		<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
-									<img [src]="checkedLegendRebanho ? 'atlas/assets/layer-visible.png' : 'atlas/assets/layer-not-visible.png'" (click)="legendchecked('rebanho_bovino')" > 
+									<img [src]="checkedLegendRebanho ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('rebanho_bovino')" >
 			      		</div>
 			      		<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
 				      		<mat-expansion-panel [expanded] = true>
@@ -634,7 +634,7 @@
 						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
 			      	<div class="row" *ngIf="potencial_intensificacao_show">
 			      		<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
-									<img [src]="checkedLegendPot_Int ? 'atlas/assets/layer-visible.png' : 'atlas/assets/layer-not-visible.png'" (click)="legendchecked('potencial_intensificacao')" > 
+									<img [src]="checkedLegendPot_Int ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('potencial_intensificacao')" >
 			      		</div>
 			      		<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
 				      		<mat-expansion-panel [expanded] = true>
@@ -655,7 +655,7 @@
 						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
 			      	<div class="row" *ngIf="pontos_sem_parada_show">
 			      		<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
-									<img [src]="checkedLegendFieldPointNoStop ? 'atlas/assets/layer-visible.png' : 'atlas/assets/layer-not-visible.png'" (click)="legendchecked('pontos_campo_sem_parada')" > 
+									<img [src]="checkedLegendFieldPointNoStop ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pontos_campo_sem_parada')" >
 			      		</div>
 			      		<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
 				      		<mat-expansion-panel [expanded] = true>
@@ -676,7 +676,7 @@
 						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 paddingLayerLegend" [ngbCollapse]="collapseLegends">
 			      	<div class="row" *ngIf="pontos_tvi_show">
 			      		<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
-									<img [src]="checkedLegendTviPoint ? 'atlas/assets/layer-visible.png' : 'atlas/assets/layer-not-visible.png'" (click)="legendchecked('pontos_tvi')" > 
+									<img [src]="checkedLegendTviPoint ? 'assets/layer-visible.png' : 'assets/layer-not-visible.png'" (click)="legendchecked('pontos_tvi')" >
 			      		</div>
 			      		<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
 				      		<mat-expansion-panel [expanded] = true>
