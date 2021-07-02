@@ -1,16 +1,19 @@
-var express = require('express')
+const envs = require('dotenv').config();
+const dotenvExpand = require('dotenv-expand');
+dotenvExpand(envs)
+
+const express = require('express')
 , load = require('express-load')
 , path = require('path')
-, util    = require('util')
 , compression = require('compression')
 , responseTime = require('response-time')
 , bodyParser = require('body-parser')
 , multer = require('multer')
 , parseCookie = require('cookie-parser');
 
-var app = express();
-var http = require('http').Server(app);
-var cookie = parseCookie('LAPIG')
+const app = express();
+const http = require('http').Server(app);
+const cookie = parseCookie('LAPIG')
 
 load('config.js', {'verbose': false})
 .into(app);
@@ -24,13 +27,17 @@ load('config.js', {'verbose': false})
 	app.get('/index.php/pt-br/', function(req, res) {
 		res.redirect('/');
 	});
+
+	app.get('/map', function(req, res) {
+		res.redirect('/');
+	});
 	
 	app.use(compression());
 	app.use(express.static(app.config.clientDir));
 	app.set('views', __dirname + '/templates');
 	app.set('view engine', 'ejs');
 
-	var publicDir = path.join(__dirname, '');
+	const publicDir = path.join(__dirname, '');
 
 	app.use(responseTime());
 	app.use(bodyParser.json());

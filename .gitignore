@@ -1,9 +1,12 @@
 *.log
+*.out
 *.sublime-project
 *.sublime-workspace
 *.pyc
+.idea
 node_modules
 *~
+/src/server/.env
 *#
 *.pyc
 *.rdb

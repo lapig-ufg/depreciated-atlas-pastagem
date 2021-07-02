@@ -13,6 +13,8 @@
     "connect-mongo": "^0.8.2",
     "connect-timeout": "^1.9.0",
     "cookie-parser": "~1.4.3",
+    "dotenv": "^10.0.0",
+    "dotenv-expand": "^5.1.0",
     "ejs": "*",
     "express": "^4.16.4",
     "express-load": "^1.1.14",
@@ -36,7 +38,7 @@
     "request-param": "^0.2.0",
     "response-time": "^2.3.0",
     "session-memory-store": "~0.2.2",
-    "sqlite3": "^4.0.6",
+    "sqlite3": "^5.0.2",
     "underscore": "~1.6.0",
     "xml2js": "~0.4.1"
   },
