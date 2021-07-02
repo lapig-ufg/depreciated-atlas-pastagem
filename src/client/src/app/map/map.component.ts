@@ -1,7 +1,8 @@
+/* eslint no-use-before-define: 0 */
 import {Component, Injectable, OnInit, Inject} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 
-import {Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { of } from 'rxjs/observable/of';
 import {catchError, debounceTime, distinctUntilChanged, map, tap, switchMap} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
@@ -33,7 +34,7 @@ import _ol_TileUrlFunction_ from 'ol/tileurlfunction.js';
 import TileJSON from 'ol/source/tilejson.js';
 import TileUTFGrid from 'ol/source/tileutfgrid';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import "rxjs/add/observable/of";
+import 'rxjs/add/observable/of';
 
 const SEARCH_URL = 'service/map/search';
 const PARAMS = new HttpParams({
@@ -204,7 +205,7 @@ export class MapComponent implements OnInit {
   pontos_tvi_show: any;
   show_year_pasture = true;
 
-  baseMap= 'mapbox';
+  baseMap = 'mapbox';
   hectares = "hectares";
   estadosCharts = "estados";
 
@@ -218,17 +219,16 @@ export class MapComponent implements OnInit {
 		this.projection = OlProj.get('EPSG:900913');
 		this.currentZoom = 4;
 		this.regionTypeCharts = '';
-    this.regionTypeBr = 'país'
+    this.regionTypeBr = 'país';
     this.model = '';
     this.infodata = { area_pasture: -1};
     this.pastagem_show = true;
 
 		this.urls = [
-			// "http://localhost:5501/ows",
-    	'http://o1.lapig.iesa.ufg.br/ows',
-    	'http://o2.lapig.iesa.ufg.br/ows',
-    	'http://o3.lapig.iesa.ufg.br/ows',
-    	'http://o4.lapig.iesa.ufg.br/ows'
+    	'https://o1.lapig.iesa.ufg.br/ows',
+    	'https://o2.lapig.iesa.ufg.br/ows',
+    	'https://o3.lapig.iesa.ufg.br/ows',
+    	'https://o4.lapig.iesa.ufg.br/ows'
     ];
 
 		this.tileGrid = new TileGrid({
@@ -237,14 +237,14 @@ export class MapComponent implements OnInit {
       tileSize: 512
     });
 
-    this.layers = []
+    this.layers = [];
 
     this.infoFeature = {
   		foto: ''
   	}
 
-  	this.tipoCampo = 'parada'
-  	this.tipoTVI = 'treinamento'
+  	this.tipoCampo = 'parada';
+  	this.tipoTVI = 'treinamento';
 	}
 
 	search = (text$: Observable<string>) =>
@@ -276,7 +276,7 @@ export class MapComponent implements OnInit {
   }
 
   yearGraphic(e) {
-    var yearGraphic = e.name
+    var yearGraphic = e.name;
     if(e.series == 'Rebanho Bovino - UA') {
       this.year = yearGraphic.toString();
       this.rebanho_bovino.layer.setVisible(true);
@@ -290,7 +290,7 @@ export class MapComponent implements OnInit {
   }
 
   regionGraphic(e) {
-    var regionUf = e.name
+    var regionUf = e.name;
 
     this.http.get("service/map/chartsByYear?year="+this.year+" AND uf='"+regionUf+"'").subscribe(chartsYear => {
       this.chartResultStates = chartsYear['state'];
@@ -1554,6 +1554,7 @@ export class MapComponent implements OnInit {
   selector: 'dialog-overview-example-dialog',
   templateUrl: 'dialog-overview-example-dialog.html',
 })
+
 export class DialogOverviewExampleDialog {
 
   constructor(
