@@ -1,23 +1,23 @@
-var pg = require('pg')
+const pg = require('pg')
 , fs = require('fs')
 , json2csv = require('json2csv').parse
 , archiver = require('archiver');
 
 
 module.exports = function(app){
-	var Map = {}
+	let Map = {}
 
-	var config = app.config;
+	const config = app.config;
 	//var conString = "postgres://postgres@localhost:5433/lapig";
-	var conString = "postgres://" + config.postgres.user + ":" + config.postgres.password + "@" + config.postgres.host + ":" + config.postgres.port + "/" + config.postgres.dbname;
-	
-	var client = new pg.Client(conString);
-			client.connect();
+	const conString = "postgres://" + config.postgres.user + ":" + config.postgres.password + "@" + config.postgres.host + ":" + config.postgres.port + "/" + config.postgres.dbname;
+
+	const client = new pg.Client(conString);
+	client.connect();
 
 	Map.extent = function(request, response) {
 
-		var region = request.param('region', '');
-		var sqlQuery = "SELECT * from regions_geom WHERE "+region;
+		const region = request.param('region', '');
+		const sqlQuery = "SELECT * from regions_geom WHERE "+region;
 		
 		client.query(sqlQuery, (err, queryResult) => {
 			if (err) {
@@ -37,14 +37,14 @@ module.exports = function(app){
 	}
 
 	Map.fieldPoints = function(request, response) {
-		var msfilter = request.param('msfilter', '');
-		var condition;
+		const msfilter = request.param('msfilter', '');
+		let condition;
 		if(msfilter) {
 			condition = ' WHERE '+msfilter;
 		}
 
-		var colums = "id, cobertura, obs, data, periodo, horario, altura, homoge, invasoras, gado, qtd_cupins, forrageira, solo_exp";
-		var sqlQuery = "SELECT ST_AsGeoJSON(geom) geojson,"+colums+" FROM pontos_campo_parada"+condition;
+		const colums = "id, cobertura, obs, data, periodo, horario, altura, homoge, invasoras, gado, qtd_cupins, forrageira, solo_exp";
+		const sqlQuery = "SELECT ST_AsGeoJSON(geom) geojson,"+colums+" FROM pontos_campo_parada"+condition;
 		
 		client.query(sqlQuery, (err, queryResult) => {
 			if (err) {

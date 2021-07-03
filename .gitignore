@@ -12,3 +12,4 @@ node_modules
 *.rdb
 *.sqlite
 fotos_campo
+src/server/data

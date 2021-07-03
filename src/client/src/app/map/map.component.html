@@ -390,7 +390,7 @@
 					  		[xAxis]="true"
 					  		(select)="yearGraphic($event)">
 					  		<ng-template #tooltipTemplate let-model="model">
-		                {{model.name}}: {{ model.value | number:'1.0-0' }} ha
+		                {{model.name}}: {{ model.value | number:'1.0-0' }}
 		            </ng-template>
         			</ngx-charts-line-chart>
 					  </mat-tab>
