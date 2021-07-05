@@ -107,7 +107,7 @@ export class MapComponent implements OnInit {
 	checkedLegendPot_Int = true;
   infodata: any;
 
-	year = '2020';
+	year = '2019';
   yearIndicatorLotacao = '2018'
 	years: any;
 	regions: any;
@@ -1572,8 +1572,11 @@ export class MapComponent implements OnInit {
 		this.sumIndicators();
 		this.updateSourceLayer();
 		this.updateChartsYears();
-    this.chartDegradationResult = this.chartsDegradation[this.pastureDagradedYear];
 	}
+
+  updateChartPastureDegraded(){
+    this.chartDegradationResult = this.chartsDegradation[this.pastureDagradedYear];
+  }
 
 	private sumIndicators() {
 
@@ -1741,6 +1744,10 @@ export class MapComponent implements OnInit {
 			this.regionSource.addFeatures(features)
 		})
 	}
+  formatValue(value){
+    console.log(value.toFixed(2))
+    return value.toFixed(2)
+  }
 
 	ngOnInit() {
 		this.layerLegend = "Área de Pastagem"

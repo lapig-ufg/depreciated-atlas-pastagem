@@ -205,8 +205,8 @@
 									<div class="row">
 										<div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 slider-layer">
 <!--                      <mat-slide-toggle (change)="layerchecked('classes_degradacao_pastagem', $event)"></mat-slide-toggle>-->
-
-                      <mat-slide-toggle (change)="layerchecked('pasture_quality', $event)"></mat-slide-toggle>
+<!--                      (change)="layerchecked('pasture_quality', $event)"-->
+                      <mat-slide-toggle ></mat-slide-toggle>
 										</div>
 										<div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10 expansion-layer">
 											<mat-expansion-panel>
@@ -236,7 +236,7 @@
                           <div style="margin-left: 2em;">
                             <mat-form-field>
                               <mat-label>Ano</mat-label>
-                              <mat-select placeholder="" (selectionChange)="updateyear()" [value]="pastureDagradedYear" [(ngModel)]="pastureDagradedYear">
+                              <mat-select placeholder="" (selectionChange)="updateChartPastureDegraded()" [value]="pastureDagradedYear" [(ngModel)]="pastureDagradedYear">
                                 <mat-option *ngFor="let year of pastureDagradedYears" [value]="year">{{ year }}</mat-option>
                               </mat-select>
                             </mat-form-field>
@@ -588,18 +588,20 @@
 <!--									<a href="https://www.sciencedirect.com/science/article/pii/S0034425719303207?via%3Dihub" target="_blank">(Parente et al. 2019)</a>-->
 <!--							</p>-->
 <!--						</mat-tab>-->
-            <mat-tab label="Pastagem Degradada">
+            <mat-tab id="pasture-degraded" label="Pastagem Degradada">
                 <h6>
                   <b>Áreas de Pastagem com Indício de Degradação - Brasil</b>
                 </h6>
               <p class="info_clique_mapa">*Área em milhões hectares (<strong>mha</strong>)</p>
               <ngx-charts-advanced-pie-chart
                 [view]="[viewWidth, 400]"
+                [animations]="false"
                 [scheme]="colorSchemeDegradationStatic"
                 [results]="chartDegradationResult"
+                [percentageFormatting]="formatValue"
                 >
                 <ng-template #tooltipTemplate let-model="model">
-                    {{model.name}}: {{ model.value | number:'1.0-0' }} mha
+                    {{model.name}}: {{ model.value }} mha
                 </ng-template>
               </ngx-charts-advanced-pie-chart>
               <p class="info_clique_mapa" style="text-align: left; padding-left:14px">*A diferença entre a área de pastagem aqui apresentada e a área mapeada,

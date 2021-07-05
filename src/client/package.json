@@ -24,7 +24,7 @@
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0",
-    "@swimlane/ngx-charts": "^7.0.1",
+    "@swimlane/ngx-charts": "^7.4.0",
     "core-js": "^2.4.1",
     "format-currency": "^1.0.0",
     "ol": "^4.6.4",

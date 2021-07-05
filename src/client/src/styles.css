@@ -251,3 +251,7 @@
 .mat-expansion-panel-body {
 	padding: 0 13px 10px !important;
 }
+
+.advanced-pie-legend:first-child {
+  font-size: 3em;
+}
