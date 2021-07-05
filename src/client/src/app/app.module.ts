@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule, MatSelectModule, MatButtonModule, MatIconModule, MatRadioModule } from '@angular/material';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
@@ -92,6 +93,7 @@ const appMobileRoutes: Routes = [
     MatTooltipModule,
     MatDialogModule,
     MatInputModule,
+    MatProgressSpinnerModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only
@@ -104,7 +106,7 @@ const appMobileRoutes: Routes = [
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
+export class AppModule {
   public constructor(private router: Router) {
 
     console.log(window.innerWidth)

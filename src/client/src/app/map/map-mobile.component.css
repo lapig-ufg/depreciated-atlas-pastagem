@@ -44,7 +44,7 @@ hr {
 }
 
 #positionLayers {
-  position: relative; 
+  position: relative;
   margin-top: 10px;
   max-width: 280px;
   background-color: #FFF;
@@ -127,7 +127,7 @@ hr {
 	line-height: 0px;
 }
 
-..mat-form-field-infix{
+.mat-form-field-infix{
 	padding: 0px  !important;
 	border-top: 0px !important;
 }
@@ -137,7 +137,7 @@ hr {
 	padding-left: 14px;
 	padding-right: 14px;
 	overflow: auto;
-  position: absolute; 
+  position: absolute;
   bottom: 0%;
   width: 100%;
   background-color: #FFF;
@@ -149,7 +149,7 @@ hr {
 }
 
 #positionLegend {
-	position: absolute; 
+	position: absolute;
   right: 1%;
   top: 4%;
   width: 220px;
@@ -181,7 +181,7 @@ hr {
 
 h6 {
 	font-size: 0.8rem;
-	margin-left: 15px; 
+	margin-left: 15px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
@@ -215,7 +215,7 @@ h6 {
 .title-atlas {
 	color: #373435;
 	font-weight: bold;
-	font-size: 1rem; 
+	font-size: 1rem;
 }
 
 .title-atlas-div {

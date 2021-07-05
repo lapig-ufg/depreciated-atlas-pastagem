@@ -93,10 +93,12 @@ export class MapComponent implements OnInit {
 	urls: any;
 	indexedLayers: any;
 	tileloading: Number;
-
 	selectPasture = 'areas-pastagens'
+  selectPastureCarbon = 'pasture_carbon_aglivc'
 	selectPastureDegraded = 'areas-pastagens-degraded'
 	checked = true;
+  checkedPastureCarbon = false;
+  checkedLegendPastureCarbon = true;
 	checkedLegendPasture = true;
 	checkedLegendPastureDegraded = true;
 	checkedLegendFieldPointNoStop = true;
@@ -105,7 +107,7 @@ export class MapComponent implements OnInit {
 	checkedLegendPot_Int = true;
   infodata: any;
 
-	year = '2019';
+	year = '2020';
   yearIndicatorLotacao = '2018'
 	years: any;
 	regions: any;
@@ -160,6 +162,11 @@ export class MapComponent implements OnInit {
   colorSchemeStatesType = ('linear');
 
   pastagem: any;
+  pasture_carbon: any;
+  pasture_carbon_aglivc: any;
+  pasture_carbon_stdeadc: any;
+  pasture_carbon_bglivs: any;
+  pasture_carbon_somsc: any;
   pastagem_municipios: any;
   pastagens_todas_transicoes: any;
   pastagens_uma_transicao: any;
@@ -194,10 +201,13 @@ export class MapComponent implements OnInit {
   region_geom: any;
   linkDownload: any;
   layerPastureShow = 'areas-pastagens';
-  layerPastureDegradedShow = 'classes_degradacao_pastagem';
+  // layerPastureDegradedShow = 'classes_degradacao_pastagem';
+  layerPastureDegradedShow = 'pasture_quality';
   layerPointTVIShow = 'treinamento';
   layerPointFieldShow = 'parada';
   pastagem_show: any;
+  layerPastureCarbonShow = 'pasture_carbon_aglivc';
+  pasture_carbon_show: any;
   pastagens_degradadas_show: any;
   rebanho_bovino_show: any;
   potencial_intensificacao_show: any;
@@ -213,7 +223,12 @@ export class MapComponent implements OnInit {
 	contractTypeValid = false;
 	disableTransitionsPastures = true;
 
-	constructor(private http: HttpClient, private _service: SearchService, public dialog: MatDialog) {
+  loadingChartPasture = true;
+
+  pastureDagradedYears = [2010, 2018];
+  pastureDagradedYear = 2010;
+
+  constructor(private http: HttpClient, private _service: SearchService, public dialog: MatDialog) {
 		this.indexedLayers = {};
 		this.tileloading = 0;
 		this.projection = OlProj.get('EPSG:900913');
@@ -389,21 +404,25 @@ export class MapComponent implements OnInit {
 		}
   }
 
-  private updateSourceLayer(){
-  	var source_pastagem_area = this.pastagem.layer.getSource();
-		var source_pastagem_municipio = this.pastagem_municipios.layer.getSource();
-		var source_pastagens_todas_transicoes = this.pastagens_todas_transicoes.layer.getSource();
-		var source_pastagens_uma_transicoes = this.pastagens_uma_transicao.layer.getSource();
-		var source_pastagens_zero_transicoes = this.pastagens_zero_transicao.layer.getSource();
-		var source_pastagens_degradadas = this.pastagens_degradadas.layer.getSource();
-		var source_pastagens_degradadas_regions = this.pastagem_degradada_municipios.layer.getSource();
-		var source_classes_degradacao_pastagem = this.classes_degradacao_pastagem.layer.getSource();
-		var source_rebanho_bovino = this.rebanho_bovino.layer.getSource();
-		var source_potencial_intensificacao = this.potencial_intensificacao.layer.getSource();
-		var source_pontos_sem_parada = this.pontos_campo_sem_parada.layer.getSource();
-		var source_pontos_tvi_treinamento = this.pontos_tvi_treinamento.layer.getSource();
-		var source_pontos_tvi_validacao = this.pontos_tvi_validacao.layer.getSource();
-		var source_landsat = this.landsat.layer.getSource()
+  private updateSourceLayer() {
+    const source_pastagem_area = this.pastagem.layer.getSource();
+    const source_pasture_carbon_aglivc = this.pasture_carbon_aglivc.layer.getSource();
+    const source_pasture_carbon_stdeadc = this.pasture_carbon_stdeadc.layer.getSource();
+    const source_pasture_carbon_bglivs = this.pasture_carbon_bglivs.layer.getSource();
+    const source_pasture_carbon_somsc = this.pasture_carbon_somsc.layer.getSource();
+		const source_pastagem_municipio = this.pastagem_municipios.layer.getSource();
+		const source_pastagens_todas_transicoes = this.pastagens_todas_transicoes.layer.getSource();
+		const source_pastagens_uma_transicoes = this.pastagens_uma_transicao.layer.getSource();
+		const source_pastagens_zero_transicoes = this.pastagens_zero_transicao.layer.getSource();
+		const source_pastagens_degradadas = this.pastagens_degradadas.layer.getSource();
+		const source_pastagens_degradadas_regions = this.pastagem_degradada_municipios.layer.getSource();
+		const source_classes_degradacao_pastagem = this.classes_degradacao_pastagem.layer.getSource();
+		const source_rebanho_bovino = this.rebanho_bovino.layer.getSource();
+		const source_potencial_intensificacao = this.potencial_intensificacao.layer.getSource();
+		const source_pontos_sem_parada = this.pontos_campo_sem_parada.layer.getSource();
+		const source_pontos_tvi_treinamento = this.pontos_tvi_treinamento.layer.getSource();
+		const source_pontos_tvi_validacao = this.pontos_tvi_validacao.layer.getSource();
+		const source_landsat = this.landsat.layer.getSource()
 
 		source_pastagem_area.setUrls(this.getUrls(this.pastagem.layername, this.pastagem.layerfilter))
 		source_pastagem_municipio.setUrls(this.getUrls(this.pastagem_municipios.layername, this.pastagem_municipios.layerfilter))
@@ -411,6 +430,10 @@ export class MapComponent implements OnInit {
 		source_pastagens_uma_transicoes.setUrls(this.getUrls(this.pastagens_uma_transicao.layername, this.pastagens_uma_transicao.layerfilter))
 		source_pastagens_zero_transicoes.setUrls(this.getUrls(this.pastagens_zero_transicao.layername, this.pastagens_zero_transicao.layerfilter))
 		source_pastagens_degradadas.setUrls(this.getUrls(this.pastagens_degradadas.layername, this.pastagens_degradadas.layerfilter))
+    source_pasture_carbon_aglivc.setUrls(this.getUrls(this.pasture_carbon_aglivc.layername, this.pasture_carbon_aglivc.layerfilter))
+    source_pasture_carbon_stdeadc.setUrls(this.getUrls(this.pasture_carbon_stdeadc.layername, this.pasture_carbon_stdeadc.layerfilter))
+    source_pasture_carbon_bglivs.setUrls(this.getUrls(this.pasture_carbon_bglivs.layername, this.pasture_carbon_bglivs.layerfilter))
+    source_pasture_carbon_somsc.setUrls(this.getUrls(this.pasture_carbon_somsc.layername, this.pasture_carbon_somsc.layerfilter))
 		source_pastagens_degradadas_regions.setUrls(this.getUrls(this.pastagem_degradada_municipios.layername, this.pastagem_degradada_municipios.layerfilter))
 		source_classes_degradacao_pastagem.setUrls(this.getUrls(this.classes_degradacao_pastagem.layername, this.classes_degradacao_pastagem.layerfilter))
 		source_rebanho_bovino.setUrls(this.getUrls(this.rebanho_bovino.layername, this.rebanho_bovino.layerfilter))
@@ -421,6 +444,10 @@ export class MapComponent implements OnInit {
 		source_landsat.updateParams({'YEAR':this.year});
 
 		source_pastagem_area.refresh();
+    source_pasture_carbon_aglivc.refresh();
+    source_pasture_carbon_stdeadc.refresh();
+    source_pasture_carbon_bglivs.refresh();;
+    source_pasture_carbon_somsc.refresh();
 		source_pastagem_municipio.refresh();
 		source_pastagens_todas_transicoes.refresh();
 		source_pastagens_uma_transicoes.refresh();
@@ -666,8 +693,16 @@ export class MapComponent implements OnInit {
 			msfilter = "&MSFILTER=category='1'"+''+this.msFilterRegion
 		} else if (filter == 'pasture_degraded_class' && this.msFilterRegionCharts == '') {
       msfilter = "&MSFILTER=category='1'"
-    } else if (filter == 'pasture_degraded_class' && this.msFilterRegionCharts != '') {
-      msfilter = "&MSFILTER=category='1'"+''+this.msFilterRegion
+    } else if (filter == 'pasture_carbon_aglivc') {
+      msfilter = '&MSFILTER='+"year=2019" + this.msFilterRegion
+    } else if (filter == 'pasture_carbon_stdeadc') {
+      msfilter = '&MSFILTER='+"year=2019" + this.msFilterRegion
+    } else if (filter == 'pasture_carbon_somsc') {
+      msfilter = '&MSFILTER='+"year=2019" + this.msFilterRegion
+    } else if (filter == 'pasture_carbon_bglivs') {
+      msfilter = '&MSFILTER='+"year=2019" + this.msFilterRegion
+    } else if (filter == 'pasture_quality') {
+      msfilter = '&MSFILTER='+"year="+this.pastureDagradedYear+''+this.msFilterRegion
     }
 
 		for (let url of this.urls) {
@@ -829,6 +864,51 @@ export class MapComponent implements OnInit {
 			layerfilter: 'pasture_degraded_class'
 		}
 
+    this.pasture_carbon = {
+      label: 'Áreas de Estoque de Carbono',
+      tooltip: 'Áreas de Estoque de Carbono ',
+      layername: "pasture_carbon_aglivc",
+      visible: false,
+      opacity: 1,
+      layerfilter: 'pasture_carbon_aglivc'
+    }
+
+		this.pasture_carbon_aglivc = {
+			label: 'Áreas de Estoque de Carbono Biomassa Viva',
+			tooltip: 'Áreas de Estoque de Carbono Biomassa Viva',
+			layername: "pasture_carbon_aglivc",
+			visible: false,
+			opacity: 1,
+			layerfilter: 'pasture_carbon_aglivc'
+		}
+
+		this.pasture_carbon_stdeadc = {
+			label: 'Áreas de Estoque de Carbono Biomassa Morta',
+			tooltip: 'Áreas de Estoque de Carbono Biomassa Morta',
+			layername: "pasture_carbon_stdeadc",
+			visible: false,
+			opacity: 1,
+			layerfilter: 'pasture_carbon_stdeadc'
+		}
+
+		this.pasture_carbon_bglivs = {
+			label: 'Áreas de Estoque de Carbono Raizes',
+			tooltip: 'Áreas de Estoque de Carbono Raizes',
+			layername: "pasture_carbon_bglivs",
+			visible: false,
+			opacity: 1,
+			layerfilter: 'pasture_carbon_bglivs'
+		}
+
+		this.pasture_carbon_somsc = {
+			label: 'Áreas de Estoque de Carbono Matéria Orgânica do Solo (SOM)',
+			tooltip: 'Áreas de Estoque de Carbono Matéria Orgânica do Solo (SOM)',
+			layername: "pasture_carbon_somsc",
+			visible: false,
+			opacity: 1,
+			layerfilter: 'pasture_carbon_somsc'
+		}
+
 		this.pastagem_degradada_municipios = {
 			label: 'Áreas de Pastagens degradadas do Brasil',
 			tooltip: 'Áreas de Pastagens degradadas do Brasil',
@@ -841,10 +921,12 @@ export class MapComponent implements OnInit {
 		this.classes_degradacao_pastagem = {
 			label: 'Classes de Degradação das Pastagens no Brasil',
 			tooltip: 'Classes de Degradação das Pastagens no Brasil',
-			layername: "classes_degradacao_pastagem",
+			// layername: "classes_degradacao_pastagem",
+			layername: "pasture_quality",
 			visible: false,
 			opacity: 1,
-			layerfilter: 'pontos_campo_sem_parada'
+			layerfilter: 'pasture_quality'
+			// layerfilter: 'pontos_campo_sem_parada'
 		}
 
 		this.rebanho_bovino = {
@@ -977,11 +1059,22 @@ export class MapComponent implements OnInit {
 		this.pontos_tvi_validacao['layer'] = this.createTMSLayer(this.pontos_tvi_validacao.layername, this.pontos_tvi_validacao.visible, this.pontos_tvi_validacao.opacity, this.pontos_tvi_validacao.layerfilter)
 		this.terras_privadas['layer'] = this.createTMSLayer(this.terras_privadas.layername, this.terras_privadas.visible, this.terras_privadas.opacity, '')
 
+    this.pasture_carbon_aglivc['layer'] = this.createTMSLayer(this.pasture_carbon_aglivc.layername, this.pasture_carbon_aglivc.visible, this.pasture_carbon_aglivc.opacity, this.pasture_carbon_aglivc.layerfilter);
+    this.pasture_carbon_bglivs['layer'] = this.createTMSLayer(this.pasture_carbon_bglivs.layername, this.pasture_carbon_bglivs.visible, this.pasture_carbon_bglivs.opacity, this.pasture_carbon_bglivs.layerfilter);
+    this.pasture_carbon_stdeadc['layer'] = this.createTMSLayer(this.pasture_carbon_stdeadc.layername, this.pasture_carbon_stdeadc.visible, this.pasture_carbon_stdeadc.opacity, this.pasture_carbon_stdeadc.layerfilter);
+    this.pasture_carbon_somsc['layer'] = this.createTMSLayer(this.pasture_carbon_somsc.layername, this.pasture_carbon_somsc.visible, this.pasture_carbon_somsc.opacity, this.pasture_carbon_somsc.layerfilter);
+
 		this.regions = this.createVectorLayer('regions', '#663300', 3);
 		this.fieldPointsStop = this.createVectorLayer('fieldPointsStop', '#fc16ef', 3);
 		this.fieldPointsStop.setVisible(false);
 
 		this.layers.push(this.pastagem['layer'])
+
+    this.layers.push(this.pasture_carbon_aglivc['layer'])
+    this.layers.push(this.pasture_carbon_bglivs['layer'])
+    this.layers.push(this.pasture_carbon_stdeadc['layer'])
+    this.layers.push(this.pasture_carbon_somsc['layer'])
+
 		this.layers.push(this.pastagem_municipios['layer'])
 		this.layers.push(this.pastagens_todas_transicoes['layer'])
 		this.layers.push(this.pastagens_uma_transicao['layer'])
@@ -1083,12 +1176,16 @@ export class MapComponent implements OnInit {
 	}
 
 	opcoesVisualizacao(e){
-		if(e.value == 'areas-pastagens'){
+    if(e.value == 'areas-pastagens'){
 			this.pastagem.layer.setVisible(true);
 			this.pastagem_municipios.layer.setVisible(false);
 			this.pastagens_todas_transicoes.layer.setVisible(false);
 			this.pastagens_uma_transicao.layer.setVisible(false);
 			this.pastagens_zero_transicao.layer.setVisible(false);
+      this.pasture_carbon_aglivc.layer.setVisible(false);
+      this.pasture_carbon_bglivs.layer.setVisible(false);
+      this.pasture_carbon_stdeadc.layer.setVisible(false);
+      this.pasture_carbon_somsc.layer.setVisible(false);
 			this.contractTypeValid = false;
 			this.layerPastureShow = 'areas-pastagens';
 			this.show_year_pasture = true;
@@ -1098,6 +1195,10 @@ export class MapComponent implements OnInit {
 			this.pastagens_todas_transicoes.layer.setVisible(false);
 			this.pastagens_uma_transicao.layer.setVisible(false);
 			this.pastagens_zero_transicao.layer.setVisible(false);
+      this.pasture_carbon_aglivc.layer.setVisible(false);
+      this.pasture_carbon_bglivs.layer.setVisible(false);
+      this.pasture_carbon_stdeadc.layer.setVisible(false);
+      this.pasture_carbon_somsc.layer.setVisible(false);
 			this.contractTypeValid = false;
 			this.layerPastureShow = 'municipios-pastagens';
 			this.show_year_pasture = true;
@@ -1106,6 +1207,10 @@ export class MapComponent implements OnInit {
 			this.pastagens_uma_transicao.layer.setVisible(false);
 			this.pastagens_zero_transicao.layer.setVisible(false);
 			this.pastagem_municipios.layer.setVisible(false);
+      this.pasture_carbon_aglivc.layer.setVisible(false);
+      this.pasture_carbon_bglivs.layer.setVisible(false);
+      this.pasture_carbon_stdeadc.layer.setVisible(false);
+      this.pasture_carbon_somsc.layer.setVisible(false);
 			this.pastagem.layer.setVisible(false);
 			this.contractTypeValid = true;
 			this.layerPastureShow = 'pastagens-todas-transicoes';
@@ -1116,21 +1221,62 @@ export class MapComponent implements OnInit {
 			this.pastagens_zero_transicao.layer.setVisible(false);
 			this.pastagens_todas_transicoes.layer.setVisible(false);
 			this.pastagem_municipios.layer.setVisible(false);
+      this.pasture_carbon_aglivc.layer.setVisible(false);
+      this.pasture_carbon_bglivs.layer.setVisible(false);
+      this.pasture_carbon_stdeadc.layer.setVisible(false);
+      this.pasture_carbon_somsc.layer.setVisible(false);
 			this.pastagem.layer.setVisible(false);
 			this.contractTypeValid = true;
 			this.layerPastureShow = 'pastagens-uma-transicao';
 			this.show_year_pasture = false;
       this.selectedIndex = 2;
-		} else if (e.value == 'pastagens-zero-transicao') {
-			this.pastagens_zero_transicao.layer.setVisible(true);
+		} else if (e.value == 'pasture_carbon_aglivc') {
+			this.pastagens_zero_transicao.layer.setVisible(false);
 			this.pastagens_uma_transicao.layer.setVisible(false);
 			this.pastagens_todas_transicoes.layer.setVisible(false);
 			this.pastagem_municipios.layer.setVisible(false);
+      this.pasture_carbon_aglivc.layer.setVisible(true);
+      this.pasture_carbon_bglivs.layer.setVisible(false);
+      this.pasture_carbon_stdeadc.layer.setVisible(false);
+      this.pasture_carbon_somsc.layer.setVisible(false);
 			this.pastagem.layer.setVisible(false);
-			this.contractTypeValid = false;
-			this.layerPastureShow = 'pastagens-zero-transicao';
-			this.show_year_pasture = false;
+			this.layerPastureCarbonShow= 'pasture_carbon_aglivc';
+		} else if (e.value == 'pasture_carbon_stdeadc') {
+			this.pastagens_zero_transicao.layer.setVisible(false);
+			this.pastagens_uma_transicao.layer.setVisible(false);
+			this.pastagens_todas_transicoes.layer.setVisible(false);
+			this.pastagem_municipios.layer.setVisible(false);
+      this.pasture_carbon_aglivc.layer.setVisible(false);
+      this.pasture_carbon_bglivs.layer.setVisible(false);
+      this.pasture_carbon_stdeadc.layer.setVisible(true);
+      this.pasture_carbon_somsc.layer.setVisible(false);
+			this.pastagem.layer.setVisible(false);
+			this.layerPastureCarbonShow = 'pasture_carbon_stdeadc';
+		} else if (e.value == 'pasture_carbon_somsc') {
+			this.pastagens_zero_transicao.layer.setVisible(false);
+			this.pastagens_uma_transicao.layer.setVisible(false);
+			this.pastagens_todas_transicoes.layer.setVisible(false);
+			this.pastagem_municipios.layer.setVisible(false);
+      this.pasture_carbon_aglivc.layer.setVisible(false);
+      this.pasture_carbon_bglivs.layer.setVisible(false);
+      this.pasture_carbon_stdeadc.layer.setVisible(false);
+      this.pasture_carbon_somsc.layer.setVisible(true);
+			this.pastagem.layer.setVisible(false);
+			this.layerPastureCarbonShow = 'pasture_carbon_somsc';
+
+		} else if (e.value == 'pasture_carbon_bglivs') {
+			this.pastagens_zero_transicao.layer.setVisible(false);
+			this.pastagens_uma_transicao.layer.setVisible(false);
+			this.pastagens_todas_transicoes.layer.setVisible(false);
+			this.pastagem_municipios.layer.setVisible(false);
+      this.pasture_carbon_aglivc.layer.setVisible(false);
+      this.pasture_carbon_bglivs.layer.setVisible(true);
+      this.pasture_carbon_stdeadc.layer.setVisible(false);
+      this.pasture_carbon_somsc.layer.setVisible(false);
+			this.pastagem.layer.setVisible(false);
+			this.layerPastureCarbonShow = 'pasture_carbon_bglivs';
 		}
+
     this.updateChartsTransitions();
 
 		// if(e.value == 'areas-pastagens-degraded'){
@@ -1253,7 +1399,7 @@ export class MapComponent implements OnInit {
 	}
 
 	layerchecked(layer, e) {
-
+    console.log(layer, e)
 		if (layer == this.estados.layer) {
 			this.municipios.layer.setVisible(false)
 			this.municipios.visible = false
@@ -1269,7 +1415,25 @@ export class MapComponent implements OnInit {
 			this.estados.visible = false
 			this.municipios.layer.setVisible(false)
 			this.municipios.visible = false
-		} else if (layer == this.pastagem.layer) {
+		} else if (layer == this.pasture_carbon.layer) {
+      if(e.checked === false){
+
+        this.pasture_carbon_aglivc.layer.setVisible(false);
+        this.pasture_carbon_bglivs.layer.setVisible(false);
+        this.pasture_carbon_stdeadc.layer.setVisible(false);
+        this.pasture_carbon_somsc.layer.setVisible(false);
+
+      } else if (e.checked === true && this.layerPastureCarbonShow == 'pasture_carbon_aglivc'){
+        this.pasture_carbon_aglivc.layer.setVisible(true);
+      } else if (e.checked === true && this.layerPastureCarbonShow == 'pasture_carbon_bglivs'){
+        this.pasture_carbon_bglivs.layer.setVisible(true);
+      } else if (e.checked === true && this.layerPastureCarbonShow == 'pasture_carbon_stdeadc'){
+        this.pasture_carbon_stdeadc.layer.setVisible(true);
+      } else if (e.checked === true && this.layerPastureCarbonShow == 'pasture_carbon_somsc'){
+        this.pasture_carbon_somsc.layer.setVisible(true);
+      }
+      this.pasture_carbon_show = e.checked;
+    } else if (layer == this.pastagem.layer) {
 			if(e.checked === false){
 				this.pastagem_municipios.layer.setVisible(false);
         this.pastagens_zero_transicao.layer.setVisible(false);
@@ -1294,7 +1458,10 @@ export class MapComponent implements OnInit {
       }
 			this.pontos_parada = e.checked;
 			this.selectedIndex = 4
-		} else if (layer == 'classes_degradacao_pastagem') {
+		} else if (layer == 'pasture_quality') {
+
+    // } else if (layer == 'classes_degradacao_pastagem') {
+
 			// if(this.layerPastureDegradedShow == 'areas-pastagens-degraded'){
 			// 	layer = this.pastagens_degradadas.layer;
 			// } else if (this.layerPastureDegradedShow == 'municipios-pastagens-degraded') {
@@ -1319,9 +1486,9 @@ export class MapComponent implements OnInit {
 				layer = this.pontos_tvi_treinamento.layer;
 			}
 		}
-
-    layer.setVisible(e.checked);
-
+		if(layer){
+      layer.setVisible(e.checked);
+    }
 	}
 
 	legendchecked(layer) {
@@ -1340,6 +1507,18 @@ export class MapComponent implements OnInit {
 				this.pastagens_zero_transicao.layer.setVisible(this.checkedLegendPasture);
 			}
 		}
+    if (layer == 'pasture_carbon') {
+      this.checkedLegendPastureCarbon = !this.checkedLegendPastureCarbon;
+      if (this.layerPastureCarbonShow == 'pasture_carbon_aglivc'){
+        this.pasture_carbon_aglivc.layer.setVisible(this.checkedLegendPastureCarbon);
+      } else if (this.layerPastureCarbonShow == 'pasture_carbon_bglivs') {
+        this.pasture_carbon_bglivs.layer.setVisible(this.checkedLegendPastureCarbon);
+      } else if (this.layerPastureCarbonShow == 'pasture_carbon_stdeadc') {
+        this.pasture_carbon_stdeadc.layer.setVisible(this.checkedLegendPastureCarbon);
+      } else if (this.layerPastureCarbonShow == 'pasture_carbon_somsc') {
+        this.pasture_carbon_somsc.layer.setVisible(this.checkedLegendPastureCarbon);
+      }
+    }
 		// else if (layer == 'pasture_degraded') {
 		// 	this.checkedLegendPastureDegraded = !this.checkedLegendPastureDegraded;
 		// 	if (this.layerPastureDegradedShow == 'areas-pastagens-degraded'){
@@ -1350,7 +1529,8 @@ export class MapComponent implements OnInit {
 		// 		this.classes_degradacao_pastagem.layer.setVisible(this.checkedLegendPastureDegraded);
 		// 	}
 		// }
-		else if (this.layerPastureDegradedShow == 'classes_degradacao_pastagem') {
+    // else if (this.layerPastureDegradedShow == 'classes_degradacao_pastagem') {
+		else if (this.layerPastureDegradedShow == 'pasture_quality') {
 			this.checkedLegendPastureDegraded = !this.checkedLegendPastureDegraded;
 			this.classes_degradacao_pastagem.layer.setVisible(this.checkedLegendPastureDegraded);
 		} else if (layer == 'rebanho_bovino') {
@@ -1397,8 +1577,8 @@ export class MapComponent implements OnInit {
         this.indicatorPasturePercentual = indicatorsPasture[1].percentual_area_ha;
       });
     }
-
-    if (this.year == '2019'){
+    //TODO Verificar ano do último dado do rebanho bovino
+    if (this.year == '2019' || this.year == '2020'){
       this.yearIndicatorLotacao = '2018';
     } else {
       this.yearIndicatorLotacao = this.year;
@@ -1409,7 +1589,7 @@ export class MapComponent implements OnInit {
       this.indicatorRebanhoBovinoPercentual = indicatorsRebanho[0].ua/indicatorsRebanho[0].past_ha
 		});
 
-		var filterPastureDegraded = 'service/map/indicatorsPastureDegraded?&MSFILTER='+this.msFilterRegionCharts
+		var filterPastureDegraded = 'service/map/indicatorsPastureDegraded?&MSFILTER=year='+this.pastureDagradedYear+''+this.msFilterRegionCharts
 		var filterPastureOld = 'service/map/indicatorsPastureOld?&MSFILTER='+this.msFilterRegionCharts
 		var filterPotencialIntensificacao = 'service/map/indicatorsPotencialIntensificacao?&MSFILTER='+this.msFilterRegionCharts
 		var filterPoints = 'service/map/indicatorsPoints?&MSFILTER='+this.msFilterRegionCharts
@@ -1428,6 +1608,7 @@ export class MapComponent implements OnInit {
 		}
 
 		this.http.get(filterPastureDegraded).subscribe(indicatorsPastureDegraded => {
+      console.log('indicatorsPastureDegraded', indicatorsPastureDegraded)
 			this.indicatorPastureDegraded = indicatorsPastureDegraded[0].sum;
 			this.indicatorPastureDegradedPercentual = indicatorsPastureDegraded[1].percentual_area_ha;
 		});
@@ -1460,9 +1641,24 @@ export class MapComponent implements OnInit {
 	}
 
 	private updateCharts() {
-
+    this.loadingChartPasture = false
 		this.http.get('service/map/charts?region='+this.msFilterRegionCharts+'&type='+this.regionTypeCharts).subscribe(charts => {
-			this.chartResult = charts;
+      this.chartResult = null;
+
+      let pastureSeries = [];
+      let series = charts[0].series;
+      series.forEach(data => {
+        if(data.value != null){
+          data.name = String(data.name)
+          data.value = parseInt(data.value)
+          data.year = String(data.year)
+          pastureSeries.push(data)
+        }
+      });
+      charts[0].series = pastureSeries;
+
+      this.chartResult = charts;
+      this.loadingChartPasture = true
 		});
 
 		this.http.get('service/map/ChartsClassDegradation?region='+this.msFilterRegionCharts).subscribe(chartsDegradation => {
@@ -1539,10 +1735,25 @@ export class MapComponent implements OnInit {
 		this.http.get('service/map/years').subscribe(years => {
 			this.years = years;
 		});
-
+    this.loadingChartPasture = false;
 		this.http.get('service/map/charts').subscribe(charts => {
+      this.chartResult = null;
+
+      let pastureSeries = [];
+      let series = charts[0].series;
+      series.forEach(data => {
+        if(data.value != null){
+          data.name = String(data.name)
+          data.value = parseInt(data.value)
+          data.year = String(data.year)
+          pastureSeries.push(data)
+        }
+      });
+      charts[0].series = pastureSeries;
 			this.chartResult = charts;
-		});
+      console.log(this.chartResult)
+      this.loadingChartPasture = true;
+    });
 
 		this.createMap();
 		this.addPoints();

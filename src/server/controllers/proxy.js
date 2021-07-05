@@ -10,7 +10,7 @@ module.exports = function(app) {
 
 		var year = request.param('year');
 		var tile = request.param('tile');
-		var url = "http://ows.lapig.iesa.ufg.br/ows?layers=pasture_rebanho_regions_utfgrid&MSFILTER=year="+year+"&mode=tile&tile="+tile+"&tilemode=gmap&map.imagetype=utfgrid";
+		var url = "https://ows.lapig.iesa.ufg.br/ows?layers=pasture_rebanho_regions_utfgrid&MSFILTER=year="+year+"&mode=tile&tile="+tile+"&tilemode=gmap&map.imagetype=utfgrid";
 
 	  requester({
 	  		uri: url

@@ -44,7 +44,7 @@ hr {
 }
 
 .card-body {
-	padding:5px; 
+	padding:5px;
 	font-size: 13px;
 }
 
@@ -53,7 +53,7 @@ hr {
 }
 
 #positionLayers {
-  position: absolute; 
+  position: absolute;
   left: 2%;
   /*bottom: 2%;*/
   /*height: 90%;*/
@@ -69,8 +69,8 @@ hr {
 }
 
 #positionCharts {
-  position: absolute; 
-  right: 1%; 
+  position: absolute;
+  right: 1%;
   bottom: 2%;
   width: 600px;
   background-color: #FFF;
@@ -82,7 +82,7 @@ hr {
 }
 
 #positionLegend {
-	position: absolute; 
+	position: absolute;
   right: 1%;
   top: 4%;
   width: 350px;
@@ -163,7 +163,7 @@ hr {
 	line-height: 0px;
 }
 
-..mat-form-field-infix{
+.mat-form-field-infix{
 	padding: 0px  !important;
 	border-top: 0px !important;
 }
@@ -189,7 +189,7 @@ hr {
 
 h6 {
 	font-size: 0.98rem;
-	margin-left: 15px; 
+	margin-left: 15px;
 	margin-top: 10px;
 }
 
@@ -222,7 +222,7 @@ h6 {
 .title-atlas {
 	color: #373435;
 	font-weight: bold;
-	font-size: 30px; 
+	font-size: 30px;
 }
 
 .title-atlas-div {
@@ -330,7 +330,7 @@ h6 {
 	padding-left: 22%;
 }*/
 
-@media (max-width: 600px) { 
+@media (max-width: 600px) {
 	.title-atlas {
 		font-size: 1em;
 	}
@@ -358,7 +358,7 @@ h6 {
 		display: none
 	}
 
-	#dropdowYearRebanho, 
+	#dropdowYearRebanho,
 	.button-csv {
 		padding-left: 33%
 	}
@@ -534,4 +534,15 @@ h6 {
     font-size: 0.7rem;
     text-align: right;
     padding-right: 14px;
+}
+
+.loading-chart-pasture{
+  display: block;
+  margin: 64px auto;
+}
+
+.legend-img{
+  text-align: center;
+  display: flex;
+  justify-content: flex-start;
 }

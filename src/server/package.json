@@ -33,7 +33,7 @@
     "multer": "^0.1.8",
     "node-mime": "^1.0.0",
     "node-schedule": "~1.2.0",
-    "pg": "^7.4.3",
+    "pg": "^8.6.0",
     "request": "^2.88.0",
     "request-param": "^0.2.0",
     "response-time": "^2.3.0",
@@ -42,7 +42,6 @@
     "underscore": "~1.12.1",
     "xml2js": "~0.4.1"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
