@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md fixed-top barra-titulo" style="border-bottom: 1px solid #808080; background-color: #FFF;">
   <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 title-atlas-div">
-  	<div class="title-atlas">Atlas Digital das Pastagens Brasileiras</div>
+  	<div class="title-atlas">Atlas Digital das Pastagens Brasileiras - <strong style="color: #ffc107;">Plataforma em Manutenção</strong></div>
   </div>
   <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 logos-atlas">
   		<a href="https://pastagem.org/index.php/pt-br/" target="_blank"><img class="logo-ufg" src="assets/ufg.png" /></a>
@@ -100,6 +100,7 @@
 															</div>
 															<div class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3" *ngIf="show_year_pasture">
 																<mat-form-field>
+                                  <mat-label>Ano</mat-label>
 																  <mat-select placeholder="" [disabled]=!pastagem_show (selectionChange)="updateyear('pastagem')" [value]="year" [(ngModel)]="year">
 																    <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
 																  </mat-select>
@@ -210,13 +211,14 @@
 													    <mat-icon class="iconInfo">info</mat-icon>
 													  </button>
 													</div>
-													<div class="value-indicators">
-														{{ indicatorPastureDegraded | number:'3.0-0' }} ha
-														<p style="margin-bottom: 0px">com indícios de degradação </p>
-														<p class="stylePercentual">({{ indicatorPastureDegradedPercentual | number:'1.1-2'}}% do(a) {{ regionTypeBr }})</p>
-													</div>
+<!--													<div class="value-indicators">-->
+<!--														{{ indicatorPastureDegraded | number:'3.0-0' }} ha-->
+<!--														<p style="margin-bottom: 0px">com indícios de degradação </p>-->
+<!--														<p class="stylePercentual">({{ indicatorPastureDegradedPercentual | number:'1.1-2'}}% do(a) {{ regionTypeBr }})</p>-->
+<!--													</div>-->
                           <div style="margin-left: 2em;">
                             <mat-form-field>
+                              <mat-label>Ano</mat-label>
                               <mat-select placeholder="" (selectionChange)="updateyear()" [value]="pastureDagradedYear" [(ngModel)]="pastureDagradedYear">
                                 <mat-option *ngFor="let year of pastureDagradedYears" [value]="year">{{ year }}</mat-option>
                               </mat-select>
