@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md fixed-top barra-titulo" style="border-bottom: 1px solid #808080; background-color: #FFF;">
   <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 title-atlas-div">
-  	<div class="title-atlas">Atlas Digital das Pastagens Brasileiras - <strong style="color: #ffc107;">Plataforma em Manutenção</strong></div>
+  	<div class="title-atlas">Atlas Digital das Pastagens Brasileiras</div>
   </div>
   <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 logos-atlas">
   		<a href="https://pastagem.org/index.php/pt-br/" target="_blank"><img class="logo-ufg" src="assets/ufg.png" /></a>
@@ -227,10 +227,10 @@
 <!--														<p class="stylePercentual">({{ indicatorPastureDegradedPercentual | number:'1.1-2'}}% do(a) {{ regionTypeBr }})</p>-->
 <!--													</div>-->
 													<div class="value-indicators" *ngIf="pastureDagradedYear == 2010">
-                            <span><strong>167.7</strong> mha<br><small>milhoes de hectares</small></span>
+                            <span><strong>167.7</strong> mha<br><small>milhões de hectares</small></span>
 													</div>
                           <div class="value-indicators" *ngIf="pastureDagradedYear == 2018">
-                            <span><strong>166</strong> mha <br><small>milhoes de hectares</small></span>
+                            <span><strong>166</strong> mha <br><small>milhões de hectares</small></span>
                           </div>
 
                           <div style="margin-left: 2em;">
@@ -588,6 +588,25 @@
 <!--									<a href="https://www.sciencedirect.com/science/article/pii/S0034425719303207?via%3Dihub" target="_blank">(Parente et al. 2019)</a>-->
 <!--							</p>-->
 <!--						</mat-tab>-->
+            <mat-tab label="Pastagem Degradada">
+                <h6>
+                  <b>Áreas de Pastagem com Indício de Degradação - Brasil</b>
+                </h6>
+              <p class="info_clique_mapa">*Área em milhões hectares (<strong>mha</strong>)</p>
+              <ngx-charts-advanced-pie-chart
+                [view]="[viewWidth, 400]"
+                [scheme]="colorSchemeDegradationStatic"
+                [results]="chartDegradationResult"
+                >
+                <ng-template #tooltipTemplate let-model="model">
+                    {{model.name}}: {{ model.value | number:'1.0-0' }} mha
+                </ng-template>
+              </ngx-charts-advanced-pie-chart>
+              <p class="info_clique_mapa" style="text-align: left; padding-left:14px">*A diferença entre a área de pastagem aqui apresentada e a área mapeada,
+                  é explicada pelo ajuste de área a partir da análise de acurácia, detalhada em
+                  <a href="https://www.sciencedirect.com/science/article/pii/S0034425719303207?via%3Dihub" target="_blank">(Parente et al. 2019)</a>
+              </p>
+            </mat-tab>
 					  <mat-tab label="Pontos Campo" *ngIf="this.pontos_parada">
 					  	<div class="row" *ngIf="this.infoFeature.foto == ''">
 					  		<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 instrucoesPontosCampo">

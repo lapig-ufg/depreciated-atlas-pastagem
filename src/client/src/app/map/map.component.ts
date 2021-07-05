@@ -157,6 +157,9 @@ export class MapComponent implements OnInit {
 	colorSchemeDegradation = {
     domain: ['#579e4e', '#c8e88f', '#f8cd88', '#db473f']
   };
+  colorSchemeDegradationStatic = {
+    domain: ['#00733F', '#F8C8D2', '#D02C17']
+  };
   colorSchemeTransitions: any;
   colorSchemeStates = ('solar');
   colorSchemeStatesType = ('linear');
@@ -227,6 +230,19 @@ export class MapComponent implements OnInit {
 
   pastureDagradedYears = [2010, 2018];
   pastureDagradedYear = 2010;
+
+  chartsDegradation = {
+    2010: [
+      { name: "Ausente", value: 48.8 },
+      { name: "Intermediário", value: 65.0 },
+      { name: "Severa", value: 53.9 }
+    ],
+    2018: [
+      {name: "Ausente", value: 68.3},
+      {name: "Intermediário", value: 53.4},
+      {name: "Severa", value: 44.3}
+    ]
+  };
 
   constructor(private http: HttpClient, private _service: SearchService, public dialog: MatDialog) {
 		this.indexedLayers = {};
@@ -1556,6 +1572,7 @@ export class MapComponent implements OnInit {
 		this.sumIndicators();
 		this.updateSourceLayer();
 		this.updateChartsYears();
+    this.chartDegradationResult = this.chartsDegradation[this.pastureDagradedYear];
 	}
 
 	private sumIndicators() {
@@ -1661,10 +1678,10 @@ export class MapComponent implements OnInit {
       this.loadingChartPasture = true
 		});
 
-		this.http.get('service/map/ChartsClassDegradation?region='+this.msFilterRegionCharts).subscribe(chartsDegradation => {
-      console.log(chartsDegradation)
-			this.chartDegradationResult = chartsDegradation;
-		});
+		// this.http.get('service/map/ChartsClassDegradation?region='+this.msFilterRegionCharts).subscribe(chartsDegradation => {
+    //   console.log(chartsDegradation)
+		// 	this.chartDegradationResult = chartsDegradation;
+		// });
 	}
 
 	private updateChartsYears() {
@@ -1732,6 +1749,7 @@ export class MapComponent implements OnInit {
 		this.updateChartsYears();
 		this.sumIndicators();
 		this.chartRegionScale = true;
+    this.chartDegradationResult = this.chartsDegradation[this.pastureDagradedYear];
 
 		this.http.get('service/map/years').subscribe(years => {
 			this.years = years;
