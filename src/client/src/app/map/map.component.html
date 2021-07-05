@@ -123,7 +123,7 @@
                       <mat-expansion-panel>
                         <mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
                           <div>
-                            <h5 class="nameLayers" ><b>Estoque de Carbono</b></h5>
+                            <h5 class="nameLayers" ><b>Estoque de Carbono - Cerrado</b></h5>
 <!--                            <h5 class="nameLayers" ><b>Estoque de Carbono - {{ regionSelected }}</b></h5>-->
                           </div>
                         </mat-expansion-panel-header>
@@ -133,10 +133,20 @@
 <!--                              <mat-icon class="iconInfo">info</mat-icon>-->
 <!--                            </button>-->
 <!--                          </div>-->
-<!--                          <div class="value-indicators" *ngIf="layerPastureShow != 'pastagens-zero-transicao'">-->
-<!--                            {{ indicatorPasture | number:'3.0-0' }} ha-->
-<!--                            <p class="stylePercentual"> ({{ indicatorPasturePercentual | number:'1.1-2'}}% do(a) {{ regionTypeBr }})</p>-->
-<!--                          </div>-->
+
+                          <div class="value-indicators"  *ngIf="layerPastureCarbonShow == 'pasture_carbon_aglivc'">
+                            <strong>0.12 </strong>PgC
+                          </div>
+                          <div class="value-indicators"  *ngIf="layerPastureCarbonShow == 'pasture_carbon_bglivs'">
+                            <strong>0.08  </strong>PgC
+                          </div>
+                          <div class="value-indicators"  *ngIf="layerPastureCarbonShow == 'pasture_carbon_stdeadc'">
+                            <strong>0.06  </strong>PgC
+                          </div>
+                          <div class="value-indicators"  *ngIf="layerPastureCarbonShow == 'pasture_carbon_somsc'">
+                            <strong>1.51  </strong>PgC
+                          </div>
+                          &nbsp; - &nbsp;<small>Petagrama de carbono</small>
 <!--                          <div class="value-indicators" *ngIf="layerPastureShow == 'pastagens-zero-transicao'">-->
 <!--                            {{ indicatorPastureOld | number:'3.0-0' }} ha-->
 <!--                            <p class="stylePercentual">({{ indicatorPastureOldPercentual | number:'1.1-2'}}% do(a) {{ regionTypeBr }})</p>-->
@@ -170,7 +180,7 @@
                                     Biomassa Morta
                                   </mat-radio-button>
                                   <mat-radio-button (change)="opcoesVisualizacao($event)" value="pasture_carbon_somsc">
-                                    Matéria Orgânica do Solo (SOM)
+                                   Carbono no Solo (20cm)
                                   </mat-radio-button>
                                   <mat-radio-button (change)="opcoesVisualizacao($event)" value="pasture_carbon_bglivs">
                                     Raizes
@@ -202,20 +212,27 @@
 											<mat-expansion-panel>
 												<mat-expansion-panel-header [collapsedHeight]="'60px'" [expandedHeight]="'60px'" class="expansion-header-layer">
 													<div>
-															<h5 class="nameLayers"><b>Pastagem Degradada - {{pastureDagradedYear}}</b></h5>
+															<h5 class="nameLayers"><b>Pastagem Degradada - Brasil</b></h5>
 													</div>
 												</mat-expansion-panel-header>
 												<div class="row layers-indicator">
-													<div>
-														<button class="button-row" (click)="openDialog('pastagem_degradada')" mat-icon-button>
-													    <mat-icon class="iconInfo">info</mat-icon>
-													  </button>
-													</div>
+<!--													<div>-->
+<!--														<button class="button-row" (click)="openDialog('pastagem_degradada')" mat-icon-button>-->
+<!--													    <mat-icon class="iconInfo">info</mat-icon>-->
+<!--													  </button>-->
+<!--													</div>-->
 <!--													<div class="value-indicators">-->
 <!--														{{ indicatorPastureDegraded | number:'3.0-0' }} ha-->
 <!--														<p style="margin-bottom: 0px">com indícios de degradação </p>-->
 <!--														<p class="stylePercentual">({{ indicatorPastureDegradedPercentual | number:'1.1-2'}}% do(a) {{ regionTypeBr }})</p>-->
 <!--													</div>-->
+													<div class="value-indicators" *ngIf="pastureDagradedYear == '2010'">
+                            <span><strong>167.7</strong> mha<br><small>milhoes de hectares</small></span>
+													</div>
+                          <div class="value-indicators" *ngIf="pastureDagradedYear == '2018'">
+                            <span><strong>166</strong> mha <br><small>milhoes de hectares</small></span>
+                          </div>
+
                           <div style="margin-left: 2em;">
                             <mat-form-field>
                               <mat-label>Ano</mat-label>

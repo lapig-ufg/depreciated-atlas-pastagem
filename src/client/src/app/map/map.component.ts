@@ -1662,6 +1662,7 @@ export class MapComponent implements OnInit {
 		});
 
 		this.http.get('service/map/ChartsClassDegradation?region='+this.msFilterRegionCharts).subscribe(chartsDegradation => {
+      console.log(chartsDegradation)
 			this.chartDegradationResult = chartsDegradation;
 		});
 	}
