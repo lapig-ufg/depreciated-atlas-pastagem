@@ -1415,7 +1415,6 @@ export class MapComponent implements OnInit {
 	}
 
 	layerchecked(layer, e) {
-    console.log(layer, e)
 		if (layer == this.estados.layer) {
 			this.municipios.layer.setVisible(false)
 			this.municipios.visible = false
@@ -1576,6 +1575,7 @@ export class MapComponent implements OnInit {
 
   updateChartPastureDegraded(){
     this.chartDegradationResult = this.chartsDegradation[this.pastureDagradedYear];
+    this.updateSourceLayer();
   }
 
 	private sumIndicators() {

@@ -1,27 +1,31 @@
 const t = require('tiles-in-bbox'),
 	async = require('async'),
 	request = require('request');
-const data = require('./muns');
+const data_muns    = require('./muns');
 const data_cerrado = require('./muns_cerrado');
+const data_ufs     = require('./ufs');
+const data_biomas  = require('./biomas');
 
-const multipleRequests = 24
+const multipleRequests = 18
 const maxZoomLevel     = 12
 const ows_url          = "http://127.0.0.1:3000"
 const bbox   = { bottom : -33.752081, left : -73.990450, top : 5.271841, right : -28.835908 } //Brazil*/
 // const bbox = { bottom: -24.6846260, left: -60.1094198, top: -2.3262773, right: -41.5220189 } //Cerrado
 // const ufs = ['GO', 'SP', 'MA', 'RO', 'PA', 'MS', 'TO', 'MT', 'PR', 'PI', 'BA', 'DF', 'MG'] /*UFS - Cerrado*/
-const ufs    = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'] /*UFS - Brazil*/
+// const ufs    = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'] /*UFS - Brazil*/
+// const biomas = ['AMAZONIA', 'CAATINGA', 'CERRADO', 'MATA ATLANTICA', 'PAMPA', 'PANTANAL'];
 // const muns = data_cerrado.muns;
-const muns   = data.muns;
-const biomas = ['AMAZONIA', 'CAATINGA', 'CERRADO', 'MATA ATLANTICA', 'PAMPA', 'PANTANAL'];
-const layers = ["pasture_quality"]
+
+const ufs    = data_ufs.ufs;
+const muns   = data_muns.muns;
+const biomas = data_biomas.biomas;
+const layers = ["pasture_quality"];
 const years  = [2010, 2018];
 let urls     = []
 
 // const types  = ['bioma', 'city', 'state', 'none']
 const types  = ['bioma', 'none']
 
-let qtdeRequests = 0;
 for (let type of types) {
 	if (type == 'none') {
 
