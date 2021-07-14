@@ -21,7 +21,7 @@ MAX_ZOOM_LEVEL_NONE = [0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 MAX_ZOOM_LEVEL = [0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
 # PORT 5000 - HOMOLOGAÇÃO
 # PORT 3000 - PRODUÇÃO
-OWS_URL = 'http://127.0.0.1:5000'
+OWS_URL = 'http://127.0.0.1:5000/ows'
 LAYERS = ['pasture_quality']
 YEARS = [2010, 2018]
 # TYPES = ['none', 'cities', 'states','biomes']
