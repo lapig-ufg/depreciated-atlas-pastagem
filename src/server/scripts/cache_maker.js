@@ -25,8 +25,8 @@ const layers = ["pasture_quality"];
 const years  = [2010, 2018];
 let urls     = []
 
-const types  = ['none', 'city', 'state','bioma']
-// const types  = ['bioma', 'none']
+// const types  = ['none', 'city', 'state','bioma']
+const types  = ['none']
 
 
 for (let type of types) {
@@ -113,7 +113,6 @@ for (let type of types) {
 				for (let year = (years.length - 1); year >= 0; year--) {
 					for (let zoom = 0; zoom <= maxZoomLevel; zoom++) {
 						const _bbox = {left: bioma.left, right: bioma.right, top: bioma.top, bottom: bioma.bottom}
-
 						let tiles = t.tilesInBbox(_bbox, zoom)
 						console.log(_bbox, zoom, tiles)
 						tiles.forEach(function (tile) {
@@ -139,25 +138,13 @@ for (let type of types) {
 }
 
 let requests = [];
-const length = urls.length;
-console.log('QTDE: ', length)
-
-urls.forEach(function (url, index) {
-	console.log(url)
-});
-
-
 
 urls.forEach(function (url, index) {
 	requests.push(function (next) {
-
-		console.log("Caching: " + url)
 		console.log((index / length * 100).toFixed(2) + "% done." );
-
 		request(url, function (error, response, body) {
 			next()
 		});
-
 	});
 })
 
