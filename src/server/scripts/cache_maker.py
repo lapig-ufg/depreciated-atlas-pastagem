@@ -102,7 +102,7 @@ def processRequests(url):
         #print(str(round((idx / length * 100), 2)) + "% done.")
         requests.get(url)
     except requests.exceptions.RequestException as e:  # This is the correct syntax
-        print()
+        print(e)
 
 def run():
     for type in TYPES:
