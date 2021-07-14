@@ -6,7 +6,7 @@ const data_muns    = require('./muns');
 const data_ufs     = require('./ufs');
 const data_biomas  = require('./biomas');
 
-const multipleRequests = 20
+const multipleRequests = 16
 const maxZoomLevelNone = 13
 const maxZoomLevel     = 12
 const ows_url          = 'http://127.0.0.1:3000'
@@ -138,7 +138,7 @@ for (let type of types) {
 }
 
 let requests = [];
-
+const length = urls.length
 urls.forEach(function (url, index) {
 	requests.push(function (next) {
 		console.log((index / length * 100).toFixed(2) + "% done." );
