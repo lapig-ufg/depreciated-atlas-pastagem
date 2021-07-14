@@ -69,7 +69,7 @@ export class SearchService {
 })
 
 export class MapComponent implements OnInit {
-
+  env: any;
 	map: OlMap;
 	layers: Array<TileWMS>;
 	projection: OlProj;
@@ -246,6 +246,7 @@ export class MapComponent implements OnInit {
   };
 
   constructor(private http: HttpClient, private _service: SearchService, public dialog: MatDialog) {
+    this.env = environment;
 		this.indexedLayers = {};
 		this.tileloading = 0;
 		this.projection = OlProj.get('EPSG:900913');
@@ -256,10 +257,10 @@ export class MapComponent implements OnInit {
     this.infodata = { area_pasture: -1};
     this.pastagem_show = true;
 		this.urls = [
-    	environment.o1,
-    	environment.o2,
-    	environment.o3,
-    	environment.o4,
+      this.env.o1,
+      this.env.o2,
+      this.env.o3,
+      this.env.o4,
     ];
 
 		this.tileGrid = new TileGrid({
@@ -1130,7 +1131,7 @@ export class MapComponent implements OnInit {
 				this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
 				} else if (this.layerPastureShow == 'municipios-pastagens') {
 					var paramsDownload = '&MSFILTER=year='+this.year+''+this.msFilterRegion
-					this.linkDownload = environment.ows + '?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=pasture_regions_municipios&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
+					this.linkDownload = this.env.ows + '?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=pasture_regions_municipios&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
 				} else if (this.layerPastureShow == 'pastagens-zero-transicao') {
 					var paramsDownload = 'file=old_pasture&regionType='+this.downloadRegionType+'&region='+this.downloadRegion+'&year='+this.year
 					this.linkDownload = 'service/map/downloadSHP?'+paramsDownload
@@ -1161,7 +1162,7 @@ export class MapComponent implements OnInit {
 				this.linkDownload = 'service/map/downloadCSV?'+paramsDownload
 			} else {
 			  var paramsDownload = '&MSFILTER=year='+this.year+''+this.msFilterRegion
-        this.linkDownload = environment.ows + '?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=lotacao_bovina_regions&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
+        this.linkDownload = this.env.ows + '?REQUEST=GetFeature&SERVICE=wfs&VERSION=1.0.0&TYPENAME=lotacao_bovina_regions&OUTPUTFORMAT=shape-zip'+paramsDownload+'&WIDTH=1&HEIGHT=1'
       }
 		} else if (layer == 'pontos_campo') {
 			var paramsDownload = 'file=pontos_campo_parada';

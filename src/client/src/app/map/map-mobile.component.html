@@ -382,11 +382,11 @@
 															</div>
 														</mat-expansion-panel-header>
 														<div>
-															<img *ngIf="layerPastureShow == 'areas-pastagens'" src="http://o4.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture&format=image%2Fpng">
-															<img *ngIf="layerPastureShow == 'municipios-pastagens'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_regions_municipios&format=image%2Fpng">
-															<img *ngIf="layerPastureShow == 'pastagens-todas-transicoes'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_all_transitions&format=image%2Fpng">
-															<img *ngIf="layerPastureShow == 'pastagens-uma-transicao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_one_transitions&format=image%2Fpng">
-															<img *ngIf="layerPastureShow == 'pastagens-zero-transicao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_zero_transitions&format=image%2Fpng">
+															<img *ngIf="layerPastureShow == 'areas-pastagens'" [src]=" env.ows + '?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture&format=image%2Fpng'">
+															<img *ngIf="layerPastureShow == 'municipios-pastagens'" [src]="env.ows + '?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_regions_municipios&format=image%2Fpng'">
+															<img *ngIf="layerPastureShow == 'pastagens-todas-transicoes'" [src]="env.ows + '?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_all_transitions&format=image%2Fpng'">
+															<img *ngIf="layerPastureShow == 'pastagens-uma-transicao'" [src]="env.ows + '?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_one_transitions&format=image%2Fpng'">
+															<img *ngIf="layerPastureShow == 'pastagens-zero-transicao'" [src]=" env.ows + '?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_zero_transitions&format=image%2Fpng'">
 														</div>
 													</mat-expansion-panel>
 												</div>
@@ -407,9 +407,9 @@
 															</div>
 														</mat-expansion-panel-header>
 														<div>
-															<!-- <img *ngIf="layerPastureDegradedShow == 'areas-pastagens-degraded'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_degraded&format=image%2Fpng">
-															<img *ngIf="layerPastureDegradedShow == 'municipios-pastagens-degraded'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_degraded_regions_municipios&format=image%2Fpng"> -->
-															<img *ngIf="layerPastureDegradedShow == 'classes_degradacao_pastagem'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=classes_degradacao_pastagem&format=image%2Fpng">
+															<!-- <img *ngIf="layerPastureDegradedShow == 'areas-pastagens-degraded'" [src]=" env.ows + '?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_degraded&format=image%2Fpng'">
+															<img *ngIf="layerPastureDegradedShow == 'municipios-pastagens-degraded'" [src]=" env.ows + '?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pasture_degraded_regions_municipios&format=image%2Fpng'"> -->
+															<img *ngIf="layerPastureDegradedShow == 'classes_degradacao_pastagem'" [src]=" env.ows + '?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=classes_degradacao_pastagem&format=image%2Fpng'">
 														</div>
 													</mat-expansion-panel>
 												</div>
@@ -430,7 +430,7 @@
 															</div>
 														</mat-expansion-panel-header>
 														<div>
-															<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=lotacao_bovina_regions&format=image%2Fpng">
+															<img [src]=" env.ows + '?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=lotacao_bovina_regions&format=image%2Fpng'">
 														</div>
 													</mat-expansion-panel>
 												</div>
@@ -451,7 +451,7 @@
 															</div>
 														</mat-expansion-panel-header>
 														<div>
-															<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=potencial_intensificacao_pecuaria&format=image%2Fpng">
+															<img [src]=" env.ows + '?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=potencial_intensificacao_pecuaria&format=image%2Fpng'">
 														</div>
 													</mat-expansion-panel>
 							      		</div>
@@ -472,7 +472,7 @@
 															</div>
 														</mat-expansion-panel-header>
 														<div>
-															<img src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_campo_sem_parada&format=image%2Fpng">
+															<img [src]=" env.ows + '?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_campo_sem_parada&format=image%2Fpng'">
 														</div>
 													</mat-expansion-panel>
 												</div>
@@ -493,8 +493,8 @@
 															</div>
 														</mat-expansion-panel-header>
 														<div>
-															<img *ngIf="layerPointTVIShow == 'treinamento'" src="http://o4.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_tvi_treinamento&format=image%2Fpng">
-															<img *ngIf="layerPointTVIShow == 'validacao'" src="http://ows.lapig.iesa.ufg.br/ows?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_tvi_validacao&format=image%2Fpng">
+															<img *ngIf="layerPointTVIShow == 'treinamento'"[src]=" env.ows + '?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_tvi_treinamento&format=image%2Fpng'">
+															<img *ngIf="layerPointTVIShow == 'validacao'" [src]=" env.ows + '?EXCEPTIONS=application%2Fvnd.ogc.se_xml&TRANSPARENT=TRUE&VERSION=1.1.1&SERVICE=WMS&REQUEST=GetLegendGraphic&layer=pontos_tvi_validacao&format=image%2Fpng'">
 														</div>
 													</mat-expansion-panel>
 												</div>
