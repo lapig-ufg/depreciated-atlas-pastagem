@@ -6,8 +6,8 @@ const data_muns    = require('./muns');
 const data_ufs     = require('./ufs');
 const data_biomas  = require('./biomas');
 
-const multipleRequests = 16
-const maxZoomLevelNone = 13
+const multipleRequests = 10
+const maxZoomLevelNone = 12
 const maxZoomLevel     = 12
 const ows_url          = 'http://127.0.0.1:5000'
 const bbox             = { bottom : -33.752081, left : -73.990450, top : 5.271841, right : -28.835908 } //Brazil*/
