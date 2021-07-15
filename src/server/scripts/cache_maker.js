@@ -9,8 +9,8 @@ const data_biomas  = require('./biomas');
 const multipleRequests = 16
 const maxZoomLevelNone = 13
 const maxZoomLevel     = 12
-const ows_url          = 'http://127.0.0.1:3000'
-const bbox      = { bottom : -33.752081, left : -73.990450, top : 5.271841, right : -28.835908 } //Brazil*/
+const ows_url          = 'http://127.0.0.1:5000'
+const bbox             = { bottom : -33.752081, left : -73.990450, top : 5.271841, right : -28.835908 } //Brazil*/
 
 // const bbox   = { bottom: -24.6846260, left: -60.1094198, top: -2.3262773, right: -41.5220189 } //Cerrado
 // const ufs    = ['GO', 'SP', 'MA', 'RO', 'PA', 'MS', 'TO', 'MT', 'PR', 'PI', 'BA', 'DF', 'MG'] /*UFS - Cerrado*/
