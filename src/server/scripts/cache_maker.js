@@ -2,13 +2,11 @@ const t = require('tiles-in-bbox'),
 	async = require('async'),
 	request = require('request');
 const data_muns    = require('./muns');
-// const data_cerrado = require('./muns_cerrado');
 const data_ufs     = require('./ufs');
 const data_biomas  = require('./biomas');
 
 const multipleRequests = 10
-const maxZoomLevelNone = 12
-const maxZoomLevel     = 12
+const zoomLevels     = [0,1,2,3,4,5,6,7]
 const ows_url          = 'http://127.0.0.1:5000'
 const bbox             = { bottom : -33.752081, left : -73.990450, top : 5.271841, right : -28.835908 } //Brazil*/
 
@@ -26,7 +24,7 @@ const years  = [2010, 2018];
 let urls     = []
 
 // const types  = ['none', 'city', 'state','bioma']
-const types  = ['none']
+const types  = ['state']
 
 
 for (let type of types) {
@@ -34,9 +32,8 @@ for (let type of types) {
 
 		for (let layername of layers) {
 
-			for (let year = (years.length - 1); year >= 0; year--) {
-				// console.log("Year: " + years[year])
-				for (let zoom = 0; zoom <= maxZoomLevelNone; zoom++) {
+			for (let year in years) {
+				for (let zoom in zoomLevels) {
 					let tiles = t.tilesInBbox(bbox, zoom)
 					tiles.forEach(function (tile) {
 						let url = ows_url +"/ows"
@@ -48,7 +45,6 @@ for (let type of types) {
 							+ "&tile=" + [tile.x, tile.y, tile.z].join('+')
 
 						url += "&MSFILTER=year=" + years[year]
-						// console.log(url)
 						urls.push(url)
 					})
 				}
@@ -58,11 +54,10 @@ for (let type of types) {
 	else if (type == 'city') {
 		for (let mun of muns) {
 			for (let layername of layers) {
-				for (let year = (years.length - 1); year >= 0; year--) {
-					// console.log("Year: " + years[year])
-					for (let zoom = 0; zoom <= maxZoomLevel; zoom++) {
-						const _bbox = {left: mun.left, right: mun.right, top: mun.top, bottom: mun.bottom}
-						let tiles = t.tilesInBbox(_bbox, zoom)
+				for (let year in years) {
+					for (let zoom in zoomLevels) {
+						// const _bbox = {left: mun.left, right: mun.right, top: mun.top, bottom: mun.bottom}
+						let tiles = t.tilesInBbox(bbox, zoom)
 						tiles.forEach(function (tile) {
 							var url = ows_url +"/ows"
 								+ "?layers=" + layername
@@ -84,10 +79,10 @@ for (let type of types) {
 	else if (type == 'state') {
 		for (let uf of ufs) {
 			for (let layername of layers) {
-				for (let year = (years.length - 1); year >= 0; year--) {
-					for (let zoom = 0; zoom <= maxZoomLevel; zoom++) {
-						const _bbox = {left: uf.left, right: uf.right, top: uf.top, bottom: uf.bottom}
-						let tiles = t.tilesInBbox(_bbox, zoom)
+				for (let year in years) {
+					for (let zoom in zoomLevels) {
+						// const _bbox = {left: uf.left, right: uf.right, top: uf.top, bottom: uf.bottom}
+						let tiles = t.tilesInBbox(bbox, zoom)
 						tiles.forEach(function (tile) {
 							let url = ows_url +"/ows"
 								+ "?layers=" + layername
@@ -110,11 +105,10 @@ for (let type of types) {
 	else if (type == 'bioma') {
 		for (let bioma of biomas) {
 			for (let layername of layers) {
-				for (let year = (years.length - 1); year >= 0; year--) {
-					for (let zoom = 0; zoom <= maxZoomLevel; zoom++) {
-						const _bbox = {left: bioma.left, right: bioma.right, top: bioma.top, bottom: bioma.bottom}
+				for (let year in years) {
+					for (let zoom in zoomLevels) {
+						// const _bbox = {left: bioma.left, right: bioma.right, top: bioma.top, bottom: bioma.bottom}
 						let tiles = t.tilesInBbox(_bbox, zoom)
-						console.log(_bbox, zoom, tiles)
 						tiles.forEach(function (tile) {
 
 							let url = ows_url +"/ows"
