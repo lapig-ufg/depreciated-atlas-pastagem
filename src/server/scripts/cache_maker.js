@@ -7,7 +7,7 @@ const data_biomas  = require('./biomas');
 
 const multipleRequests = 10
 const zoomLevels     = [0,1,2,3,4,5,6,7]
-const ows_url          = 'http://127.0.0.1:5000'
+const ows_url          = 'http://127.0.0.1:3000'
 const bbox             = { bottom : -33.752081, left : -73.990450, top : 5.271841, right : -28.835908 } //Brazil*/
 
 // const bbox   = { bottom: -24.6846260, left: -60.1094198, top: -2.3262773, right: -41.5220189 } //Cerrado
