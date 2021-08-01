@@ -39,6 +39,7 @@
     "response-time": "^2.3.0",
     "session-memory-store": "~0.2.2",
     "sqlite3": "^5.0.2",
+    "tile-generator": "^1.1.0",
     "tiles-in-bbox": "^1.0.2",
     "underscore": "~1.12.1",
     "xml2js": "~0.4.1"

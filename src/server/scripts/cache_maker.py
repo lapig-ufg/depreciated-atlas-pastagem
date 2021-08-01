@@ -114,7 +114,7 @@ def run():
             states()
         elif type == 'biomes':
             biomes()
-    num_cores = 20
+    num_cores = 16
     length = len(urls)
     Parallel(n_jobs=num_cores)(delayed(processRequests)(url) for url in urls)
 

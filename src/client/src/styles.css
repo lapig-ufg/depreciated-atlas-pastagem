@@ -1,8 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "./assets/bootstrap/css/bootstrap.css";
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import "assets/site/fontawesome-all.min.css";
+@import "assets/site/style.css";
 
 .mat-tab-label{
 	min-width: 100px !important;

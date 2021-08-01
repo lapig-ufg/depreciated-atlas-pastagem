@@ -1,12 +1,13 @@
 const t = require('tiles-in-bbox'),
 	async = require('async'),
+	tileGenerator = require('tile-generator'),
 	request = require('request');
-const data_muns    = require('./muns');
+const muns    = require('./muns2');
 const data_ufs     = require('./ufs');
 const data_biomas  = require('./biomas');
 
 const multipleRequests = 10
-const zoomLevels     = [0,1,2,3,4,5,6,7]
+const zoomLevels     = [0,1,2,3,4,5,6,7, 9, 10, 11]
 const ows_url          = 'http://127.0.0.1:3000'
 const bbox             = { bottom : -33.752081, left : -73.990450, top : 5.271841, right : -28.835908 } //Brazil*/
 
@@ -17,18 +18,16 @@ const bbox             = { bottom : -33.752081, left : -73.990450, top : 5.27184
 // const muns   = data_cerrado.muns;
 
 const ufs    = data_ufs.ufs;
-const muns   = data_muns.muns;
 const biomas = data_biomas.biomas;
 const layers = ["pasture_quality"];
 const years  = [2010, 2018];
 let urls     = []
 
 // const types  = ['none', 'city', 'state','bioma']
-const types  = ['state']
-
+const types  = ['city']
 
 for (let type of types) {
-	if (type == 'none') {
+	if (type === 'none') {
 
 		for (let layername of layers) {
 
@@ -51,32 +50,49 @@ for (let type of types) {
 			}
 		}
 	}
-	else if (type == 'city') {
+	else if (type === 'city') {
 		for (let mun of muns) {
 			for (let layername of layers) {
 				for (let year in years) {
 					for (let zoom in zoomLevels) {
 						// const _bbox = {left: mun.left, right: mun.right, top: mun.top, bottom: mun.bottom}
-						let tiles = t.tilesInBbox(bbox, zoom)
-						tiles.forEach(function (tile) {
-							var url = ows_url +"/ows"
-								+ "?layers=" + layername
-								+ "&mode=tile"
-								+ "&tilemode=gmap"
-								+ "&map.imagetype=png"
-								//+ "&map.imagetype=utfgrid"
-								+ "&tile=" + [tile.x, tile.y, tile.z].join('+')
+						// let tiles = t.tilesInBbox(bbox, zoom)
 
-							url += "&MSFILTER=year=" + years[year] + " AND cd_geocmu = '" + mun.cd_geocmu + "'"
+						tileGenerator(zoom, mun.bbox)
+							.on('data', function (tile) {
 
-							urls.push(url)
-						})
+								var url = ows_url +"/ows"
+									+ "?layers=" + layername
+									+ "&mode=tile"
+									+ "&tilemode=gmap"
+									+ "&map.imagetype=png"
+									//+ "&map.imagetype=utfgrid"
+									+ "&tile=" + [tile[0], tile[1], tile[2]].join('+')
+
+								url += "&MSFILTER=year=" + years[year] + " AND cd_geocmu = '" + mun.cd_geocmu + "'"
+								console.log(url)
+								urls.push(url)
+							});
+
+						// tiles.forEach(function (tile) {
+						// 	var url = ows_url +"/ows"
+						// 		+ "?layers=" + layername
+						// 		+ "&mode=tile"
+						// 		+ "&tilemode=gmap"
+						// 		+ "&map.imagetype=png"
+						// 		//+ "&map.imagetype=utfgrid"
+						// 		+ "&tile=" + [tile.x, tile.y, tile.z].join('+')
+						//
+						// 	url += "&MSFILTER=year=" + years[year] + " AND cd_geocmu = '" + mun.cd_geocmu + "'"
+						//
+						// 	urls.push(url)
+						// })
 					}
 				}
 			}
 		}
 	}
-	else if (type == 'state') {
+	else if (type === 'state') {
 		for (let uf of ufs) {
 			for (let layername of layers) {
 				for (let year in years) {
@@ -102,7 +118,7 @@ for (let type of types) {
 			}
 		}
 	}
-	else if (type == 'bioma') {
+	else if (type === 'bioma') {
 		for (let bioma of biomas) {
 			for (let layername of layers) {
 				for (let year in years) {
@@ -131,15 +147,18 @@ for (let type of types) {
 	}
 }
 
-let requests = [];
-const length = urls.length
-urls.forEach(function (url, index) {
-	requests.push(function (next) {
-		console.log((index / length * 100).toFixed(2) + "% done." );
-		request(url, function (error, response, body) {
-			next()
-		});
-	});
-})
+console.log(urls)
 
-async.parallelLimit(requests, multipleRequests)
+//
+// let requests = [];
+// const length = urls.length
+// urls.forEach(function (url, index) {
+// 	requests.push(function (next) {
+// 		console.log((index / length * 100).toFixed(2) + "% done." );
+// 		request(url, function (error, response, body) {
+// 			next()
+// 		});
+// 	});
+// })
+//
+// async.parallelLimit(requests, multipleRequests)
