@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,6 +23,7 @@ import { AppComponent } from './app.component';
 import { MapComponent, DialogOverviewExampleDialog } from './map/map.component';
 import { MapMobileComponent } from './map/map-mobile.component';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
+import { ErrorComponent } from "./site/pages/error/error.component";
 
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -46,9 +47,8 @@ const appRoutes: Routes = [
     path: 'map-mobile',
     component: MapMobileComponent,
   },
-  { path: '',
-    redirectTo: '/map',
-    pathMatch: 'full'
+  { path: '**',
+    component: ErrorComponent,
   }
 ];
 
@@ -73,6 +73,7 @@ const appMobileRoutes: Routes = [
     MapComponent,
     MapMobileComponent,
     AppNavbarComponent,
+    ErrorComponent,
     DialogOverviewExampleDialog
   ],
   imports: [
@@ -100,9 +101,9 @@ const appMobileRoutes: Routes = [
     MatProgressSpinnerModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
+      { enableTracing: false } // <-- debugging purposes only
     ),
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
   ],
   entryComponents:[DialogOverviewExampleDialog],
   providers: [
@@ -112,8 +113,6 @@ const appMobileRoutes: Routes = [
 })
 export class AppModule {
   public constructor(private router: Router) {
-
-    console.log(window.innerWidth)
     if (window.innerWidth < 768) {
       router.resetConfig(appMobileRoutes);
     }

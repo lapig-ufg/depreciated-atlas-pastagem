@@ -11007,9 +11007,9 @@ a.text-dark:focus {
 }
 
 :root {
-  --theme-color: #727272;
+  --theme-color: #1d3430;
   --primary-color: #ffc845;
-  --secondary-color:#727272;
+  --secondary-color: #1d3430;
   --font-color: #707070;
   --bg-color: #fff;
   --heading-color: #060606;
@@ -11029,9 +11029,9 @@ a.text-dark:focus {
 }
 
 [data-theme="dark"] {
-  --theme-color: #e40000;
+  --theme-color:  #1d3430;
   --primary-color: #ffc845;
-  --secondary-color: #d83030;
+  --secondary-color:  #1d3430;
   --font-color: #b7b7b7;
   --bg-color: #171717;
   --heading-color: #fdfffc;
@@ -12310,7 +12310,7 @@ button.search-btn:hover {
   font-size: 15px;
   color: #fff;
   border-radius: 30px;
-  background: var(--primary-color);
+  background: var(--secondary-color);
   border: none;
   transition: all .25s ease-in-out;
 }
@@ -12576,7 +12576,7 @@ h5.small-title-2 {
 
 /* footer */
 .w3l-footer-22 {
-  background: #252628;
+  background: #1d3430;
 }
 
 .right-side {
@@ -12877,7 +12877,7 @@ h5.small-title-2 {
 
 /* content section */
 .w3l-content-mid {
-  background: url(./images/bg3.jpg) no-repeat left;
+  background: url(./images/diferencial.png) no-repeat left;
   background-size: cover;
   -webkit-background-size: cover;
   -o-background-size: cover;
@@ -12985,6 +12985,15 @@ a.service-heading:hover {
   -ms-background-size: cover;
 }
 
+.error{
+  background: url(./images/error.jpg) no-repeat center;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  -ms-background-size: cover;
+}
+
 a.popup-with-zoom-anim span {
   font-size: 45px;
 }
@@ -12998,7 +13007,7 @@ a.popup-with-zoom-anim {
 
 /* feature section */
 .w3l-feature-8 {
-  background: url(./images/bg2.jpg) no-repeat center fixed;
+  /*background: url(./images/bg2.jpg) no-repeat center fixed;*/
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -13176,10 +13185,18 @@ a.btn.btn-style.btn-style-normal {
 /* //content tabs section */
 
 /* team section */
+/*.team-block-single {*/
+/*  box-shadow: 0 20px 62px var(--box-shadow-color);*/
+/*  background: var(--bg-color-2);*/
+/*  border-radius: 8px;*/
+/*}*/
 .team-block-single {
-  box-shadow: 0 20px 62px var(--box-shadow-color);
-  background: var(--bg-color-2);
+  box-shadow: 0 5px 5px -3px rgba(0,0,0,.2),0 8px 10px 1px rgba(0,0,0,.14),0 3px 14px 2px rgba(0,0,0,.12)!important;
   border-radius: 8px;
+}
+
+.team-block-single img {
+  border-radius: 8px 8px 0 0;
 }
 
 .w3l-team .team-grids {
@@ -13881,7 +13898,7 @@ div#owl-demo2 .owl-dots {
 
 /* inner-banner */
 .inner-banner {
-  background: url(./images/inner-banner.jpg) no-repeat top;
+  background: url(./images/sobre1.jpg) no-repeat top;
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -13890,6 +13907,38 @@ div#owl-demo2 .owl-dots {
   position: relative;
   z-index: 0;
 }
+.metodos-banner{
+  background: url(./images/metodos.jpg) no-repeat top;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  -ms-background-size: cover;
+  position: relative;
+  z-index: 0;
+}
+
+.artigos-banner{
+  background: url(./images/artigos.jpg) no-repeat top;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  -ms-background-size: cover;
+  position: relative;
+  z-index: 0;
+}
+
+/*.service-section{*/
+/*  background: url(./images/bkg_destaques.jpg) no-repeat top;*/
+/*  background-size: cover;*/
+/*  -webkit-background-size: cover;*/
+/*  -moz-background-size: cover;*/
+/*  -o-background-size: cover;*/
+/*  -ms-background-size: cover;*/
+/*  position: relative;*/
+/*  z-index: 0;*/
+/*}*/
 
 .inner-banner::before {
   content: "";
@@ -14445,7 +14494,7 @@ h5.contact-text {
 
 /* error page */
 .w3l-error-grid {
-  background: url(./images/error.jpg) no-repeat;
+  /*background: url(./images/error.jpg) no-repeat;*/
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;

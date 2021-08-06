@@ -22,7 +22,12 @@
       "styles": [
         "styles.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "assets/site/js/jquery-3.3.1.min.js",
+        "assets/site/js/owl.carousel.js",
+        "assets/site/js/jquery.magnific-popup.min.js",
+        "assets/site/js/scripts.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

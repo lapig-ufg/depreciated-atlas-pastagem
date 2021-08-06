@@ -1,0 +1,16 @@
+.copyright-footer img{
+  max-width: 19%;
+}
+
+.navbar-brand img {
+  height: 2em;
+}
+
+.diferencial{
+  max-width: calc(100% - 16%);
+  padding: 40px;
+  background: rgb(255 255 255 / 10%);
+  border-radius: 15px;
+  display: block;
+  margin: 0 auto;
+}
