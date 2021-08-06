@@ -98,7 +98,8 @@ export class IndexComponent implements  AfterViewInit {
         rel: 0,
         showinfo: 0,
         fs: 0,
-        playsinline: 1
+        playsinline: 1,
+        Origin:'https://atlas-homolog.lapig.iesa.ufg.br/'
       },
       events: {
         'onStateChange': this.onPlayerStateChange.bind(this),

@@ -33,7 +33,14 @@ load('config.js', {'verbose': false})
 	});
 	
 	app.use(compression());
-	app.use(express.static(app.config.clientDir));
+	app.use(express.static(app.config.clientDir, { redirect: false }));
+	app.get('*', function (request, response, next) {
+		if (!request.url.includes('api') && !request.url.includes('service')) {
+			response.sendFile(path.resolve(app.config.clientDir + '/index.html'));
+		} else {
+			next();
+		}
+	});
 	app.set('views', __dirname + '/templates');
 	app.set('view engine', 'ejs');
 
