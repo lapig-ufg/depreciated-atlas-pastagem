@@ -34,6 +34,7 @@ export class IndexComponent implements  AfterViewInit {
     }
 
     this.video = 'ZZnHtkblmro';
+
     const firstScriptTag = document.getElementsByTagName('script')[0];
 
     for(let src of this.scritps){
@@ -82,21 +83,22 @@ export class IndexComponent implements  AfterViewInit {
     this.reframed = false;
     this.player = new window['YT'].Player('video', {
       videoId: this.video,
+      Host: 'https://www.youtube.com',
       width: window.innerWidth,
       height: window.innerHeight,
       playerVars: {
         vq: 'hd1080',
-        // html5: 1,
+        html5: 1,
         autohide: 1,
         autoplay: 1,
         modestbranding: 1,
         controls: 0,
         loop: 1,
-        // disablekb: 1,
+        disablekb: 1,
         rel: 0,
         showinfo: 0,
-        // fs: 0,
-        // playsinline: 1
+        fs: 0,
+        playsinline: 1
       },
       events: {
         'onStateChange': this.onPlayerStateChange.bind(this),

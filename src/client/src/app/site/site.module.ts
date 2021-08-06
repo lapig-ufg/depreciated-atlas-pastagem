@@ -1,4 +1,4 @@
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import { NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SiteRoutingModule } from './site-routing.module';
 import { IndexComponent } from './pages/index/index.component';
@@ -14,7 +14,6 @@ import { MetodosComponent } from './pages/metodos/metodos.component';
     SiteRoutingModule,
     FormsModule
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [IndexComponent, BaseComponent, SobreComponent, ArtigosComponent, MetodosComponent]
 })
 export class SiteModule {
