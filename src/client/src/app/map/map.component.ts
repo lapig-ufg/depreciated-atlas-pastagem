@@ -200,7 +200,7 @@ export class MapComponent implements OnInit {
   dropdowPontosTVI = new FormControl('treinamento');
   tipoCampo: any;
   tipoTVI: any;
-
+  region:any;
   regionSource: any;
   region_geom: any;
   linkDownload: any;
@@ -344,6 +344,7 @@ export class MapComponent implements OnInit {
   }
 
   updateRegion(region) {
+    this.region = region;
   	this.regionSelected = region.item.name;
   	this.regionTypeCharts = region.item.type;
     this.regionTypeBr = region.item.type;
@@ -351,7 +352,7 @@ export class MapComponent implements OnInit {
   	this.downloadRegion = region.item.value;
   	var regionType = region.item.type;
   	var region = region.item.value;
-  	this.region_geom = region;
+    this.region_geom = region;
 
   	if(regionType == 'estado') {
   		regionType = 'uf'
@@ -407,7 +408,9 @@ export class MapComponent implements OnInit {
   private zoomExtent() {
   	var map = this.map;
   	if (this.regionTypeCharts != '') {
-			this.http.get('service/map/extent?region=text='+"'"+this.region_geom+"'").subscribe(extentResult => {
+      // this.http.get('service/map/extent?region=text='+"'"+this.region_geom+"'").subscribe(extentResult => {
+			this.http.post('service/map/extent', this.region.item).subscribe(extentResult => {
+        console.log(extentResult)
 				var features = (new GeoJSON()).readFeatures(extentResult, {
 				  dataProjection : 'EPSG:4326',
 				  featureProjection: 'EPSG:3857'

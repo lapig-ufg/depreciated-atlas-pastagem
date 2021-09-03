@@ -1,3 +1,3 @@
 #!/bin/bash
 
-NODE_ENV=dev always app-atlas-cluster.js
+NODE_ENV=dev nodemon app-atlas-cluster.js
