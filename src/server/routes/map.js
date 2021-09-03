@@ -2,7 +2,7 @@ module.exports = function (app) {
 
 	var map = app.controllers.map;
 	
-	app.get('/service/map/extent', map.extent);
+	app.post('/service/map/extent', map.extent);
 	app.get('/service/map/fieldPoints', map.fieldPoints);
 	app.get('/service/map/indicators', map.indicators);
 	app.get('/service/map/indicatorsPastureBreBiomas', map.indicatorsPastureBreBiomas);

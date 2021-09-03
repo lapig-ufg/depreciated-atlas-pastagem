@@ -9,31 +9,61 @@ module.exports = function (app) {
 
     const config = app.config;
     //var conString = "postgres://postgres@localhost:5433/lapig";
-    const conString = "postgresql://" + config.postgres.user + ":" + config.postgres.password + "@" + config.postgres.host + ":" + config.postgres.port + "/" + config.postgres.dbname;
+    const conString = "postgresql://" + config.postgres.user + ":" + config.postgres.password + "@" + config.postgres.host + ":" + config.postgres.port + "/" + config.postgres.dbname + "?idle_in_transaction_session_timeout=30000";
+    const conGeneral = "postgresql://" + config.postgres.user + ":" + config.postgres.password + "@" + config.postgres.host + ":" + config.postgres.port + "/general?idle_in_transaction_session_timeout=30000";
 
     const client = new pg.Client(conString);
+    const general = new pg.Client(conGeneral);
+
     client.connect();
+    general.connect();
 
     Map.extent = function (request, response) {
+        const {type, value} = request.body
 
-        const region = request.param('region', '');
-        const sqlQuery = "SELECT * from regions_geom WHERE " + region;
+        const types = {
+            "bioma": "biome",
+            "estado": "state",
+            "municipio": "city"
+        }
 
-        client.query(sqlQuery, (err, queryResult) => {
-            if (err) {
-                console.log(err)
-                response.end()
-            } else {
+        let sqlQuery = `SELECT geom_json as geojson FROM regions_geom WHERE type = '${types[type]}' AND unaccent(value) = unaccent('${value}')`;
 
-                var result = {
-                    'type': 'Feature',
-                    'geometry': JSON.parse(queryResult.rows[0]['geom'])
+        if(types[type] === 'biome'){
+            sqlQuery = `SELECT geojson FROM new_biomas WHERE unaccent(value) = unaccent('${value}')`;
+            console.log(sqlQuery)
+            client.query(sqlQuery, (err, queryResult) => {
+                if (err) {
+                    console.log(err)
+                    response.end()
+                } else {
+                    console.log(queryResult.rows[0]['geojson'])
+                    var result = {
+                        'type': 'Feature',
+                        'geometry': JSON.parse(queryResult.rows[0]['geojson'])
+                    }
+                    response.send(result)
+                    response.end();
                 }
+            });
+        } else{
+            general.query(sqlQuery, (err, queryResult) => {
+                if (err) {
+                    console.log(err)
+                    response.end()
+                } else {
+                    var result = {
+                        'type': 'Feature',
+                        'geometry': JSON.parse(queryResult.rows[0]['geojson'])
+                    }
 
-                response.send(result)
-                response.end();
-            }
-        });
+                    response.send(result)
+                    response.end();
+                }
+            });
+        }
+
+
     }
 
     Map.fieldPoints = function (request, response) {
@@ -211,7 +241,7 @@ module.exports = function (app) {
         }
 
         client.query("SELECT year, SUM(ua) as ua, sum(n_kbcs) as kbc, " + area_pasture + " as past_ha FROM lotacao_bovina_regions WHERE " + msfilter + " GROUP BY year ORDER BY year", (err, res) => {
-
+            console.log('indicatorsRebanhoBovino', err)
             if (err) {
                 console.log(err.stack)
                 response.send(err)
@@ -243,7 +273,7 @@ module.exports = function (app) {
 
             if (err) {
                 console.log(err.stack)
-                response.send(err)
+                response.send(res.rows)
                 response.end()
             } else {
                 response.send(res.rows)
@@ -310,7 +340,7 @@ module.exports = function (app) {
         if (msfilter) {
             filters = " WHERE " + msfilter;
         }
-
+        console.log('msfilter', msfilter)
         client.query("SELECT COUNT(*) from pontos_tvi_treinamento" + filters, (err, res) => {
 
             if (err) {
@@ -318,6 +348,7 @@ module.exports = function (app) {
                 response.send(err)
                 response.end()
             } else {
+                console.log(res)
                 response.send(res.rows)
                 response.end()
             }
