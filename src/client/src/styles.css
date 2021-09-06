@@ -5,6 +5,16 @@
 @import "assets/site/fontawesome-all.min.css";
 @import "assets/site/style.css";
 
+*{
+  font-family: 'Montserrat', sans-serif ;
+}
+.mat-dialog-title{
+  font-family: 'Montserrat', sans-serif !important;
+}
+.mat-slide-toggle-content{
+  font-family: 'Montserrat', sans-serif !important;
+}
+
 .mat-tab-label{
 	min-width: 100px !important;
 	padding: 10px 10px !important;

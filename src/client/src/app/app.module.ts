@@ -35,10 +35,6 @@ registerLocaleData(localePt);
 
 const appRoutes: Routes = [
   {
-    path: '',
-    loadChildren: './site/site.module#SiteModule',
-  },
-  {
     path: 'map',
     component: MapComponent
   },
