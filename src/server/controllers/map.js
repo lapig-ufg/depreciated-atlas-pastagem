@@ -14,11 +14,11 @@ module.exports = function (app) {
 
     const client = new pg.Client(conString);
     const general = new pg.Client(conGeneral);
-
     client.connect();
     general.connect();
 
     Map.extent = function (request, response) {
+
         const {type, value} = request.body
 
         const types = {
@@ -31,16 +31,15 @@ module.exports = function (app) {
 
         if(types[type] === 'biome'){
             sqlQuery = `SELECT geojson FROM new_biomas WHERE unaccent(value) = unaccent('${value}')`;
-            console.log(sqlQuery)
+
             client.query(sqlQuery, (err, queryResult) => {
                 if (err) {
                     console.log(err)
                     response.end()
                 } else {
-                    console.log(queryResult.rows[0]['geojson'])
                     var result = {
                         'type': 'Feature',
-                        'geometry': JSON.parse(queryResult.rows[0]['geojson'])
+                        'geometry': queryResult.rows[0]['geojson']
                     }
                     response.send(result)
                     response.end();
@@ -56,14 +55,11 @@ module.exports = function (app) {
                         'type': 'Feature',
                         'geometry': JSON.parse(queryResult.rows[0]['geojson'])
                     }
-
                     response.send(result)
                     response.end();
                 }
             });
         }
-
-
     }
 
     Map.fieldPoints = function (request, response) {
@@ -241,7 +237,6 @@ module.exports = function (app) {
         }
 
         client.query("SELECT year, SUM(ua) as ua, sum(n_kbcs) as kbc, " + area_pasture + " as past_ha FROM lotacao_bovina_regions WHERE " + msfilter + " GROUP BY year ORDER BY year", (err, res) => {
-            console.log('indicatorsRebanhoBovino', err)
             if (err) {
                 console.log(err.stack)
                 response.send(err)
@@ -263,6 +258,7 @@ module.exports = function (app) {
             filters = filters + " AND " + msfilter;
             filtersRegions = " WHERE " + msfilter;
         }
+
         // client.query("SELECT SUM(area_ha), (SELECT SUM(pol_ha) FROM regions" + filtersRegions + ") as area_mun FROM classes_degradacao_pastagem" + filters, (err, res) => {
         client.query("SELECT SUM(area_ha), (SELECT SUM(pol_ha) FROM regions" + filtersRegions + ") as area_mun FROM pasture_quality" + filters, (err, res) => {
             var percentual_area_ha = ((res.rows[0].sum * 100) / res.rows[0].area_mun);
@@ -340,7 +336,6 @@ module.exports = function (app) {
         if (msfilter) {
             filters = " WHERE " + msfilter;
         }
-        console.log('msfilter', msfilter)
         client.query("SELECT COUNT(*) from pontos_tvi_treinamento" + filters, (err, res) => {
 
             if (err) {
