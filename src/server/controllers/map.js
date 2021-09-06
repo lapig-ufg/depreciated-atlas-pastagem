@@ -343,7 +343,6 @@ module.exports = function (app) {
                 response.send(err)
                 response.end()
             } else {
-                console.log(res)
                 response.send(res.rows)
                 response.end()
             }
