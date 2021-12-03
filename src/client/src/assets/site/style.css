@@ -8359,6 +8359,7 @@ button.bg-dark:focus {
   right: 0;
   left: 0;
   z-index: 1030;
+  background-color: #1d3430c7;
 }
 
 .fixed-bottom {
@@ -11999,11 +12000,15 @@ header.nav-fixed {
   padding: 0px;
   border-bottom: none;
   z-index: 9 !important;
-  background-color: var(--bg-color);
+  /*background-color: var(--bg-color);*/
+  background-color: #1d3430c7;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.05);
-  height: 70px;
+  height: 85px;
   /* for z-index:10 to display gallery popup */
 }
+
+
+
 
 header.nav-fixed nav.navbar.navbar-expand-lg.stroke {
   box-shadow: none;
@@ -12045,7 +12050,7 @@ nav ul li a:hover {
 }
 
 .nav-fixed .navbar-expand-lg .navbar-nav .nav-link {
-  color: var(--heading-color);
+  color:white;
 }
 
 .nav-fixed .navbar-brand {
@@ -12414,7 +12419,21 @@ h3.title-main:after {
 .banner-19 .banner-layer {
   position: relative;
   min-height: 100vh;
+
 }
+.banner-layer {
+  position: relative;
+  min-height: 100vh;
+  background: url(./images/banner.jpg) no-repeat left;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  -moz-background-size: cover;
+  -ms-background-size: cover;
+  z-index: 1;
+}
+
+
 
 .main-content-top {
   position: absolute;
@@ -12718,7 +12737,8 @@ h5.small-title-2 {
 
 .footer-contact {
   background: #191a1c;
-  padding: 2em;
+  /*padding: 2em;*/
+  border-radius: 15px;
 }
 
 .footer-contact.active {
@@ -12977,12 +12997,12 @@ a.service-heading:hover {
 }
 
 .w3l-content-photo-5 {
-  background: url(./images/bg1.png) no-repeat center;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  -ms-background-size: cover;
+  /*background: url(./images/bg1.png) no-repeat center;*/
+  /*background-size: cover;*/
+  /*-webkit-background-size: cover;*/
+  /*-moz-background-size: cover;*/
+  /*-o-background-size: cover;*/
+  /*-ms-background-size: cover;*/
 }
 
 .error{
@@ -14875,6 +14895,15 @@ h5.texti {
     padding: 0.5rem;
     font-size: 15px;
   }
+}
+iframe {
+  border-radius: 15px;
+  -webkit-box-shadow: 0px 0px 40px 0px var(--box-shadow-color);
+  box-shadow: 0px 0px 40px 0px var(--box-shadow-color);
+}
+
+.navbar-brand img {
+  height: 3.5em!important;
 }
 
 /* //shortcodes page */

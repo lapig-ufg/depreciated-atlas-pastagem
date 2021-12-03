@@ -44,8 +44,6 @@ export class IndexComponent implements  AfterViewInit {
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     }
 
-    /* startVideo() will create an <iframe> (and YouTube player) after the API code downloads. */
-    window['onYouTubeIframeAPIReady'] = () => this.startVideo();
     this.cdr.detectChanges();
     $(this.owl.nativeElement).owlCarousel({
       loop: true,
@@ -107,6 +105,7 @@ export class IndexComponent implements  AfterViewInit {
         'onReady': this.onPlayerReady.bind(this),
       }
     });
+
   }
 
   /*It will be called when the Video Player is ready */
