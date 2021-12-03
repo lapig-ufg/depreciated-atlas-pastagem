@@ -15,19 +15,18 @@
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav ml-lg-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          <li *ngFor="let itemMenu of menu" [class]="itemMenu.selected ? 'nav-item active' : 'nav-item'" >
+            <a class="nav-link" href="{{itemMenu.href}}">{{itemMenu.title}} <span *ngIf="itemMenu.selected" class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/sobre">Sobre</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/metodos">Métodos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/artigos">Artigos</a>
-          </li>
-
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="/sobre">Sobre</a>-->
+<!--          </li>-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="/metodos">Métodos</a>-->
+<!--          </li>-->
+<!--          <li class="nav-item active">-->
+<!--            <a class="nav-link" href="/artigos">Artigos</a>-->
+<!--          </li>-->
         </ul>
       </div>
       <!-- toggle switch for light and dark theme -->
@@ -76,7 +75,7 @@
   <div class=" pt-lg-3 pb-lg-3 copyright-footer text-center">
     <div class="container">
       <div class="columns">
-        <img src="assets/site/images/logos/logo_branco.png" alt="Atlas das Pastagens"
+        <img src="assets/site/images/logos/atlas_partners.png" alt="Atlas das Pastagens"
              title="Atlas das Pastagens Brasileiras"/>
         <p>© {{ year }} Atlas das Pastagens Brasileiras. Todos os direitos reservados.
         </p>

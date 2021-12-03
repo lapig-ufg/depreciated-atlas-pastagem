@@ -10,7 +10,7 @@
 
 .service-details p {
   text-align: justify;
-  height: 20em;
+  /*height: 20em;*/
   font-size: 14px;
   overflow: hidden;
 }

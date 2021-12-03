@@ -1,5 +1,10 @@
-.copyright-footer img{
-  max-width: 19%;
+.copyright-footer img {
+  border-radius: 15px;
+  margin: 15px;
+  max-width: 70%;
+  background: #ffffff26;;
+  padding: 20px;
+  /*filter: grayscale(100%);*/
 }
 
 .navbar-brand img {
