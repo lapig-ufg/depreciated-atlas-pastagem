@@ -14911,6 +14911,24 @@ iframe {
   border-bottom: 1px solid var(--primary-color) !important;
 }
 
+p{
+  text-align: justify;
+  text-indent: 50px;
+}
+
+::-webkit-scrollbar {
+  width: 10px!important;
+  cursor: pointer!important;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);;
+  border-radius: 5px;
+}
 
 
 /* //shortcodes page */
